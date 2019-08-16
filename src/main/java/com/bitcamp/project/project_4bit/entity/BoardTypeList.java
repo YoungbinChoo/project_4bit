@@ -22,11 +22,6 @@ public class BoardTypeList implements Serializable {
     @Column(name = "board_name")
     private String boardName;
 
-    // isnotice       (공지표시유무)
-    @Column(name = "isnotice")
-    @Convert(converter = BooleanToStringConverter.class)
-    private Boolean isnotice;
-
     @Column(name = "article_last_number")
     private int articleLastNumber;
 
@@ -58,14 +53,6 @@ public class BoardTypeList implements Serializable {
 
     public void setBoardName(String boardName) {
         this.boardName = boardName;
-    }
-
-    public Boolean getIsnotice() {
-        return isnotice;
-    }
-
-    public void setIsnotice(Boolean isnotice) {
-        this.isnotice = isnotice;
     }
 
     public int getArticleLastNumber() {

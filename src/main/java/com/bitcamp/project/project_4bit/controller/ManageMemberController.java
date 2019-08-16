@@ -93,7 +93,7 @@ public class ManageMemberController {
         return userService.selectOfTeacher(classId);
     }
 
-    // classId 로 회원리스트를 찾아오는 컨트롤러
+    // classId 로 학생리스트를 찾아오는 컨트롤러
     // EndPoint : http://localhost:8080/manage/member/student/list?classId={classId}
     @PreAuthorize("hasAnyAuthority('MANAGE_READ')")
     @RequestMapping(

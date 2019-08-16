@@ -78,7 +78,7 @@ public class UserService {
     }
 
 
-    // 관리자가 학생의 개인정보를 수정하는 service
+    // 관리자가 학생과 강사 개인정보를 수정하는 service
     @Transactional
     public String updateUserByAdmin(Long userId, User user) {
 
@@ -107,9 +107,15 @@ public class UserService {
                 return "알 수 없는 이유로 유저정보 업데이트에 실패했습니다";
             }
         }
-        // 학생 고유정보 업데이트 실패했으므로 유저정보 업데이트 안함
+        // 학생 고유정보 업데이트 안했을 경우 강사 업데이트 함
         else if(isStudentUpdateSuccess==0) {
-            return "학생 고유정보 업데이트에 실패하여, 유저정보도 업데이트 하지 않았습니다";
+
+            int isUserUpdateSuccess = userRepository.updateUserByAdmin(userId, newUsername, newPassword, newName, newEmail, newPhone);
+            if(isUserUpdateSuccess==1) {
+                return "모든 유저정보를 성공적으로 수정하였습니다";
+            }else {
+                return "알 수 없는 이유로 유저정보 업데이트에 실패했습니다";
+            }
         }
         else {
             return "알 수 없는 이유로 학생 고유정보 업데이트에 실패하여, 유저정보도 업데이트 하지 않았습니다";
