@@ -58,15 +58,14 @@ public class ManageMemberController {
                     MediaType.APPLICATION_XML_VALUE
             })
     public User registerMember(Principal principal,
-                               @RequestBody RegisterMember registerMember,
-                               String roleCode
+                               @RequestBody RegisterMember registerMember
     ){
 
         // 1. 학생등록 todo : *프론트에서 받아오는 roleCode로 등록하도록 수정*
-        if(roleCode.equals("role_student")){
+        if(registerMember.getRoleCode().equals("role_student")){
             return registerMemberService.registerStudent(registerMember);
         }else{
-            // 2. 강사등록 (birth 가 null 이면)
+            // 2. 강사등록 (role_student 가 아니면)
             return registerMemberService.registerTeacher(registerMember);
         }
 
