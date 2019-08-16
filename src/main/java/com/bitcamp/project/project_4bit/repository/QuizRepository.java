@@ -30,18 +30,9 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @Query(value = "SELECT * FROM quiz WHERE quiz_id=?1", nativeQuery = true)
     Page<Quiz> findOneByQuiz(Pageable pageable, Long quizId);
 
-
-    //    역할 : 문제를 과목별로 찾기
-    @Query(value = "SELECT * FROM quiz WHERE quiz_subject = ?1", nativeQuery = true)
-    Page<Quiz> findQuizByQuizSubject(Pageable pageable, String quizSubject);
-
-    //    역할 : 문제를 챕터별로 찾기
-    @Query(value = "SELECT * FROM quiz WHERE quiz_chapter = ?1", nativeQuery = true)
-    Page<Quiz> findQuizByQuizChapter(Pageable pageable, String quizChapter);
-
-    //    역할 : 문제를 난이별로 찾기
-    @Query(value = "SELECT * FROM quiz WHERE quiz_level = ?1", nativeQuery = true)
-    Page<Quiz> findQuizByQuizLevel(Pageable pageable, String quizLevel);
+    //    역할 : 과목별,챕터별,난이도별로 찾는 메서드
+    @Query(value = "SELECT * FROM quiz WHERE quiz_subject=?1 OR quiz_chapter=?2 OR quiz_level=?3", nativeQuery = true)
+    Page<Quiz> findQuizByQuizSubjectAndQuizChapterAndQuizLevel(Pageable pageable, String quizSubject, String quizChapter, String quizLevel);
 
     //    역할 : 문제 contents, answer, eachScore, subject, chapter, level을 quizId로 찾아서 수정
     @Modifying
@@ -49,5 +40,15 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     int updateQuiz(String quizContents, String quizAnswer, int quizEachScore, String quizSubject, String quizChapter, String quizLevel, Long quizId);
 
 
-
+//    //    역할 : 문제를 과목별로 찾기
+//    @Query(value = "SELECT * FROM quiz WHERE quiz_subject = ?1", nativeQuery = true)
+//    Page<Quiz> findQuizByQuizSubject(Pageable pageable, String quizSubject);
+//
+//    //    역할 : 문제를 챕터별로 찾기
+//    @Query(value = "SELECT * FROM quiz WHERE quiz_chapter = ?1", nativeQuery = true)
+//    Page<Quiz> findQuizByQuizChapter(Pageable pageable, String quizChapter);
+//
+//    //    역할 : 문제를 난이별로 찾기
+//    @Query(value = "SELECT * FROM quiz WHERE quiz_level = ?1", nativeQuery = true)
+//    Page<Quiz> findQuizByQuizLevel(Pageable pageable, String quizLevel);
 }
