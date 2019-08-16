@@ -33,7 +33,7 @@ public class HwReplyController {
     ///////////////////////////   HwReply 작성(과제댓글, 학생/강사 가능)   ///////////////////////////
     // http://localhost:8080/hwreply/write?hwArticleId={hwArticleId}
 
-    @PreAuthorize("hasAnyAuthority('WRITE_SHW')")
+    @PreAuthorize("hasAnyAuthority('SHW_WRITE')")
     @RequestMapping(
             path = "/write",
             method = RequestMethod.POST,

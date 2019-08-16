@@ -49,7 +49,7 @@ public class ReplyController {
     private UserService userService;
     // 댓글 작성
     // EndPoint : http://localhost:8080/reply/write?boardId=class_1_board&articleId=23
-    @PreAuthorize("hasAnyAuthority('WRITE_NOTICE','WRITE_JOB','WRITE_PRO','WRITE_CBOARD','WRITE_CNOTICE','WRITE_LIBRARY')")
+    @PreAuthorize("hasAnyAuthority('NOTICE_WRITE','JOB_WRITE','PRO_WRITE','CBOARD_WRITE','CNOTICE_WRITE','LIBRARY_WRITE')")
     @RequestMapping(
             path = "/write",
             method = RequestMethod.POST,
@@ -78,7 +78,7 @@ public class ReplyController {
 
     // 댓글 전체조회
     // EndPoint :http://localhost:8080/reply/list?boardId=class_1_board&articleId=23
-    @PreAuthorize("hasAnyAuthority('READ_NOTICE','READ_JOB','READ_PRO','READ_CBOARD','READ_CNOTICE','READ_LIBRARY')")
+    @PreAuthorize("hasAnyAuthority('NOTICE_READ','JOB_READ','PRO_READ','CBOARD_READ','CNOTICE_READ','LIBRARY_READ')")
     @RequestMapping(
             path = "/list",
             method = RequestMethod.GET,
@@ -100,7 +100,7 @@ public class ReplyController {
 
     // 댓글 수정
     // EndPoint :  http://localhost:8080/reply/view?replyId=5
-    @PreAuthorize("hasAnyAuthority('WRITE_NOTICE','WRITE_JOB','WRITE_PRO','WRITE_CBOARD','WRITE_CNOTICE','WRITE_LIBRARY')")
+    @PreAuthorize("hasAnyAuthority('NOTICE_WRITE','JOB_WRITE','PRO_WRITE','CBOARD_WRITE','CNOTICE_WRITE','LIBRARY_WRITE')")
     @RequestMapping(
             path = "/view",
             method = RequestMethod.PATCH,
@@ -134,7 +134,7 @@ public class ReplyController {
 
     // 댓글 삭제
     // EndPoint :  http://localhost:8080/reply/view?replyId=5
-    @PreAuthorize("hasAnyAuthority('WRITE_NOTICE','WRITE_JOB','WRITE_PRO','WRITE_CBOARD','WRITE_CNOTICE','WRITE_LIBRARY')")
+    @PreAuthorize("hasAnyAuthority('NOTICE_WRITE','JOB_WRITE','PRO_WRITE','CBOARD_WRITE','CNOTICE_WRITE','LIBRARY_WRITE')")
     @RequestMapping(
             path = "/view",
             method = RequestMethod.DELETE,
