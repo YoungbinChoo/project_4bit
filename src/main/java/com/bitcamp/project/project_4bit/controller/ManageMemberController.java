@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.stream.Collectors;
 
-
-/*수정예정*/
+/*todo : 모든 메서드에 principal 받아오도록 수정함*/
 
 // UserController 랑 같은 역할입니다.
 // admin 이 member를 관리하는 controller.
@@ -59,17 +58,20 @@ public class ManageMemberController {
                     MediaType.APPLICATION_XML_VALUE
             })
     public User registerMember(Principal principal,
-            @RequestBody RegisterMember registerMember,
-            @RequestParam(name = "role", required = true) String roleCode
-                               ){
+                               @RequestBody RegisterMember registerMember,
+                               String roleCode
+    ){
 
         // 1. 학생등록 todo : *프론트에서 받아오는 roleCode로 등록하도록 수정*
-        if(registerMember.getStudentBirth() != null){
+        if(roleCode.equals("role_student")){
             return registerMemberService.registerStudent(registerMember);
         }else{
             // 2. 강사등록 (birth 가 null 이면)
             return registerMemberService.registerTeacher(registerMember);
         }
+
+        //todo: principal을 받아서 어떤 admin이 등록했나 log를 남기는게 정석이지만,
+        //현재 admin 로그를 남기는 컬럼이 없으므로 메서드 수정 안함
     }
 
     // classId 로 강사를 찾아오는 Controller
@@ -83,7 +85,7 @@ public class ManageMemberController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public User selectTeacherOfClassId(@PathVariable("classId") Long classId){
+    public User selectTeacherOfClassId(Principal principal,@PathVariable("classId") Long classId){
         return userService.selectOfTeacher(classId);
     }
 
@@ -98,6 +100,7 @@ public class ManageMemberController {
                     MediaType.APPLICATION_XML_VALUE
             })
     public ResultItems<Student> listOf(
+            Principal principal,
             @RequestParam(name = "classId", required = true) Long classId,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "15", required = false) int size) {
@@ -117,7 +120,7 @@ public class ManageMemberController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public User retrieve(@RequestParam("userId") Long userId){
+    public User retrieve(Principal principal,@RequestParam("userId") Long userId){
         return userService.itemOfUser(userId).get();
     }
 
@@ -132,10 +135,13 @@ public class ManageMemberController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public String update(@RequestParam(name = "userId", required = true) Long userId,
-                      @RequestBody User user){
+    public String update(Principal principal,@RequestParam(name = "userId", required = true) Long userId,
+                         @RequestBody User user){
 
         return userService.updateUserByAdmin(userId, user);
+
+        //todo: principal을 받아서 어떤 admin이 수정했나 log를 남기는게 정석이지만,
+        //현재 admin 로그를 남기는 컬럼이 없으므로 메서드 수정 안함
     }
 
     // admin이 user를 삭제
@@ -148,6 +154,7 @@ public class ManageMemberController {
                     MediaType.APPLICATION_XML_VALUE
             })
     public User delete(
+            Principal principal,
             @RequestParam("userId") Long userId){
 
         userService.deleteUser(userId);
@@ -156,5 +163,8 @@ public class ManageMemberController {
         user.setUserId(userId);
 
         return user;
+
+        //todo: principal을 받아서 어떤 admin이 삭제했나 log를 남기는게 정석이지만,
+        //현재 admin 로그를 남기는 컬럼이 없으므로 메서드 수정 안함
     }
 }
