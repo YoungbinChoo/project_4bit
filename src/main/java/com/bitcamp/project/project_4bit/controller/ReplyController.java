@@ -60,7 +60,6 @@ public class ReplyController {
     )
     public Reply create(
             Principal principal,
-//            @PathVariable("boardId") String boardId,
             @RequestParam(name = "boardId", required = true) String boardId,
             @RequestParam(name = "articleId", required = true) Long articleId,
             @RequestBody Reply reply) {
@@ -106,9 +105,7 @@ public class ReplyController {
             method = RequestMethod.PATCH,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_XML_VALUE
-            }
-    )
+                    MediaType.APPLICATION_XML_VALUE })
     public int update(
             Principal principal,
             @RequestParam(name = "replyId", required = true) Long replyId,
@@ -124,9 +121,11 @@ public class ReplyController {
         // 3. replyOwner 와 reply 객체 안에 있는 user_id를 비교해준다.
         if(replyOwner == reply.getUser().getUserId()){
             // 같다면 수정을 한다.
+            System.out.println("수정에 성공했습니다.");
             return replyService.updateReply(reply.getReplyContents(), replyId);
         }else{
             // 다르다면 수정을 안한다.
+            System.out.println("수정에 실패했습니다.");
             return 0;
         }
     }
@@ -134,15 +133,14 @@ public class ReplyController {
 
     // 댓글 삭제
     // EndPoint :  http://localhost:8080/reply/view?replyId=5
+    // Todo : 관리자는 모든 게시물을 삭제할 수 있는 권한을 주어야 함.
     @PreAuthorize("hasAnyAuthority('NOTICE_WRITE','JOB_WRITE','PRO_WRITE','CBOARD_WRITE','CNOTICE_WRITE','LIBRARY_WRITE')")
     @RequestMapping(
             path = "/view",
             method = RequestMethod.DELETE,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_XML_VALUE
-            }
-    )
+                    MediaType.APPLICATION_XML_VALUE })
     public Reply delete(
             Principal principal,
             Reply reply,
@@ -157,6 +155,7 @@ public class ReplyController {
 
         // 3. 비교해서 같다면 삭제
         if(replyOwner == reply.getUser().getUserId()){
+            System.out.println("삭제에 성공했습니다.");
             replyService.deleteReply(replyId);
         }
 

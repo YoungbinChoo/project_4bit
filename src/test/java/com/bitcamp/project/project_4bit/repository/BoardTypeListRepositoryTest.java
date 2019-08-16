@@ -36,7 +36,6 @@ public class BoardTypeListRepositoryTest {
         BoardTypeList boardTypeList = new BoardTypeList();
         boardTypeList.setBoardId("class_1_board");
         boardTypeList.setBoardName("1반 자유게시판");
-        boardTypeList.setIsnotice(false);
         boardTypeList.setClassGroup(classGroup);
         boardTypeList.setConstraintDefine(constraintDefine);
 
