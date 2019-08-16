@@ -19,12 +19,8 @@ public class RoadmapController {
     @Autowired
     private RoadmapService roadmapService;
 
-    // 역할   : 해당 게시판의 로드맵들 전체 출력
-    // 설명   : 과목명, 챕터명 에 대한 읽기 권한이 필요하다.
-    //         ResultItems 에 관련한 클래스는 model 안에 있습니다.
-    //         페이지네이션을 해주기 위해서 Pageable 을 해주는 것이고, URL 에서 RoadmapStageNo 로 스테이지들을 구분 해주어야 하기 때문에
-    //         RoadmapStageNo 의 required 만 true 로 해주어 URL 에 필수적으로 작성하도록 합니다.
-    @PreAuthorize("hasAnyAuthority('READ_ROADMAP')")
+    // 역할   : Roadmap 내용들 전체 출력
+    @PreAuthorize("hasAnyAuthority('ROADMAP_READ')")
     @RequestMapping(
             path = "/list",
             method = RequestMethod.GET,
@@ -34,7 +30,6 @@ public class RoadmapController {
             }
     )
     public ResultItems<Roadmap> listOf(
-//            @RequestParam(name = "roadmapStageNo", required = true) Integer roadmapStageNo,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -44,8 +39,8 @@ public class RoadmapController {
     }
 
 
-    // 역할 : 해당 게시판의 게시물 하나를 조회
-    @PreAuthorize("hasAnyAuthority('READ_ROADMAP')")
+    // 역할 : Roadmap 내용 하나를 조회
+    @PreAuthorize("hasAnyAuthority('ROADMAP_READ')")
     @RequestMapping(
             path = "/view",
             method = RequestMethod.GET,

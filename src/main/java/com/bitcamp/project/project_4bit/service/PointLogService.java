@@ -14,6 +14,8 @@ public class PointLogService {
     public Page<PointLog> listofPointLog(Pageable pageable){
         return  pointLogRepository.findAll(pageable);
     }
+
+    /*todo: 포인트 더해줄 때 서비스 로직 생각해야함*/
     @Transactional
     public PointLog addedPointLog(PointLog pointLog){
         return  pointLogRepository.save(pointLog);

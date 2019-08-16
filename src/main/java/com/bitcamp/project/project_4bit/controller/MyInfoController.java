@@ -23,7 +23,7 @@ public class MyInfoController {
     private UserService userService;
 
     // 회원 개인 정보 읽어오는 컨트롤러
-    @PreAuthorize("hasAnyAuthority('READ_ME')")
+    @PreAuthorize("hasAnyAuthority('ME_READ')")
     @RequestMapping(
             method = RequestMethod.GET,
             produces = {
@@ -43,7 +43,7 @@ public class MyInfoController {
 
 
     // 회원 개인 정보 수정하는 컨트롤러
-    @PreAuthorize("hasAnyAuthority('WRITE_ME')")
+    @PreAuthorize("hasAnyAuthority('ME_WRITE')")
     @RequestMapping(
             path = "/edit",
             method = RequestMethod.PATCH,

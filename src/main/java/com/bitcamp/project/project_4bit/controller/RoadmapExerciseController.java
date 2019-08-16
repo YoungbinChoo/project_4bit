@@ -25,8 +25,8 @@ public class RoadmapExerciseController {
     @Autowired
     private RoadmapExerciseService roadmapExerciseService;
 
-    // 역할   : 해당 게시판의 로드맵들 전체 출력
-    @PreAuthorize("hasAnyAuthority('READ_ROADMAP')")
+    // 역할   : RoadmapExercise 내용들 전체 출력
+    @PreAuthorize("hasAnyAuthority('ROADMAP_READ')")
     @RequestMapping(
             path = "/list",
             method = RequestMethod.GET,
@@ -44,8 +44,8 @@ public class RoadmapExerciseController {
         return new ResultItems<RoadmapExercise>(roadmapExerciseList.stream().collect(Collectors.toList()), page, size, roadmapExerciseList.getTotalElements());
     }
 
-    // 역할 : 해당 게시판의 게시물 하나를 조회
-    @PreAuthorize("hasAnyAuthority('READ_ROADMAP')")
+    // 역할 : RoadmapExercise 내용 하나를 조회
+    @PreAuthorize("hasAnyAuthority('ROADMAP_READ')")
     @RequestMapping(
             path = "/view",
             method = RequestMethod.GET,
@@ -55,7 +55,7 @@ public class RoadmapExerciseController {
             }
     )
     public Long retrieve(
-           @RequestParam(name = "exerciseSequence", required = true) Long exerciseSequence) {
+            @RequestParam(name = "exerciseSequence", required = true) Long exerciseSequence) {
 
         return roadmapExerciseService.itemOfRoadmapExerciseAndExerciseSequence(exerciseSequence);
     }

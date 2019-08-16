@@ -21,6 +21,7 @@ public class PointLogController {
 
 
     // 포인트로그 리스트를 보여주는 메서드
+    // endpoint : http://localhost:8080/mypage/point?userId={userId}
     @RequestMapping(
             method = RequestMethod.GET,
             produces = {
@@ -35,6 +36,8 @@ public class PointLogController {
         return pointLogs;
     }
 
+    //포인트 더하는 메서드
+    // endpoint : http://localhost:8080/mypage/point
     @RequestMapping(
             method = RequestMethod.POST,
             produces = {
@@ -43,6 +46,7 @@ public class PointLogController {
             }
     )
     public PointLog addPointLog(Principal principal,@RequestBody PointLog pointLog){
+        /*접속된 스스로에게 포인트 부여됨*/
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
         pointLog.setUser(user);
         return pointLogService.addedPointLog(pointLog);

@@ -51,7 +51,7 @@ public class ArticleController {
     //          어느 게시판에 게시글을 쓸 건지 정해주어야되므로 setBoardTypeList()를 사용하여 설정해줍니다.
     //          selectBoardId() 는 BoardTypeListService 안에 있습니다.
     // EndPoint :  http://localhost:8080/board/class_1_board/write
-    @PreAuthorize("hasAnyAuthority('WRITE_NOTICE','WRITE_JOB','WRITE_PRO','WRITE_CBOARD','WRITE_CNOTICE','WRITE_LIBRARY')")
+    @PreAuthorize("hasAnyAuthority('NOTICE_WRITE','JOB_WRITE','PRO_WRITE','CBOARD_WRITE','CNOTICE_WRITE','LIBRARY_WRITE')")
     @RequestMapping(
             path = "/{boardId}/write",
             method = RequestMethod.POST,
@@ -87,7 +87,7 @@ public class ArticleController {
     //         페이지네이션을 해주기 위해서 Pageable 을 해주는 것이고, URL 에서 boardId 로 게시판들을 구분 해주어야 하기 때문에
     //         boardId 의 required 만 true 로 해주어 URL 에 필수적으로 작성하도록 합니다.
     // EndPoint : http://localhost:8080/board/list?boardId=class_1_board 로 해주어야 되므로 GET 방식을 사용합니다.
-    @PreAuthorize("hasAnyAuthority('READ_NOTICE','READ_JOB','READ_PRO','READ_CBOARD','READ_CNOTICE','READ_LIBRARY')")
+    @PreAuthorize("hasAnyAuthority('NOTICE_READ','JOB_READ','PRO_READ','CBOARD_READ','CNOTICE_READ','LIBRARY_READ')")
     @RequestMapping(
             path = "/list",
             method = RequestMethod.GET,
@@ -111,7 +111,7 @@ public class ArticleController {
     // 설명 : 우선 boardId 로 게시판을 구별해주고 그 게시판에 해당 게시물이 있으면 조회가 되게 합니다.
     //        ?boardId=  이쪽은 실제로 사용은 하지 않지만 URL 통일을 위해 무의미하게 써줌. URL에서는 작성해주어야됨.
     // EndPoint : http://localhost:8080/board/view?boardId=class_1_board&articleId=28
-    @PreAuthorize("hasAnyAuthority('READ_NOTICE','READ_JOB','READ_PRO','READ_CBOARD','READ_CNOTICE','READ_LIBRARY')")
+    @PreAuthorize("hasAnyAuthority('NOTICE_READ','JOB_READ','PRO_READ','CBOARD_READ','CNOTICE_READ','LIBRARY_READ')")
     @RequestMapping(
 //            path = "/{boardId}",
             path = "/view",
@@ -135,7 +135,7 @@ public class ArticleController {
     //       게시글의 제목, 내용을 수정 할 수 있습니다. (날짜는 now() 를 사용해서 자동으로 수정한 시간으로 세팅 됩니다.)
     //        ?boardId=  이쪽은 실제로 사용은 하지 않지만 URL 통일을 위해 무의미하게 써줌. URL에서는 작성해주어야됨.
     // EndPoint :  http://localhost:8080/board/view?boardId&articleId=8
-    @PreAuthorize("hasAnyAuthority('WRITE_NOTICE','WRITE_JOB','WRITE_PRO','WRITE_CBOARD','WRITE_CNOTICE','WRITE_LIBRARY')")
+    @PreAuthorize("hasAnyAuthority('NOTICE_WRITE','JOB_WRITE','PRO_WRITE','CBOARD_WRITE','CNOTICE_WRITE','LIBRARY_WRITE')")
     @RequestMapping(
             path = "/view",
             method = RequestMethod.PATCH,
@@ -170,7 +170,7 @@ public class ArticleController {
     // 설명 : articleId를 사용해서 해당 게시물을 DB에서 아예 삭제합니다.
     //        ?boardId=  이쪽은 실제로 사용은 하지 않지만 URL 통일을 위해 무의미하게 써줌. URL에서는 작성해주어야됨.
     // EndPoint :  http://localhost:8080/board/view?articleId=28
-    @PreAuthorize("hasAnyAuthority('WRITE_NOTICE','WRITE_JOB','WRITE_PRO','WRITE_CBOARD','WRITE_CNOTICE','WRITE_LIBRARY')")
+    @PreAuthorize("hasAnyAuthority('NOTICE_WRITE','JOB_WRITE','PRO_WRITE','CBOARD_WRITE','CNOTICE_WRITE','LIBRARY_WRITE')")
     @RequestMapping(
 //            path = "/{articleId}",
             path = "/view",
