@@ -23,6 +23,7 @@ public class MyInfoController {
     private UserService userService;
 
     // 회원 개인 정보 읽어오는 컨트롤러
+    //endpoint : http://localhost:8080/mypage/myinfo?userId={userId}
     @PreAuthorize("hasAnyAuthority('ME_READ')")
     @RequestMapping(
             method = RequestMethod.GET,
@@ -43,6 +44,7 @@ public class MyInfoController {
 
 
     // 회원 개인 정보 수정하는 컨트롤러
+    //endpoint : http://localhost:8080/mypage/myinfo/edit?userId={userId}
     @PreAuthorize("hasAnyAuthority('ME_WRITE')")
     @RequestMapping(
             path = "/edit",
@@ -56,7 +58,7 @@ public class MyInfoController {
                       @RequestBody User user
                       ) {
 
-        //1. 본인과 수정하는 유저를 비교해주기 위해 userMe 생성
+        //본인과 수정하는 유저를 비교해주기 위해 userMe 생성
         User userMe = (User) userDetailsService.loadUserByUsername(principal.getName());
 
         if (userMe.getUserId() == userId) {

@@ -137,7 +137,7 @@ public class UserService {
 
         //학생일 경우 birth 수정 가능
         // userCheck 검사결과 학생이면 생일정보 수정
-        if (userCheck.getRole().equals("role_student")) {
+        if (userCheck.getRole().getRoleCode().equals("role_student")) {
             String newBirth = user.getStudentBirth();
             int isStudentUpdateSuccess = studentRepository.updateStudentBySelf(userId, newBirth);
             if(isStudentUpdateSuccess == 1){

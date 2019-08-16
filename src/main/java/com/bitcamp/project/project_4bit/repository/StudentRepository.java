@@ -13,11 +13,12 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     // classId 를 통해서 소속 학생 전체 리스트를 뽑는 Jpa 쿼리
     Page<Student> findAllByClassGroup_ClassId(Long classId, Pageable pageable);
 
-    // 수정 시 studentBirth, classID 를 수정하는 쿼리.
+
     @Modifying
     @Query(value = "UPDATE student s SET s.student_birth=?2 WHERE s.user_id=?1", nativeQuery = true)
     int updateStudentBySelf(Long userId, String newStudentBirth);
 
+    // 관리자 수정 시 studentBirth, classID 를 수정하는 쿼리.
     @Modifying
     @Query(value = "UPDATE student s SET s.student_birth=?2, s.class_id=?3 WHERE s.user_id=?1", nativeQuery = true)
     int updateStudentByAdmin(Long userId, String newStudentBirth, Long newClassId);
