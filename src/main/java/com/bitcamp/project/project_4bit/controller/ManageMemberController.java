@@ -19,6 +19,8 @@ import java.security.Principal;
 import java.util.stream.Collectors;
 
 
+/*수정예정*/
+
 // UserController 랑 같은 역할입니다.
 // admin 이 member를 관리하는 controller.
 @RestController
