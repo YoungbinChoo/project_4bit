@@ -52,7 +52,7 @@ public class QuizController {
      * 참고사항 : 선생님 고유 권한이니까 WRITE_TQUIZ 지정했습니다.
      * endpoint : http://localhost:8080/class/test/exbank/write
      * */
-    @PreAuthorize("hasAnyAuthority('WRITE_TQUIZ')")
+    @PreAuthorize("hasAnyAuthority('TQUIZ_WRITE')")
     @RequestMapping(
             path = "/write",
             method = RequestMethod.POST,
@@ -96,7 +96,7 @@ public class QuizController {
 
     // Todo: 이부분을 퀴즈 상세보기로 고쳐야(quiz id받아서 내용표시)
 //     http://localhost:8080/class/test/exbank/oneList?quizId={quizId}
-    @PreAuthorize("hasAnyAuthority('READ_TQUIZ')")
+    @PreAuthorize("hasAnyAuthority('TQUIZ_READ')")
     @RequestMapping(
             path = "/oneList",
             method = RequestMethod.GET,
@@ -120,7 +120,7 @@ public class QuizController {
      *           외부에서 quizSubject를 파라미터로 받와야해서 @RequestBody로 받아왔습니다.
      * endpoint : http://localhost:8080/class/test/exbank/subject/{quizSubject}
      * */
-    @PreAuthorize("hasAnyAuthority('READ_TQUIZ')")
+    @PreAuthorize("hasAnyAuthority('TQUIZ_READ')")
     @RequestMapping(
             path = "/subject",
             method = RequestMethod.GET,
@@ -141,7 +141,7 @@ public class QuizController {
      *           외부에서 quizChapter 를 파라미터로 받와야해서 @RequestBody로 받아왔습니다.
      * endpoint : http://localhost:8080/class/test/exbank/chapter/{quizChapter}
      * */
-    @PreAuthorize("hasAnyAuthority('READ_TQUIZ')")
+    @PreAuthorize("hasAnyAuthority('TQUIZ_READ')")
     @RequestMapping(
             path = "/chapter",
             method = RequestMethod.GET,
@@ -161,7 +161,7 @@ public class QuizController {
      *           외부에서 quizLevel 를 파라미터로 받와야해서 @RequestBody로 받아왔습니다.
      * endpoint : http://localhost:8080/class/test/exbank/level/{quizLevel}
      * */
-    @PreAuthorize("hasAnyAuthority('READ_TQUIZ')")
+    @PreAuthorize("hasAnyAuthority('TQUIZ_READ')")
     @RequestMapping(
             path = "/level",
             method = RequestMethod.GET,

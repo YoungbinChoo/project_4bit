@@ -49,7 +49,7 @@ public class ManageMemberController {
     // 역할 : admin 이 member 를 등록 *프론트에서 roleCode 같이 submit 하도록 설계해야함*
     // endpoint : http://localhost:8080/manage/member/new?role={roleCode}
     // studentBirth , ClassGroup 을 같이 넣어주면 학생이 등록, 빼면 강사가 등록된다.
-    @PreAuthorize("hasAnyAuthority('WRITE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('MEMBER_WRITE')")
     @RequestMapping(
             path = "/new",
             method = RequestMethod.POST,
@@ -78,8 +78,8 @@ public class ManageMemberController {
 
     // classId 로 강사를 찾아오는 Controller
     // Class_Teacher_Log 테이블에 데이터가 들어가있어야 조회가 된다.
-    // EndPoint : http://localhost:8080/manage/member/teacher?classId={classId}
-    @PreAuthorize("hasAnyAuthority('READ_MEMBER')")
+    // EndPoint :
+    @PreAuthorize("hasAnyAuthority('MEMBER_READ')")
     @RequestMapping(
             path = "/teacher",
             method = RequestMethod.GET,
@@ -92,8 +92,8 @@ public class ManageMemberController {
     }
 
     // classId 로 회원리스트를 찾아오는 컨트롤러
-    // EndPoint : http://localhost:8080/manage/member/student/list?classId={classId}
-    @PreAuthorize("hasAnyAuthority('READ_MEMBER')")
+    // EndPoint : http://localhost:8080/manage/member/student/list?classId=1
+    @PreAuthorize("hasAnyAuthority('MEMBER_READ')")
     @RequestMapping(
             path = "/student/list",
             method = RequestMethod.GET,
@@ -114,8 +114,8 @@ public class ManageMemberController {
 
 
     // 회원 상세로 들어가는 컨트롤러
-    // EndPoint : http://localhost:8080/manage/member?userId={userId}
-    @PreAuthorize("hasAnyAuthority('READ_MEMBER')")
+    // EndPoint : http://localhost:8080/manage/member?userId=18
+    @PreAuthorize("hasAnyAuthority('MEMBER_READ')")
     @RequestMapping(
             method = RequestMethod.GET,
             produces = {
@@ -129,7 +129,7 @@ public class ManageMemberController {
 
     // admin 이 user를 수정
     // Endpoint : http://localhost:8080/manage/member/edit?userId={userId}
-    @PreAuthorize("hasAnyAuthority('WRITE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('MEMBER_WRITE')")
     @RequestMapping(
             path = "/edit",
             method = RequestMethod.PATCH,
@@ -147,8 +147,8 @@ public class ManageMemberController {
     }
 
     // admin이 user를 삭제
-    // endpoint : http://localhost:8080/manage/member?userId={userId}
-    @PreAuthorize("hasAnyAuthority('WRITE_MEMBER')")
+    // endpoint : http://localhost:8080/manage/member?userId=17
+    @PreAuthorize("hasAnyAuthority('MEMBER_WRITE')")
     @RequestMapping(
             method = RequestMethod.DELETE,
             produces = {
