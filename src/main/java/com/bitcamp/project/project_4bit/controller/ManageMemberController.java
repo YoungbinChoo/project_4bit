@@ -46,7 +46,7 @@ public class ManageMemberController {
         return (User) PrincipalUtil.from(principal);
     }
 
-    // 역할 : admin 이 member 를 등록
+    // 역할 : admin 이 member 를 등록 *프론트에서 roleCode 같이 submit 하도록 설계해야함*
     // endpoint : http://localhost:8080/manage/member/new?role={roleCode}
     // studentBirth , ClassGroup 을 같이 넣어주면 학생이 등록, 빼면 강사가 등록된다.
     @PreAuthorize("hasAnyAuthority('WRITE_MEMBER')")
@@ -61,7 +61,7 @@ public class ManageMemberController {
                                @RequestBody RegisterMember registerMember
     ){
 
-        // 1. 학생등록 todo : *프론트에서 받아오는 roleCode로 등록하도록 수정*
+        // 1. 학생등록
         if(registerMember.getRoleCode().equals("role_student")){
             return registerMemberService.registerStudent(registerMember);
         }else{
@@ -69,7 +69,7 @@ public class ManageMemberController {
             return registerMemberService.registerTeacher(registerMember);
         }
 
-        //todo: principal을 받아서 어떤 admin이 등록했나 log를 남기는게 정석이지만,
+        //principal을 받아서 어떤 admin이 등록했나 log를 남기는게 정석이지만,
         //현재 admin 로그를 남기는 컬럼이 없으므로 메서드 수정 안함
     }
 
@@ -139,7 +139,7 @@ public class ManageMemberController {
 
         return userService.updateUserByAdmin(userId, user);
 
-        //todo: principal을 받아서 어떤 admin이 수정했나 log를 남기는게 정석이지만,
+        //principal을 받아서 어떤 admin이 수정했나 log를 남기는게 정석이지만,
         //현재 admin 로그를 남기는 컬럼이 없으므로 메서드 수정 안함
     }
 
@@ -163,7 +163,7 @@ public class ManageMemberController {
 
         return user;
 
-        //todo: principal을 받아서 어떤 admin이 삭제했나 log를 남기는게 정석이지만,
+        //principal을 받아서 어떤 admin이 삭제했나 log를 남기는게 정석이지만,
         //현재 admin 로그를 남기는 컬럼이 없으므로 메서드 수정 안함
     }
 }
