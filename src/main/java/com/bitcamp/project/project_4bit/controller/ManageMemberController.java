@@ -75,7 +75,7 @@ public class ManageMemberController {
 
     // classId 로 강사를 찾아오는 Controller
     // Class_Teacher_Log 테이블에 데이터가 들어가있어야 조회가 된다.
-    // EndPoint : http://localhost:8080/manage/member/teacher?classId={classId}
+    // EndPoint :
     @PreAuthorize("hasAnyAuthority('MEMBER_READ')")
     @RequestMapping(
             path = "/teacher",
@@ -89,7 +89,7 @@ public class ManageMemberController {
     }
 
     // classId 로 회원리스트를 찾아오는 컨트롤러
-    // EndPoint : http://localhost:8080/manage/member/student/list?classId={classId}
+    // EndPoint : http://localhost:8080/manage/member/student/list?classId=1
     @PreAuthorize("hasAnyAuthority('MEMBER_READ')")
     @RequestMapping(
             path = "/student/list",
@@ -111,7 +111,7 @@ public class ManageMemberController {
 
 
     // 회원 상세로 들어가는 컨트롤러
-    // EndPoint : http://localhost:8080/manage/member?userId={userId}
+    // EndPoint : http://localhost:8080/manage/member?userId=18
     @PreAuthorize("hasAnyAuthority('MEMBER_READ')")
     @RequestMapping(
             method = RequestMethod.GET,
@@ -144,7 +144,7 @@ public class ManageMemberController {
     }
 
     // admin이 user를 삭제
-    // endpoint : http://localhost:8080/manage/member?userId={userId}
+    // endpoint : http://localhost:8080/manage/member?userId=17
     @PreAuthorize("hasAnyAuthority('MEMBER_WRITE')")
     @RequestMapping(
             method = RequestMethod.DELETE,
