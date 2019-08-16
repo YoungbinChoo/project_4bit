@@ -44,7 +44,7 @@ public class HwArticleController {
     // Todo: 학생 아니어도 가능?, 현재 유효한 과제인가 검증 필요
     ///////////////////////////   HwArticle 글쓰기(=과제제출)   ///////////////////////////
     // http://localhost:8080/class/assignment/submit/write?hwno={hwno}
-    @PreAuthorize("hasAnyAuthority('WRITE_SHW')")    // 학생만 가능
+    @PreAuthorize("hasAnyAuthority('SHW_WRITE')")    // 학생만 가능
     @RequestMapping(
             path = "/write",
             method = RequestMethod.POST,
@@ -89,7 +89,7 @@ public class HwArticleController {
     // Todo : 관리자도 상세보기가 가능하게 해야하나?
     ///////////////////////////   HwArticle 상세보기(=제출한 과제 확인)   ///////////////////////////
     // http://localhost:8080/class/assignment/submit/view?hwArticleId={hwArticleId}
-    @PreAuthorize("hasAnyAuthority('READ_SHW')")
+    @PreAuthorize("hasAnyAuthority('SHW_READ')")
     @RequestMapping(
             path = "/view",
             method = RequestMethod.POST,
@@ -156,7 +156,7 @@ public class HwArticleController {
     // Todo : 관리자는 본인이 쓴게 아니어도 수정이 가능하게 해야하나?
     ///////////////////////////   HwArticle 수정 (학생만)   ///////////////////////////
     // http://localhost:8080/class/assignment/submit/view?hwArticleId={hwArticleId}
-    @PreAuthorize("hasAnyAuthority('WRITE_SHW')")   // 학생만 가능
+    @PreAuthorize("hasAnyAuthority('SHW_WRITE')")   // 학생만 가능
     @RequestMapping(
             path = "/view",
             method = RequestMethod.PATCH,
@@ -211,7 +211,7 @@ public class HwArticleController {
     // Todo : 관리자는 본인이 쓴게 아니어도 삭제가 가능하게 해야하나?
     ///////////////////////////   HwArticle 삭제 (학생만)   ///////////////////////////
     // http://localhost:8080/class/assignment/submit/view?hwArticleId={hwArticleId}
-    @PreAuthorize("hasAnyAuthority('WRITE_SHW')")   // 학생만 가능
+    @PreAuthorize("hasAnyAuthority('SHW_WRITE')")   // 학생만 가능
     @RequestMapping(
             path = "/view",
             method = RequestMethod.DELETE,

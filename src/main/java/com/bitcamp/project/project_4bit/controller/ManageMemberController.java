@@ -46,10 +46,10 @@ public class ManageMemberController {
         return (User) PrincipalUtil.from(principal);
     }
 
-    // 역할 : admin 이 member 를 등록
+    // 역할 : admin 이 member 를 등록 *프론트에서 roleCode 같이 submit 하도록 설계해야함*
     // endpoint : http://localhost:8080/manage/member/new?role={roleCode}
     // studentBirth , ClassGroup 을 같이 넣어주면 학생이 등록, 빼면 강사가 등록된다.
-    @PreAuthorize("hasAnyAuthority('WRITE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('MEMBER_WRITE')")
     @RequestMapping(
             path = "/new",
             method = RequestMethod.POST,
@@ -58,26 +58,28 @@ public class ManageMemberController {
                     MediaType.APPLICATION_XML_VALUE
             })
     public User registerMember(Principal principal,
-                               @RequestBody RegisterMember registerMember,
-                               String roleCode
+                               @RequestBody RegisterMember registerMember
     ){
 
-        // 1. 학생등록 todo : *프론트에서 받아오는 roleCode로 등록하도록 수정*
-        if(roleCode.equals("role_student")){
+        // 1. 학생등록
+        if(registerMember.getRoleCode().equals("role_student")){
             return registerMemberService.registerStudent(registerMember);
         }else{
-            // 2. 강사등록 (birth 가 null 이면)
+            // 2. 강사등록 (role_student 가 아니면)
             return registerMemberService.registerTeacher(registerMember);
         }
 
-        //todo: principal을 받아서 어떤 admin이 등록했나 log를 남기는게 정석이지만,
+        //principal을 받아서 어떤 admin이 등록했나 log를 남기는게 정석이지만,
         //현재 admin 로그를 남기는 컬럼이 없으므로 메서드 수정 안함
     }
 
+    /*todo : teacher랑 student가 한 화면에 나와야하는데 방법을 몰라서 일단 path를 다르게 주었음*/
+    // selectTeacherOfClassId, listOf 를 한 화면에 가져갈 수 있는 방법을 찾아야함
+
     // classId 로 강사를 찾아오는 Controller
     // Class_Teacher_Log 테이블에 데이터가 들어가있어야 조회가 된다.
-    // EndPoint :
-    @PreAuthorize("hasAnyAuthority('READ_MEMBER')")
+    // EndPoint : http://localhost:8080/manage/member/teacher?classId={classId}
+    @PreAuthorize("hasAnyAuthority('MEMBER_READ')")
     @RequestMapping(
             path = "/teacher",
             method = RequestMethod.GET,
@@ -85,13 +87,13 @@ public class ManageMemberController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public User selectTeacherOfClassId(Principal principal,@PathVariable("classId") Long classId){
+    public User selectTeacherOfClassId(Principal principal,@RequestParam("classId") Long classId){
         return userService.selectOfTeacher(classId);
     }
 
     // classId 로 회원리스트를 찾아오는 컨트롤러
-    // EndPoint : http://localhost:8080/manage/member/student/list?classId=1
-    @PreAuthorize("hasAnyAuthority('READ_MEMBER')")
+    // EndPoint : http://localhost:8080/manage/member/student/list?classId={classId}
+    @PreAuthorize("hasAnyAuthority('MEMBER_READ')")
     @RequestMapping(
             path = "/student/list",
             method = RequestMethod.GET,
@@ -112,8 +114,8 @@ public class ManageMemberController {
 
 
     // 회원 상세로 들어가는 컨트롤러
-    // EndPoint : http://localhost:8080/manage/member?userId=18
-    @PreAuthorize("hasAnyAuthority('READ_MEMBER')")
+    // EndPoint : http://localhost:8080/manage/member?userId={userId}
+    @PreAuthorize("hasAnyAuthority('MEMBER_READ')")
     @RequestMapping(
             method = RequestMethod.GET,
             produces = {
@@ -127,7 +129,7 @@ public class ManageMemberController {
 
     // admin 이 user를 수정
     // Endpoint : http://localhost:8080/manage/member/edit?userId={userId}
-    @PreAuthorize("hasAnyAuthority('WRITE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('MEMBER_WRITE')")
     @RequestMapping(
             path = "/edit",
             method = RequestMethod.PATCH,
@@ -140,13 +142,13 @@ public class ManageMemberController {
 
         return userService.updateUserByAdmin(userId, user);
 
-        //todo: principal을 받아서 어떤 admin이 수정했나 log를 남기는게 정석이지만,
+        //principal을 받아서 어떤 admin이 수정했나 log를 남기는게 정석이지만,
         //현재 admin 로그를 남기는 컬럼이 없으므로 메서드 수정 안함
     }
 
     // admin이 user를 삭제
-    // endpoint : http://localhost:8080/manage/member?userId=17
-    @PreAuthorize("hasAnyAuthority('WRITE_MEMBER')")
+    // endpoint : http://localhost:8080/manage/member?userId={userId}
+    @PreAuthorize("hasAnyAuthority('MEMBER_WRITE')")
     @RequestMapping(
             method = RequestMethod.DELETE,
             produces = {
@@ -164,7 +166,7 @@ public class ManageMemberController {
 
         return user;
 
-        //todo: principal을 받아서 어떤 admin이 삭제했나 log를 남기는게 정석이지만,
+        //principal을 받아서 어떤 admin이 삭제했나 log를 남기는게 정석이지만,
         //현재 admin 로그를 남기는 컬럼이 없으므로 메서드 수정 안함
     }
 }

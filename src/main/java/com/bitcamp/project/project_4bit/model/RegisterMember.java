@@ -34,10 +34,7 @@ public class RegisterMember implements Serializable {
 
     private ClassGroup classGroup;
 
-
-
-
-
+    private String roleCode;
 
     public String getUsername() {
         return username;
@@ -95,14 +92,14 @@ public class RegisterMember implements Serializable {
         this.classGroup = classGroup;
     }
 
-//    public User user() {
-//        User user = new User();
-//        user.setUsername(username);
-//        user.setPassword(password);
-//        user.setName(name);
-//        user.setEmail(email);
-//        return user;
-//    }
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
+
 
     // Service에서 사용하는 것인데, 등록할 때 멤버 등록을 위해 하나로 묶어주기 위해 만든 메서드
     // Teacher, Student의 공통된 부분을 묶어서 사용.

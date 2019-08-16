@@ -13,7 +13,7 @@ public interface RoadmapRepository extends JpaRepository<Roadmap,Integer> {
     // 해당 Roadmap 테이블에서 where 조건으로 RoadmapStageNo를 줘서 찾는것.
     Roadmap findByRoadmapStageNo(Integer roadmapStageNo);
 
-    // 해당 RoadmapStageNo에 대한 모든 Roadmap을 출력
+    //  Roadmap 내용들 전체 출력
     Page<Roadmap> findAll(Pageable pageable);
 
     // 해당 RoadmapStageNo에 해당하는 Roadmap 하나를 조회

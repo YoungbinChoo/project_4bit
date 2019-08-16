@@ -24,7 +24,7 @@ public class ClassGroupController {
     // 역할 : admin 이 class 를 등록
     // endpoint :
     //Todo : WRITE_MEMBER -> WRITE_CLASS  로 바꾸고 DB에도 WRITE_CLASS 를 준다. (Or WRITE_REGISTER 이런걸로 통일 하든 합시다~)
-    @PreAuthorize("hasAnyAuthority('WRITE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('MEMBER_WRITE')")
     @RequestMapping(
             path = "/new",
             method = RequestMethod.POST,

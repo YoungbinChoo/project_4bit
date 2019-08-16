@@ -56,7 +56,7 @@ public class HomeworkController {
     // Todo: 권한체크 강화? (authority체크만으로 넘어갈거면 불필요) - 불필요한듯
     ///////////////////////////   Homework 출제(=글쓰기)   ///////////////////////////
     // http://localhost:8080/class/assignment/write
-    @PreAuthorize("hasAnyAuthority('WRITE_HW')")    // 강사만 가능
+    @PreAuthorize("hasAnyAuthority('HW_WRITE')")    // 강사만 가능
     @RequestMapping(
             path = "/write",
             method = RequestMethod.POST,
@@ -125,7 +125,7 @@ public class HomeworkController {
     // Todo: 관리자 계정의 과제목록 READ, WRITE권한을 줄 것인지 생각해야
     ///////////////////////////   Homework 목록읽기(=게시판)   ///////////////////////////
     // http://localhost:8080/class/assignment/list
-    @PreAuthorize("hasAnyAuthority('READ_HW')")     // 학생, 강사 가능
+    @PreAuthorize("hasAnyAuthority('HW_READ')")     // 학생, 강사 가능
     @RequestMapping(
             path = "/list",
             method = RequestMethod.POST,
@@ -191,7 +191,7 @@ public class HomeworkController {
     // Todo: 권한체크 강화해야 (list에서 한 번 거르지만 여기서 다시 걸러야함. 반이 일치하는지)
     ///////////////////////////   Homework 상세보기(=게시물 상세)   ///////////////////////////
     // http://localhost:8080/class/assignment/view?hwno=1
-    @PreAuthorize("hasAnyAuthority('READ_HW')")
+    @PreAuthorize("hasAnyAuthority('HW_READ')")
     @RequestMapping(
             path = "/view",
             method = RequestMethod.GET,
@@ -209,7 +209,7 @@ public class HomeworkController {
     ///////////////////////////   Homework 수정 (강사만)   ///////////////////////////
     // http://localhost:8080/class/assignment/view?hwno={hwno}
     // UPDATE는 int로 반환한다 (0: 실패, 1: 성공)
-    @PreAuthorize("hasAnyAuthority('WRITE_HW')")
+    @PreAuthorize("hasAnyAuthority('HW_WRITE')")
     @RequestMapping(
             path = "/view",
             method = RequestMethod.PATCH,
@@ -255,7 +255,7 @@ public class HomeworkController {
     ///////////////////////////   Homework 삭제 (강사만)   ///////////////////////////
     // http://localhost:8080/class/assignment/view?hwno=1
 
-    @PreAuthorize("hasAnyAuthority('WRITE_HW')")
+    @PreAuthorize("hasAnyAuthority('HW_WRITE')")
     @RequestMapping(
             path = "/view",
             method = RequestMethod.DELETE,

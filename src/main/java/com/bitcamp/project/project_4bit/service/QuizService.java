@@ -46,22 +46,10 @@ public class QuizService {
         return quizRepository.findAllByQuiz(pageable);
     }
 
-    //    과목으로 퀴즈 문제 목록
-    @Transactional(readOnly = true)
-    public Page<Quiz> findQuizByQuizSubject(Pageable pageable, String quizSubject){
-        return quizRepository.findQuizByQuizSubject(pageable, quizSubject);
-    }
-
-    //    챕터별 퀴즈 문제 목록
-    @Transactional(readOnly = true)
-    public Page<Quiz> findQuizByQuizChapter(Pageable pageable, String quizChapter){
-        return quizRepository.findQuizByQuizChapter(pageable, quizChapter);
-    }
-
-    //    난이도별 퀴즈 문제 목록
-    @Transactional(readOnly = true)
-    public Page<Quiz> findQuizByQuizLevel(Pageable pageable, String quizLevel){
-        return quizRepository.findQuizByQuizLevel(pageable, quizLevel);
+    //    역할 : 과목별,챕터별,난이도별로 찾는 메서드
+    @Transactional
+    public Page<Quiz> findQuizByQuizSubjectAndQuizChapterAndQuizLevel(Pageable pageable, String quizSubject, String quizChapter, String quizLevel){
+        return quizRepository.findQuizByQuizSubjectAndQuizChapterAndQuizLevel(pageable, quizSubject, quizChapter, quizLevel);
     }
 
     //     문제 contents, answer, eachScore, subject, chapter, level 수정
@@ -70,5 +58,23 @@ public class QuizService {
 
         return quizRepository.updateQuiz(quizContents, quizAnswer, quizEachScore, quizSubject, quizChapter, quizLevel, quizId);
     }
+
+//    //    과목으로 퀴즈 문제 목록
+//    @Transactional(readOnly = true)
+//    public Page<Quiz> findQuizByQuizSubject(Pageable pageable, String quizSubject){
+//        return quizRepository.findQuizByQuizSubject(pageable, quizSubject);
+//    }
+//
+//    //    챕터별 퀴즈 문제 목록
+//    @Transactional(readOnly = true)
+//    public Page<Quiz> findQuizByQuizChapter(Pageable pageable, String quizChapter){
+//        return quizRepository.findQuizByQuizChapter(pageable, quizChapter);
+//    }
+//
+//    //    난이도별 퀴즈 문제 목록
+//    @Transactional(readOnly = true)
+//    public Page<Quiz> findQuizByQuizLevel(Pageable pageable, String quizLevel){
+//        return quizRepository.findQuizByQuizLevel(pageable, quizLevel);
+//    }
 
 }

@@ -47,7 +47,6 @@ public class RegisterMemberService {
         // 4. User Table에 저장 돼있는 강사 정보를 Teacher 테이블에도 저장해 주는 역할
         Teacher teacher = new Teacher();
         teacher.setUser(user_t);
-//        teacher = teacherRepository.save(teacher);
         teacherRepository.save(teacher);
 
         // 5. 컨트롤러에서 반환된 유저(강사)정보를 사용
@@ -73,8 +72,7 @@ public class RegisterMemberService {
         // 4-2. 학생정보에는 생년월일과 반 정보가 있기 때문에 Birth 와 Class 를 등록해 준다.
         student.setStudentBirth(registerMember.getStudentBirth());
         student.setClassGroup(registerMember.getClassGroup());
-
-        student = studentRepository.save(student);
+        studentRepository.save(student);
 
         // 5. 컨트롤러에서 반환된 유저(학생)정보를 사용
         return user_s;
