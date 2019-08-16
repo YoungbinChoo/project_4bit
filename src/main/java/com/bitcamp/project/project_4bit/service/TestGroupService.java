@@ -83,4 +83,24 @@ public class TestGroupService {
     public void deleteTestGroup(Long testId){
         testGroupRepository.deleteById(testId);
      }
+
+
+
+
+
+
+
+
+
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // StudentTest를 만들면서 추가한 부분
+    @Transactional
+    public TestGroup loadTestGroupBytestId(Long testId){
+        return testGroupRepository.findByTestId(testId);
+    }
+
 }

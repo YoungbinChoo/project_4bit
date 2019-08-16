@@ -63,17 +63,16 @@ public class TestGroupController {
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
         testGroup.setUser(user);
 
-        /* ------------------------------------- [teacherId 얻기] ------------------------------------- */
-        // 시험 작성 권한이 강사에게만 있으므로 teacherId만 얻으면 됨
+        /* ------------------------------------- [classId 얻기] ------------------------------------- */
 
         // 2. user 정보에서 userId를 얻음
         Long userId = user.getUserId();
 
-
+        // 4. userIdToClassIdConverter에서 userId가 강사인 경우 classId를 찾는 방법을 통해 classId를 얻는다
+        // TODO 권한 중요 >> 강사만 들어올 수 있게 해야함
         Long classId = userIdToClassIdConverter.userIdToClassId(userId);
 
         System.out.println("생성_반_Id : " + classId);
-
 
         // 5. classId로 classGroup 전체 정보를 얻는다 (DB : class_group / java : ClassGroup)
         ClassGroup classGroup = classGroupService.laodClassGroupByClassId(classId);
@@ -117,14 +116,13 @@ public class TestGroupController {
         // 1. principal으로 User정보 획득
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
 
-        /* ----------------------------- [teacherId 또는 studentId 얻기] ----------------------------- */
+        /* ------------------------------------- [classId 얻기] ------------------------------------- */
         Long userId = user.getUserId();
         System.out.println("진행중_컨트롤_유저_Id : " + userId);
 
         // 여기서는 학생 강사 모두 읽기 권한을 가지고 있으므로 접근이 가능
-        // 따라서 얻은 userId가 학생인지 선생인지 구분해야한다 (classId를 얻는 방법이 다르기 때문에)
 
-        // 2_1. userId로 classId를 얻어옴
+        // 2. userId로 classId를 얻어옴
         Long classId = userIdToClassIdConverter.userIdToClassId(userId);
 
         System.out.println("진행중_컨트롤_반_Id : " + classId);
@@ -192,9 +190,8 @@ public class TestGroupController {
 
         /* ------------------------------------- [classId 얻기] ------------------------------------- */
         // 여기서는 학생 강사 모두 읽기 권한이 있으므로 접근이 가능
-        // 따라서 얻은 userId가 학생인지 선생인지 구분해야한다(classId를 얻는 방법이 다르기 때문에)
 
-
+        // 2. userId로 classId를 얻어옴
         Long classId = userIdToClassIdConverter.userIdToClassId(userId);
 
         System.out.println("완료_반_Id : " + classId);
@@ -251,8 +248,9 @@ public class TestGroupController {
         System.out.println("설명_유저_Id : " + userId);
 
         /* ------------------------------------- [classId 얻기] ------------------------------------- */
+        // 여기서는 학생 강사 모두 읽기 권한을 가지고 있으므로 접근이 가능
 
-
+        // 2. userId로 classId를 얻어옴
         Long classId = userIdToClassIdConverter.userIdToClassId(userId);
 
 
@@ -287,7 +285,10 @@ public class TestGroupController {
 
         Long userId = user.getUserId();
 
+        // 여기서는 학생만이 시험 응시 권한을 가지고 있으므로 학생만 접근해야함
 
+        // 4. userIdToClassIdConverter에서 userId가 학생인 경우 classId를 찾는 방법을 통해 classId를 얻는다
+        // TODO 권한 중요 >> 학생만 들어올 수 있게 해야함
         Long classId = userIdToClassIdConverter.userIdToClassId(userId);
 
         System.out.println("컨트롤_유저_Id : " + userId);
@@ -345,6 +346,8 @@ public class TestGroupController {
         // userId로 teacher에서 teacherId를 획득
         Long userId = user.getUserId();
 
+        // 4. userIdToClassIdConverter에서 userId가 강사인 경우 classId를 찾는 방법을 통해 classId를 얻는다
+        // TODO 권한 중요 >> 강사만 들어올 수 있게 해야함
         Long classId = userIdToClassIdConverter.userIdToClassId(userId);
 
         System.out.println("컨트롤_반_Id : " + classId);
