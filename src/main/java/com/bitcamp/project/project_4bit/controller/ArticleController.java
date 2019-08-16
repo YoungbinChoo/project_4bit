@@ -96,6 +96,18 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
+
+
+
+
+
+
+
+
+
+
+
+
     public ResultItems<Article> listOf(
             @RequestParam(name = "boardId", required = true) String boardId,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
