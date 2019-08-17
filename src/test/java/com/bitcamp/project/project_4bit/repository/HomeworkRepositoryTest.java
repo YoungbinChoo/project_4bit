@@ -53,8 +53,8 @@ public class HomeworkRepositoryTest {
         homework.setHwSubject("JAVA");
         // 과제 내용
         homework.setHwDescription("이번 과제는 없습니다");
-        // 과제제출 파일첨부 유무
-        homework.setHwTeachIsfile(false);
+//        // 과제제출 파일첨부 유무
+//        homework.setHwTeachIsfile(false);
 
         /////////////////// FK설정
         // 반 고유번호

@@ -49,10 +49,10 @@ public class Homework implements Serializable {
     @Column(name = "hw_description")
     private String hwDescription;
 
-    // 과제제출 파일첨부 유무
-    @Column(name = "hw_teach_isfile")
-    @Convert(converter = BooleanToStringConverter.class)
-    private Boolean hwTeachIsfile;
+//    // 과제제출 파일첨부 유무
+//    @Column(name = "hw_teach_isfile")
+//    @Convert(converter = BooleanToStringConverter.class)
+//    private Boolean hwTeachIsfile;
 
     // 반 고유번호(FK)
     @ManyToOne(fetch = FetchType.EAGER)
@@ -129,13 +129,13 @@ public class Homework implements Serializable {
         this.hwDescription = hwDescription;
     }
 
-    public Boolean getHwTeachIsfile() {
-        return hwTeachIsfile;
-    }
-
-    public void setHwTeachIsfile(Boolean hwTeachIsfile) {
-        this.hwTeachIsfile = hwTeachIsfile;
-    }
+//    public Boolean getHwTeachIsfile() {
+//        return hwTeachIsfile;
+//    }
+//
+//    public void setHwTeachIsfile(Boolean hwTeachIsfile) {
+//        this.hwTeachIsfile = hwTeachIsfile;
+//    }
 
     public ClassGroup getClassGroup() {
         return classGroup;
