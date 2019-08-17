@@ -303,7 +303,7 @@ public class TestGroupController {
 
 
         /* ------------------------------------- [시험 응시 가능 시간 여부 확인] ------------------------------------- */
-        Long applyTestId = testGroupService.ApplyItemOfTestGroup(classId, testId, today);
+        Long applyTestId = testGroupService.applyItemOfTestGroup(classId, testId, today);
 
 
         if(applyTestId == null) {

@@ -40,7 +40,6 @@ public class StudentTestRepositoryTest {
        User user = userRepository.findByUsername("test_s");
 
        StudentTest studentTest = new StudentTest();
-       studentTest.setStAnswer(Arrays.asList());
        studentTest.setStTestScore(40);
        studentTest.setTestGroup(testGroup);
        studentTest.setUser(user);
