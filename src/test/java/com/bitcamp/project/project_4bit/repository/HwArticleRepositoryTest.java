@@ -44,8 +44,8 @@ public class HwArticleRepositoryTest {
 //        hwArticle.setHwUpdateDate();
         // 과제내용
         hwArticle.setHwContents("과제 답안 #1 제출 합니다");
-        // 과제 파일첨부 유무
-        hwArticle.setHwIsFile(false);
+//        // 과제 파일첨부 유무
+//        hwArticle.setHwIsFile(false);
 
         ///////////////////// FK설정
         hwArticle.setHomework(homework);
