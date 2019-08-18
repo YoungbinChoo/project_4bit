@@ -72,10 +72,6 @@ public class ManageMemberController {
     }
 
 
-
-    /*todo : teacher랑 student가 한 화면에 나와야하는데 방법을 몰라서 일단 path를 다르게 주었음*/
-    // selectTeacherOfClassId, listOf 를 한 화면에 가져갈 수 있는 방법을 찾아야함 >> 프론트에서 해결 가능?
-
     // classId 로 강사를 찾아오는 Controller
     // Class_Teacher_Log 테이블에 데이터가 들어가있어야 조회가 된다.
     // EndPoint : http://localhost:8080/manage/member/teacher?classId={classId}
