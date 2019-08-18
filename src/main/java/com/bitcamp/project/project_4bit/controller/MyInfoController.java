@@ -42,7 +42,6 @@ public class MyInfoController {
         }
     }
 
-
     // 회원 개인 정보 수정하는 컨트롤러
     //endpoint : http://localhost:8080/mypage/myinfo/edit?userId={userId}
     @PreAuthorize("hasAnyAuthority('ME_WRITE')")

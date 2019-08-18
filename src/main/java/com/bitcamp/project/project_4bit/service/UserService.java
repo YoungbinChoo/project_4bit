@@ -7,10 +7,10 @@ import com.bitcamp.project.project_4bit.repository.ClassTeacherLogRepository;
 import com.bitcamp.project.project_4bit.repository.StudentRepository;
 import com.bitcamp.project.project_4bit.repository.TeacherRepository;
 import com.bitcamp.project.project_4bit.repository.UserRepository;
+import com.bitcamp.project.project_4bit.util.UserIdToClassIdConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +34,9 @@ public class UserService {
 
     @Autowired
     private LocalUserDetailsService userDetailsService;
+
+    @Autowired
+    private UserIdToClassIdConverter userIdToClassIdConverter;
 
 
 //=====================================     관리자    ===========================================================
@@ -167,4 +170,28 @@ public class UserService {
 
     // 강사 학생현황 화면에서 counsel 관리하는 서비스================================================================
 
+
+    // 강사의 userId로 담당 클래스를 찾는 서비스
+    @Transactional
+    public Long loadClassIdByUserId(Long userId){
+        return userIdToClassIdConverter.userIdToClassId(userId);
+    }
+
+    //강사가 학생을 선택하면 counsel 내용을 찾아오는 서비스
+    @Transactional
+    public String loadCounselByStudentId(Long studentId){
+        return studentRepository.findCounselByStudentId(studentId);
+    }
+
+    //강사가 학생의 counsel 내용을 작성, 수정하는 서비스
+    @Transactional
+    public String updateCounselByTeacher(Long studentId, String counsel){
+        int updateNewCounsel = studentRepository.updateCounsel(studentId,counsel);
+
+        if(updateNewCounsel == 1){
+            return "학생 상담내역을 저장하였습니다.";
+        }else {
+            return "학생 상담내역 저장에 실패하였습니다.";
+        }
+    }
 }
