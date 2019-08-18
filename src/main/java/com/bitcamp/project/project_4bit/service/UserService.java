@@ -7,10 +7,10 @@ import com.bitcamp.project.project_4bit.repository.ClassTeacherLogRepository;
 import com.bitcamp.project.project_4bit.repository.StudentRepository;
 import com.bitcamp.project.project_4bit.repository.TeacherRepository;
 import com.bitcamp.project.project_4bit.repository.UserRepository;
+import com.bitcamp.project.project_4bit.util.UserIdToClassIdConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +34,9 @@ public class UserService {
 
     @Autowired
     private LocalUserDetailsService userDetailsService;
+
+    @Autowired
+    private UserIdToClassIdConverter userIdToClassIdConverter;
 
 
 //=====================================     관리자    ===========================================================
@@ -78,7 +81,7 @@ public class UserService {
     }
 
 
-    // 관리자가 학생의 개인정보를 수정하는 service
+    // 관리자가 학생과 강사 개인정보를 수정하는 service
     @Transactional
     public String updateUserByAdmin(Long userId, User user) {
 
@@ -107,9 +110,15 @@ public class UserService {
                 return "알 수 없는 이유로 유저정보 업데이트에 실패했습니다";
             }
         }
-        // 학생 고유정보 업데이트 실패했으므로 유저정보 업데이트 안함
+        // 학생 고유정보 업데이트 안했을 경우 강사 업데이트 함
         else if(isStudentUpdateSuccess==0) {
-            return "학생 고유정보 업데이트에 실패하여, 유저정보도 업데이트 하지 않았습니다";
+
+            int isUserUpdateSuccess = userRepository.updateUserByAdmin(userId, newUsername, newPassword, newName, newEmail, newPhone);
+            if(isUserUpdateSuccess==1) {
+                return "모든 유저정보를 성공적으로 수정하였습니다";
+            }else {
+                return "알 수 없는 이유로 유저정보 업데이트에 실패했습니다";
+            }
         }
         else {
             return "알 수 없는 이유로 학생 고유정보 업데이트에 실패하여, 유저정보도 업데이트 하지 않았습니다";
@@ -131,7 +140,7 @@ public class UserService {
 
         //학생일 경우 birth 수정 가능
         // userCheck 검사결과 학생이면 생일정보 수정
-        if (userCheck.getRole().equals("role_student")) {
+        if (userCheck.getRole().getRoleCode().equals("role_student")) {
             String newBirth = user.getStudentBirth();
             int isStudentUpdateSuccess = studentRepository.updateStudentBySelf(userId, newBirth);
             if(isStudentUpdateSuccess == 1){
@@ -156,6 +165,45 @@ public class UserService {
             }else{
                 return "유저정보 업데이트에 실패했습니다";
             }
+        }
+    }
+
+    // 강사 학생현황 화면에서 counsel 관리하는 서비스================================================================
+
+
+    // 강사의 userId로 담당 클래스를 찾는 서비스
+    @Transactional
+    public Long loadClassIdByUserId(Long userId){
+        return userIdToClassIdConverter.userIdToClassId(userId);
+    }
+
+    //학생 아이디로 담당 클래스를 찾는 서비스
+    @Transactional
+    public Long loadClassIdByStudentId(Long studentId){
+
+        Student student = studentRepository.findByStudentId(studentId);
+
+        Long userId = student.getUser().getUserId();
+        Long classId = userIdToClassIdConverter.userIdToClassId(userId);
+        return classId;
+    }
+
+
+    //강사가 학생을 선택하면 counsel 내용을 찾아오는 서비스
+    @Transactional
+    public String loadCounselByStudentId(Long studentId){
+        return studentRepository.findCounselByStudentId(studentId);
+    }
+
+    //강사가 학생의 counsel 내용을 작성, 수정하는 서비스
+    @Transactional
+    public String updateCounselByTeacher(Long studentId, String counsel){
+        int updateNewCounsel = studentRepository.updateCounsel(studentId,counsel);
+
+        if(updateNewCounsel == 1){
+            return "학생 상담내역을 저장하였습니다.";
+        }else {
+            return "학생 상담내역 저장에 실패하였습니다.";
         }
     }
 }

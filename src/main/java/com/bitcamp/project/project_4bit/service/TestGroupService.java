@@ -18,8 +18,8 @@ public class TestGroupService {
 
     // StudentTestController를 만들면서 추가한 부분
     // 역할 : testGroupRepository에서 얻은  TestGroup 전체 정보 (DB : test_group / java : TestGroup)를 반환
-    public TestGroup findOneByTestId(Long userId){
-        return testGroupRepository.findOneByUserId(userId);
+    public TestGroup findOneByTestId(Long testId){
+        return testGroupRepository.findOneByUserId(testId);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ public class TestGroupService {
     // 역할 : 시험 응시하기 버튼을 클릭했을 때 가능 기간인지를 구분하기 위한 메소드
     //       testGroupRepository에서 얻은 testId를 넘긴다
     @Transactional(readOnly = true)
-    public Long ApplyItemOfTestGroup(Long classId, Long testId, String today){
+    public Long applyItemOfTestGroup(Long classId, Long testId, String today){
         return testGroupRepository.findApplyTestByTestId(classId, testId, today);
     }
 
@@ -95,7 +95,7 @@ public class TestGroupService {
 
 
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // StudentTest를 만들면서 추가한 부분
     @Transactional
@@ -103,4 +103,11 @@ public class TestGroupService {
         return testGroupRepository.findByTestId(testId);
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Transactional
+    public int updateStudentScore(int sum, double avg, int max, int min,Long testId){
+        return testGroupRepository.updateTestGroup(sum, avg, max, min, testId);
+    }
 }

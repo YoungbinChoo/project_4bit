@@ -2,6 +2,7 @@ package com.bitcamp.project.project_4bit.entity;
 
 
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "student")
 @DynamicInsert
+@DynamicUpdate
 public class Student implements Serializable {
 
     // 학생 고유번호
@@ -29,11 +31,6 @@ public class Student implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-
-//    // 반 고유번호(FK)
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "class_id")
-//    private ClassGroup classGroup;
 
     // 반 고유번호(FK)
     @ManyToOne(fetch = FetchType.EAGER)
@@ -63,6 +60,8 @@ public class Student implements Serializable {
     // 상담내용
     @Column(name = "counsel")
     private String counsel;
+
+
 
     public Long getStudentId() {
         return studentId;

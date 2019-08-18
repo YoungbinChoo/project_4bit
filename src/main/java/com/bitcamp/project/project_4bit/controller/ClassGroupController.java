@@ -21,10 +21,11 @@ public class ClassGroupController {
     private ClassGroupService classGroupService;
 
 
+    /*todo : startDate, endDate 입력 해결해야함 : 현재 계속 now()로 들어가고 있음*/
+
     // 역할 : admin 이 class 를 등록
-    // endpoint :
-    //Todo : WRITE_MEMBER -> WRITE_CLASS  로 바꾸고 DB에도 WRITE_CLASS 를 준다. (Or WRITE_REGISTER 이런걸로 통일 하든 합시다~)
-    @PreAuthorize("hasAnyAuthority('MEMBER_WRITE')")
+    // endpoint : http://localhost:8080/manage/class/new
+    @PreAuthorize("hasAnyAuthority('MANAGE_WRITE')")
     @RequestMapping(
             path = "/new",
             method = RequestMethod.POST,
@@ -32,8 +33,6 @@ public class ClassGroupController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-//    public Object registerMember(@RequestBody Map<String, Object> map){
-//        return map.get("className");
     public ClassGroup registerMember(@RequestBody ClassGroup classGroup){
         return classGroupService.registerClassGroup(classGroup);
     }
