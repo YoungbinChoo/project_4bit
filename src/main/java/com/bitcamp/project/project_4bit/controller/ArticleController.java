@@ -1,10 +1,8 @@
 package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.Article;
-import com.bitcamp.project.project_4bit.entity.BoardTypeList;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.model.ResultItems;
-import com.bitcamp.project.project_4bit.repository.BoardTypeListRepository;
 import com.bitcamp.project.project_4bit.service.ArticleService;
 import com.bitcamp.project.project_4bit.service.BoardTypeListService;
 import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
@@ -32,6 +30,23 @@ import java.util.stream.Collectors;
 * */
 
 
+// ================   param 으로 넘어오는 Article 구성 ====================================================
+// 1. article_id : 사용자입력 X, Auto_Increment
+// 2. article_create_date : 사용자입력 X, 저장한 순간의 시간이 DB에 저장
+// 3. article_update_date : 사용자입력 X, 수정한 순간의 시간이 DB에 저장(최초 저장시에는 생성시간과 동일)
+// 4. article_hits : 사용자 입력 X, Todo : 누르면 자동으로 증가되도록 로직을 만들어줘야됨
+// 5. article_like : 사용자 입력 X, Todo : 누르면 자동으로 증가되도록 로직을 만들어줘야됨
+// 6. group_id : 사용자 입력 X,
+// 7. depth : 사용자 입력 X,
+// 8. sequence : 사용자 입력 X
+// 9. article_tile : 사용자 입력.
+// 10. article_contents : 사용자 입력.
+// 11. user_id : 사용자 입력 X, principal 을 통해서 지정
+// 12. board_id : 사용자 입력 X, Client 의 URL 에서 /board 다음의 내용을 받아옴.
+// =======================================================================================================
+
+
+
 @RestController
 @RequestMapping("/board")
 public class ArticleController {
@@ -57,9 +72,7 @@ public class ArticleController {
             method = RequestMethod.POST,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_XML_VALUE
-            }
-    )
+                    MediaType.APPLICATION_XML_VALUE})
     public Article create(
             Principal principal,
             @PathVariable("boardId") String boardId,
@@ -75,7 +88,6 @@ public class ArticleController {
         // 3. BoardTypeList에 있는 article_last_number 를 구해와서 article의 articleNumber에 세팅해준다.   -> 각 게시판마다 게시물 번호는 개별적으로 증가
         article.setArticleNumber(boardTypeListService.incrementNumber(boardId));
 
-        // * BoardTypeList에 새롭게 article_last_number 컬럼을 추가했음.
 
         return articleService.createArticle(article);
     }
@@ -93,18 +105,20 @@ public class ArticleController {
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_XML_VALUE
-            }
-    )
+                    MediaType.APPLICATION_XML_VALUE})
     public ResultItems<Article> listOf(
             @RequestParam(name = "boardId", required = true) String boardId,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
+
+
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Article> articleList = articleService.listOfArticleByBoardId(boardId,pageable);
 
         return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
     }
+
+
 
 
     // 역할 : 해당 게시판의 게시물 하나를 조회
@@ -128,6 +142,8 @@ public class ArticleController {
 
         return articleService.itemOfArticleAndBoardId(articleId,boardId).get();
     }
+
+
 
 
     // 역할 : 해당 게시물을 수정

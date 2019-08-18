@@ -21,7 +21,7 @@ public interface TestGroupRepository extends JpaRepository<TestGroup, Long> {
 
     // StudentTestController를 만들면서 추가한 부분
     //
-    @Query(value = "SELECT * FROM test_group WHERE testId = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM test_group WHERE test_id = ?1", nativeQuery = true)
     TestGroup findOneByUserId(Long testId);
 
 
