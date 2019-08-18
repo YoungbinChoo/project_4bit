@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+// 코드 작성자 : 황서영
 // 모든 User의 정보를 등록/ 수정/ 삭제 해주는 관리자의 파트와, 자기 자신의 정보를 읽고 수정하는 강사,학생의 파트로 분리
 @Service
 public class UserService {
