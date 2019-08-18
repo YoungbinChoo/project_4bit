@@ -24,4 +24,28 @@ public interface StudentTestRepository extends JpaRepository<StudentTest,Long> {
     @Query(value = "UPDATE student_test SET st_test_score=?1 WHERE test_id =?2 AND user_id = ?3", nativeQuery = true)
     int updateStudentTest(int stTestScore, Long testId, Long userId);
 
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    // 역할 : 해당 시험의 총점을 반환
+    @Query(value = "SELECT SUM(st_test_score) FROM student_test WHERE test_id = ?1 GROUP BY test_id", nativeQuery = true)
+    int findSumByTestId(Long testId);
+
+    // 역할 : 해당 시험을 본 학생들 수 반환
+    @Query(value = "SELECT COUNT(user_id) FROM student_test WHERE test_id = ?1 GROUP BY test_id", nativeQuery = true)
+    int findStudentCountByTestId(Long testId);
+
+    // 역할 : 해당 시험 최고점 반환
+    @Query(value = "SELECT st_test_score FROM student_test WHERE test_id = ?1 ORDER BY st_test_score DESC LIMIT 1", nativeQuery = true)
+    int findMaxByTestId(Long testId);
+
+    // 역할 : 해당 시험 최저점 반환
+    @Query(value = "SELECT st_test_score FROM student_test WHERE test_id = ?1 ORDER BY st_test_score ASC LIMIT 1", nativeQuery = true)
+    int findMinByTestId(Long testId);
+
 }

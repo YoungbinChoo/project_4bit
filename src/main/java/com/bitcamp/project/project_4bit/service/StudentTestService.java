@@ -29,4 +29,31 @@ public class StudentTestService {
     public int updateStudentTest(int studentScore, Long testId, Long userId){
         return studentTestRepository.updateStudentTest(studentScore, testId, userId);
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : studentTestRepository에서 넘긴 총점을 반환
+    @Transactional
+    public int readSumByTestId(Long testId){
+        return studentTestRepository.findSumByTestId(testId);
+    }
+
+    // 역할 : studentTestRepository에서 넘긴 시험을 본 학생 수 반환
+    @Transactional
+    public int readStudentCountByTestId(Long testId){
+        return studentTestRepository.findStudentCountByTestId(testId);
+    }
+
+    // 역할 : studentTestRepository에서 넘긴 최고값 반환
+    @Transactional
+    public int readMaxByTestId(Long testId){
+        return studentTestRepository.findMaxByTestId(testId);
+    }
+
+    // 역할 : studentTestRepository에서 넘긴 최저점 반환
+    @Transactional
+    public int readMinByTestId(Long testId){
+        return studentTestRepository.findMinByTestId(testId);
+    }
 }

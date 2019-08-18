@@ -41,6 +41,9 @@ public class TestGroupController {
     @Autowired
     private UserIdToClassIdConverter userIdToClassIdConverter;
 
+    @Autowired
+    private StudentTestService studentTestService;
+
 
     // 역할 : 시험 작성
     // 주의사항 : teacherId를 구하기 위해 class_teacher_log 테이블 사용 >>  값이 들어있는지 확인해야해요
@@ -404,6 +407,46 @@ public class TestGroupController {
         TestGroup testGroup = new TestGroup();
         testGroup.setTestId(testId);
         return testGroup;
+    }
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 해당 시험 점수 총점 및 평균 수정
+    // 엔드포인트 : http://localhost:8080/class/test/testId={testId}/update
+    @RequestMapping(
+            path = "/class/test/testId={testId}/update",
+            method = RequestMethod.GET,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public int updateScores(@PathVariable("testId") Long testId){
+
+        int sum = studentTestService.readSumByTestId(testId);
+        System.out.println("총점 : " + sum);
+
+        double avg = sum/studentTestService.readStudentCountByTestId(testId);
+        System.out.println("평균 : " + avg);
+
+        int max = studentTestService.readMaxByTestId(testId);
+        System.out.println("최고점 : " + max);
+
+        int min = studentTestService.readMinByTestId(testId);
+        System.out.println("최저점 : " + min);
+
+        int successOrFail = testGroupService.updateStudentScore(sum, avg, max, min, testId);
+
+        if(successOrFail == 0){
+            System.out.println("수정에 실패했습니다");
+        } else {
+            System.out.println("수정에 성공했습니다");
+        }
+
+        return successOrFail;
     }
 
 }
