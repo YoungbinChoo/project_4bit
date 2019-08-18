@@ -18,5 +18,11 @@ public class TestQuizService {
         return testQuizRepository.save(testQuiz);
     }
 
+    // 시험 문제 id로 시험 문제 찾아오는 메서드
+    @Transactional
+    public TestQuiz findByTestQuizId(Long testQuizId){
+        return testQuizRepository.findByTestQuizId(testQuizId);
+    }
+
 
 }

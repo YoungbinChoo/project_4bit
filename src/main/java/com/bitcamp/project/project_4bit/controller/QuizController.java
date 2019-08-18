@@ -84,7 +84,6 @@ public class QuizController {
             method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResultItems<Quiz> listOfAllQuiz(
-//            @RequestParam(name = "subject", required = false) String subject,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size){
 
@@ -104,9 +103,7 @@ public class QuizController {
     public Quiz listOfOneQuiz(
             @RequestParam(name = "quizId", required = false) Long quizId){
 
-        Quiz quizList = quizService.findOneByQuiz(quizId);
-
-        return quizList;
+            return quizService.findOneByQuiz(quizId);
     }
 
     /* 퀴즈 검색

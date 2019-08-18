@@ -25,7 +25,8 @@ public class TestQuizController {
     @Autowired
     private TestGroupService testGroupService;
 
-    //    testQuiz 생성
+//    testQuiz 생성
+//    endpoint : http://localhost:8080/class/testquiz/write?testId={testId}&quizId={quizId}
     @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
     @RequestMapping(
             path = "/write",
@@ -33,10 +34,8 @@ public class TestQuizController {
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public TestQuiz createQuiz(
             @RequestBody TestQuiz testQuiz,
-//            @RequestParam(name = "number", required = false) int number,
             @RequestParam(name = "testId", required = false) Long testId,
-            @RequestParam(name = "quizId", required = false) Long quizId
-            ){
+            @RequestParam(name = "quizId", required = false) Long quizId){
         /*
          * 1. test_quiz_id : 고유번호 자동생성
          * 2. test_quiz_no : 시험 문제의 문제번호
@@ -53,10 +52,23 @@ public class TestQuizController {
         testQuiz.setTestGroup(testGroup);
         testQuiz.setQuiz(quiz);
 
-
         return testQuizService.createTestQuiz(testQuiz);
     }
 
+//    testQuiz 상세 보기
+//    endpoint : http://localhost:8080/class/testquiz/detail?testquizid={testQuizId}
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
+    @RequestMapping(
+            path = "/detail",
+            method = RequestMethod.GET,
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public TestQuiz listOfTestQuiz(
+            @RequestParam(name = "testquizid", required = false) Long testQuizId){
+
+        System.out.println("시험문제 id : " + testQuizId);
+
+        return testQuizService.findByTestQuizId(testQuizId);
+    }
 
 
 

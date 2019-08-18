@@ -8,14 +8,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 /*
- * 작성일 : 2019.08.13
+ * 작성일 : 2019.08.18
  * 메서드 순서
  * 1. findAllByQuiz();
- * 2. findQuizByQuizSubject();
- * 3. findQuizByQuizChapter();
- * 4. findQuizByQuizChapter();
- * 5. findQuizByQuizLevel();
- * 6. updateQuiz();
+ * 2. findOneByQuiz();
+ * 3. findQuizByQuizSubjectAndQuizChapterAndQuizLevel();
+ * 4. updateQuiz();
  * */
 
 
@@ -39,16 +37,4 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @Query(value = "UPDATE Quiz q SET q.quiz_contents =?1, q.quiz_answer =?2, q.quiz_each_score =?3, q.quiz_subject =?4, q.quiz_chapter =?5, q.quiz_level =?6 WHERE q.quiz_id =?7", nativeQuery = true)
     int updateQuiz(String quizContents, String quizAnswer, int quizEachScore, String quizSubject, String quizChapter, String quizLevel, Long quizId);
 
-
-//    //    역할 : 문제를 과목별로 찾기
-//    @Query(value = "SELECT * FROM quiz WHERE quiz_subject = ?1", nativeQuery = true)
-//    Page<Quiz> findQuizByQuizSubject(Pageable pageable, String quizSubject);
-//
-//    //    역할 : 문제를 챕터별로 찾기
-//    @Query(value = "SELECT * FROM quiz WHERE quiz_chapter = ?1", nativeQuery = true)
-//    Page<Quiz> findQuizByQuizChapter(Pageable pageable, String quizChapter);
-//
-//    //    역할 : 문제를 난이별로 찾기
-//    @Query(value = "SELECT * FROM quiz WHERE quiz_level = ?1", nativeQuery = true)
-//    Page<Quiz> findQuizByQuizLevel(Pageable pageable, String quizLevel);
 }
