@@ -55,6 +55,14 @@ public class BoardTypeList implements Serializable {
         this.boardName = boardName;
     }
 
+    public Boolean getIsnotice() {
+        return isnotice;
+    }
+
+    public void setIsnotice(Boolean isnotice) {
+        this.isnotice = isnotice;
+    }
+
     public int getArticleLastNumber() {
         return articleLastNumber;
     }

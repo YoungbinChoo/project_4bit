@@ -18,10 +18,6 @@ public class StudentTest implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long studentTestId;
 
-    @Column(name = "st_answer")
-    @Convert(converter = JsonCollectionToStringConverter.class)
-    private Collection<StAnswer> stAnswer;
-
     @Column(name = "st_test_score")
     private int stTestScore;
 
@@ -41,14 +37,6 @@ public class StudentTest implements Serializable {
 
     public void setStudentTestId(Long studentTestId) {
         this.studentTestId = studentTestId;
-    }
-
-    public Collection<StAnswer> getStAnswer() {
-        return stAnswer;
-    }
-
-    public void setStAnswer(Collection<StAnswer> stAnswer) {
-        this.stAnswer = stAnswer;
     }
 
     public int getStTestScore() {

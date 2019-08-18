@@ -1,9 +1,7 @@
 package com.bitcamp.project.project_4bit.service;
 
 import com.bitcamp.project.project_4bit.entity.BoardTypeList;
-import com.bitcamp.project.project_4bit.entity.Branch;
 import com.bitcamp.project.project_4bit.entity.ClassGroup;
-import com.bitcamp.project.project_4bit.entity.ConstraintDefine;
 import com.bitcamp.project.project_4bit.repository.BoardTypeListRepository;
 import com.bitcamp.project.project_4bit.repository.BranchRepository;
 import com.bitcamp.project.project_4bit.repository.ClassGroupRepository;
@@ -12,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 /*
 작성자     : 이중호, 황서영
 작성일시    : 19.08.14 16:00

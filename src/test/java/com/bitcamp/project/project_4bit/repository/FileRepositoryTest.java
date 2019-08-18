@@ -1,7 +1,7 @@
 package com.bitcamp.project.project_4bit.repository;
 
 import com.bitcamp.project.project_4bit.entity.Article;
-import com.bitcamp.project.project_4bit.entity.ArticleFile;
+import com.bitcamp.project.project_4bit.entity.File;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DataJpaTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ArticleFileRepositoryTest {
+public class FileRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -25,23 +25,22 @@ public class ArticleFileRepositoryTest {
     private ArticleRepository articleRepository;
 
     @Autowired
-    private ArticleFileRepository articleFileRepository;
+    private FileRepository fileRepository;
 
     @Test
     public void testCreateArticleFile(){
         Article article = articleRepository.findByArticleId((long)5);
 
-        ArticleFile articleFile = new ArticleFile();
-        articleFile.setArticle(article);
-        articleFile.setFileUrl("파일주소1");
-        articleFile.setFileName("파일명1");
-        articleFile.setFileSize(50);
+        File file = new File();
+        file.setFileUrl("파일주소1");
+        file.setFileName("파일명1");
+        file.setFileSize(50);
 
-        ArticleFile saved = entityManager.persist(articleFile);
+        File saved = entityManager.persist(file);
         Assert.assertNotNull(saved);
-        Assert.assertEquals(saved.getFileUrl(), articleFile.getFileUrl());
-        Assert.assertEquals(saved.getFileName(), articleFile.getFileName());
-        Assert.assertEquals(saved.getFileId(), articleFile.getFileId());
-        Assert.assertEquals(saved.getFileSize(), articleFile.getFileSize());
+        Assert.assertEquals(saved.getFileUrl(), file.getFileUrl());
+        Assert.assertEquals(saved.getFileName(), file.getFileName());
+        Assert.assertEquals(saved.getFileId(), file.getFileId());
+        Assert.assertEquals(saved.getFileSize(), file.getFileSize());
     }
 }

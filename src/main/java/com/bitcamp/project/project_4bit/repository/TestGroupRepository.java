@@ -17,7 +17,7 @@ public interface TestGroupRepository extends JpaRepository<TestGroup, Long> {
     // TestGroupRepositoryTest에서 사용 >> 시험 고유번호로 조회
     TestGroup findByTestId(Long testId);
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // StudentTestController를 만들면서 추가한 부분
     //
@@ -25,7 +25,7 @@ public interface TestGroupRepository extends JpaRepository<TestGroup, Long> {
     TestGroup findOneByUserId(Long testId);
 
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 역할 : 반별 시험을 진행 중인지 구분한다
     //       반별 시험 종료 시간으로 검색한다 >> TestGroup에 있는 정보 전체를 얻은 후 넘김
@@ -51,12 +51,23 @@ public interface TestGroupRepository extends JpaRepository<TestGroup, Long> {
     @Query(value = "SELECT test_id FROM test_group WHERE class_id=?1 AND test_id = ?2 AND test_start_time < ?3", nativeQuery = true)
     Long findApplyTestByTestId(Long classId, Long testId, String today);
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 역할 : 시험 수정
     @Modifying
     @Query(value = "UPDATE test_group SET test_name=?1, test_start_time=?2, test_end_time=?3, test_description=?4 WHERE test_id =?5 AND class_id = ?6", nativeQuery = true)
     int updateTestGroup(String testName, String testStartTime, String testEndTime, String testDescription, Long testId, Long classId);
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 해당 시험 총점, 평균, 최고점, 최저점을 넣기 위한 TestGroup 수정
+    @Modifying
+    @Query(value = "UPDATE test_group SET sum=?1, avg=?2, max=?3, min=?4 WHERE test_id =?5", nativeQuery = true)
+    int updateTestGroup(int sum, double avg, int max, int min, Long testId);
 
 
 }

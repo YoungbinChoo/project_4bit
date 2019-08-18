@@ -41,11 +41,14 @@ public class TestGroupController {
     @Autowired
     private UserIdToClassIdConverter userIdToClassIdConverter;
 
+    @Autowired
+    private StudentTestService studentTestService;
+
 
     // 역할 : 시험 작성
     // 주의사항 : teacherId를 구하기 위해 class_teacher_log 테이블 사용 >>  값이 들어있는지 확인해야해요
     // 엔드포인트 : http://localhost:8080/class/test/write
-    @PreAuthorize("hasAnyAuthority('TTEST_WRITE')")
+    @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
     @RequestMapping(
             method = RequestMethod.POST,
             path = "/class/test/write",
@@ -96,7 +99,7 @@ public class TestGroupController {
     // 주의사항 : Page<>로 받을 때 DB int형 값에 null이 있으면 에러 나요!! 채워주세요
     //          DB에 종료시간이 현재시간보다 이전인 것만 있으면 아무것도 나오지 않습니다
     // 엔드포인트 : http://localhost:8080/class/test
-    @PreAuthorize("hasAnyAuthority('STEST_READ', 'TEST_READ', 'TTEST_READ')")
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/class/test",
@@ -164,7 +167,7 @@ public class TestGroupController {
     // 역할 : 반별 시험 진행 완료 전체 출력
     // 주의사항 : Page<>로 받을 때 DB int형 값에 null이 있으면 에러 나요!! 채워주세요
     // 엔드포인트 : http://localhost:8080/study/endedtest
-    @PreAuthorize("hasAnyAuthority('STEST_READ', 'TEST_READ', 'TTEST_READ')")
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/study/endedtest",
@@ -227,7 +230,7 @@ public class TestGroupController {
     // 역할 : 시험 하나를 클릭했을 시 해당 시험 설명을 출력
     // 주의사항 : output은 TestGroup 전체지만 프론트에서 description만 출력하려고 계획 중
     // 엔드포인트 : http://localhost:8080/class/test/testId={testId}
-    @PreAuthorize("hasAnyAuthority('STEST_READ', 'TEST_READ', 'TTEST_READ')")
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/class/test/testId={testId}",
@@ -267,7 +270,7 @@ public class TestGroupController {
 
     // 역할 : 시험 응시하기 버튼을 클릭했을 시 응시 가능 기간인지를 판별하여 출력
     // 엔드포인트 : http://localhost:8080/class/test/testId={testId}/apply
-    @PreAuthorize("hasAnyAuthority('STEST_READ', 'STEST_WRITE')")
+    @PreAuthorize("hasAnyAuthority('STEST_WRITE')")
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/class/test/testId={testId}/apply",
@@ -303,12 +306,12 @@ public class TestGroupController {
 
 
         /* ------------------------------------- [시험 응시 가능 시간 여부 확인] ------------------------------------- */
-        Long applyTestId = testGroupService.ApplyItemOfTestGroup(classId, testId, today);
+        Long applyTestId = testGroupService.applyItemOfTestGroup(classId, testId, today);
 
 
         if(applyTestId == null) {
             System.out.println("시험_번호 : " + applyTestId);
-            System.out.println("시험_여부 : 시험 응시 기간이 아닙니다");
+            System.out.println("시험_여부 : 시험 응시 기간이 아니거나 권한 없음(다른 반)");
             return 0L;
         }
 
@@ -324,7 +327,7 @@ public class TestGroupController {
 
     // 역할 : 시험 수정
     // 엔드포인트 : http://localhost:8080/class/test/testId={testId}/edit
-    @PreAuthorize("hasAnyAuthority('TTEST_WRITE')")
+    @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
     @RequestMapping(
             path = "/class/test/testId={testId}/edit",
             method = RequestMethod.PATCH,
@@ -386,7 +389,7 @@ public class TestGroupController {
 
     // 역할 : 시험 삭제
     // 엔드포인트 : http://localhost:8080/class/test/testId={testId}/delete
-    @PreAuthorize("hasAnyAuthority('TTEST_WRITE')")
+    @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
     @RequestMapping(
             path = "/class/test/testId={testId}/delete",
             method = RequestMethod.DELETE,
@@ -404,6 +407,46 @@ public class TestGroupController {
         TestGroup testGroup = new TestGroup();
         testGroup.setTestId(testId);
         return testGroup;
+    }
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 해당 시험 점수 총점 및 평균 수정
+    // 엔드포인트 : http://localhost:8080/class/test/testId={testId}/update
+    @RequestMapping(
+            path = "/class/test/testId={testId}/update",
+            method = RequestMethod.GET,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public int updateScores(@PathVariable("testId") Long testId){
+
+        int sum = studentTestService.readSumByTestId(testId);
+        System.out.println("총점 : " + sum);
+
+        double avg = sum/studentTestService.readStudentCountByTestId(testId);
+        System.out.println("평균 : " + avg);
+
+        int max = studentTestService.readMaxByTestId(testId);
+        System.out.println("최고점 : " + max);
+
+        int min = studentTestService.readMinByTestId(testId);
+        System.out.println("최저점 : " + min);
+
+        int successOrFail = testGroupService.updateStudentScore(sum, avg, max, min, testId);
+
+        if(successOrFail == 0){
+            System.out.println("수정에 실패했습니다");
+        } else {
+            System.out.println("수정에 성공했습니다");
+        }
+
+        return successOrFail;
     }
 
 }

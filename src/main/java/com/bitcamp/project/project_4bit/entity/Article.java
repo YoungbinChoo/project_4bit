@@ -61,18 +61,10 @@ public class Article implements Serializable {
     @Column(name = "article_title")
     private String articleTitle;
 
-    //article_type (게시물타입)
-    @Column(name = "article_type")
-    private String articleType;
-
     //article_contents (게시물내용)
     @Column(name = "article_contents")
     private String articleContents;
 
-    //isfile (파일첨부유무)
-    @Column(name = "isfile")
-    @Convert(converter = BooleanToStringConverter.class)
-    private Boolean isfile;
 
     // FK : board_id (게시판영문명) From : board_manager 테이블
     @OneToOne
@@ -166,28 +158,12 @@ public class Article implements Serializable {
         this.articleTitle = articleTitle;
     }
 
-    public String getArticleType() {
-        return articleType;
-    }
-
-    public void setArticleType(String articleType) {
-        this.articleType = articleType;
-    }
-
     public String getArticleContents() {
         return articleContents;
     }
 
     public void setArticleContents(String articleContents) {
         this.articleContents = articleContents;
-    }
-
-    public Boolean getIsfile() {
-        return isfile;
-    }
-
-    public void setIsfile(Boolean isfile) {
-        this.isfile = isfile;
     }
 
     public BoardTypeList getBoardTypeList() {
