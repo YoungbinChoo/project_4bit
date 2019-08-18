@@ -28,7 +28,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
     //    역할 : 문제 1개를 보여주는 메서드
     @Query(value = "SELECT * FROM quiz WHERE quiz_id=?1", nativeQuery = true)
-    Page<Quiz> findOneByQuiz(Pageable pageable, Long quizId);
+    Quiz findOneByQuiz(Long quizId);
 
     //    역할 : 과목별,챕터별,난이도별로 찾는 메서드
     @Query(value = "SELECT * FROM quiz WHERE quiz_subject=?1 OR quiz_chapter=?2 OR quiz_level=?3", nativeQuery = true)

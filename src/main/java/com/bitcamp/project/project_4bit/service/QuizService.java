@@ -36,8 +36,8 @@ public class QuizService {
 
     //    퀴즈 문제를 1개만 보여주기
     @Transactional
-    public Page<Quiz> findOneByQuiz(Pageable pageable, Long quizId){
-        return quizRepository.findOneByQuiz(pageable, quizId);
+    public Quiz findOneByQuiz(Long quizId){
+        return quizRepository.findOneByQuiz(quizId);
     }
 
     //    퀴즈 전체 목록 불러오기

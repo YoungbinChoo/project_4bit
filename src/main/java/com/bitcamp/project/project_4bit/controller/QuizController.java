@@ -49,10 +49,10 @@ public class QuizController {
 
     /* 퀴즈 생성
      * input : param으로 사용자가 입력한 quiz가 전체 담겨옵니다.
-     * 참고사항 : 선생님 고유 권한이니까 WRITE_TQUIZ 지정했습니다.
+     * 참고사항 : 선생님 고유 권한이니까 TEST_WRITE 지정했습니다.
      * endpoint : http://localhost:8080/class/test/exbank/write
      * */
-    @PreAuthorize("hasAnyAuthority('TQUIZ_WRITE')")
+    @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
     @RequestMapping(
             path = "/write",
             method = RequestMethod.POST,
@@ -96,27 +96,24 @@ public class QuizController {
 
     // Todo: 이부분을 퀴즈 상세보기로 고쳐야(quiz id받아서 내용표시)
 //     http://localhost:8080/class/test/exbank/oneList?quizId={quizId}
-    @PreAuthorize("hasAnyAuthority('TQUIZ_READ')")
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
             path = "/detail",
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResultItems<Quiz> listOfOneQuiz(
-            @RequestParam(name = "quizId", required = false) Long quizId,
-            @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "5", required = false) int size){
+    public Quiz listOfOneQuiz(
+            @RequestParam(name = "quizId", required = false) Long quizId){
 
-        Pageable pageable =PageRequest.of(page-1, size);
-        Page<Quiz> quizList = quizService.findOneByQuiz(pageable,quizId);
+        Quiz quizList = quizService.findOneByQuiz(quizId);
 
-        return new ResultItems<Quiz>(quizList.stream().collect(Collectors.toList()), page, size, quizList.getTotalElements());
+        return quizList;
     }
 
     /* 퀴즈 검색
      * 참고사항 : 문제 보기는 선생님의 읽기 권한이 필요
      * 외부에서 quizSubject, quizChapter, quizLevel를 파라미터를 @RequestBody로 받아옴
      * endpoint : http://localhost:8080/class/test/exbank/retrieve?subject={quizSubject}&chapter={quizChapter}&level={quizLevel}*/
-    @PreAuthorize("hasAnyAuthority('TQUIZ_READ')")
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
             path = "/retrieve",
             method = RequestMethod.GET,
