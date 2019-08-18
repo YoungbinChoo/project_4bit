@@ -59,8 +59,8 @@ public class PointLogController {
         /*접속된 스스로에게 포인트 부여됨*/
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
         pointLog.setUser(user);
+
+        // user의 기존 포인트에 부여된 point가 더해지면서 log로 저장됨
         return pointLogService.addedPointLog(pointLog);
     }
-
-    /*todo : User에 pointSum으로 더해주는 메서드*/
 }

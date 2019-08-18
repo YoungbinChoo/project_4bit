@@ -30,4 +30,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "UPDATE user u SET u.username=?2, u.password=?3, u.name=?4, u.email=?5, u.phone=?6 WHERE u.user_id =?1", nativeQuery = true)
     int updateUserByAdmin(Long userId, String newUsername, String newPassword, String newName, String newEmail, String newPhone);
 
+
+    //5. Point가 더해지면 User에 Point 더하는 쿼리
+    @Modifying
+    @Query(value = "UPDATE user u SET u.point_sum = u.point_sum+?2 WHERE u.user_id =?1", nativeQuery = true)
+    int updatePointSum(Long userId, int point);
 }
