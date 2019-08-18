@@ -23,8 +23,8 @@ public class TestQuiz implements Serializable {
     @JoinColumn(name = "test_id")
     private TestGroup testGroup;
 
-    @Column(name = "test_quiz_order")
-    private int testQuizOrder;
+    @Column(name = "test_quiz_no")
+    private int testQuizNo;
 
     //getter/setter/////////////////////////////////////////////////////////////////////
 
@@ -52,11 +52,11 @@ public class TestQuiz implements Serializable {
         this.testGroup = testGroup;
     }
 
-    public int getTestQuizOrder() {
-        return testQuizOrder;
+    public int getTestQuizNo() {
+        return testQuizNo;
     }
 
-    public void setTestQuizOrder(int testQuizOrder) {
-        this.testQuizOrder = testQuizOrder;
+    public void setTestQuizNo(int testQuizNo) {
+        this.testQuizNo = testQuizNo;
     }
 }

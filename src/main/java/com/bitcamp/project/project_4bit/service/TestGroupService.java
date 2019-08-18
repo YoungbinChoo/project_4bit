@@ -18,8 +18,8 @@ public class TestGroupService {
 
     // StudentTestController를 만들면서 추가한 부분
     // 역할 : testGroupRepository에서 얻은  TestGroup 전체 정보 (DB : test_group / java : TestGroup)를 반환
-    public TestGroup findOneByTestId(Long userId){
-        return testGroupRepository.findOneByUserId(userId);
+    public TestGroup findOneByTestId(Long testId){
+        return testGroupRepository.findOneByUserId(testId);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
