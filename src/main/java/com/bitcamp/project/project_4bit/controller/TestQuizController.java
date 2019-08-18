@@ -7,6 +7,8 @@ import com.bitcamp.project.project_4bit.service.QuizService;
 import com.bitcamp.project.project_4bit.service.TestGroupService;
 import com.bitcamp.project.project_4bit.service.TestQuizService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -55,14 +57,14 @@ public class TestQuizController {
         return testQuizService.createTestQuiz(testQuiz);
     }
 
-//    testQuiz 상세 보기
+//    testQuiz 1개 상세 보기
 //    endpoint : http://localhost:8080/class/testquiz/detail?testquizid={testQuizId}
     @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
             path = "/detail",
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public TestQuiz listOfTestQuiz(
+    public TestQuiz listOfOneTestQuiz(
             @RequestParam(name = "testquizid", required = false) Long testQuizId){
 
         System.out.println("시험문제 id : " + testQuizId);
@@ -70,6 +72,16 @@ public class TestQuizController {
         return testQuizService.findByTestQuizId(testQuizId);
     }
 
+//    testQuiz 전체
+//    endpoint : http://localhost:8080/class/testquiz/list
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
+    @RequestMapping(
+            path = "/list",
+            method = RequestMethod.POST,
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public Page<TestQuiz> listOfTestQuiz(Pageable pageable){
+        return testQuizService.findAllOfTestQuiz(pageable);
+    }
 
 
 

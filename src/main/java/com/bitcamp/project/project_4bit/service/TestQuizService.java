@@ -3,6 +3,8 @@ package com.bitcamp.project.project_4bit.service;
 import com.bitcamp.project.project_4bit.entity.TestQuiz;
 import com.bitcamp.project.project_4bit.repository.TestQuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,13 @@ public class TestQuizService {
     public TestQuiz findByTestQuizId(Long testQuizId){
         return testQuizRepository.findByTestQuizId(testQuizId);
     }
+
+//    시험 문제 전체 찾아오기 메서드
+    @Transactional
+    public Page<TestQuiz> findAllOfTestQuiz(Pageable pageable){
+        return testQuizRepository.findAllByTestQuiz(pageable);
+    }
+
 
 
 }
