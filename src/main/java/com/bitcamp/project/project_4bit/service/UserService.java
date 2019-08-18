@@ -177,6 +177,18 @@ public class UserService {
         return userIdToClassIdConverter.userIdToClassId(userId);
     }
 
+    //학생 아이디로 담당 클래스를 찾는 서비스
+    @Transactional
+    public Long loadClassIdByStudentId(Long studentId){
+
+        Student student = studentRepository.findByStudentId(studentId);
+
+        Long userId = student.getUser().getUserId();
+        Long classId = userIdToClassIdConverter.userIdToClassId(userId);
+        return classId;
+    }
+
+
     //강사가 학생을 선택하면 counsel 내용을 찾아오는 서비스
     @Transactional
     public String loadCounselByStudentId(Long studentId){

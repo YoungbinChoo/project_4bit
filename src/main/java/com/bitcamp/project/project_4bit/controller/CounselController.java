@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
+/*작성자 : 황서영
+* 컨트롤러에 권한 따로 주지 않았는데 담당강사의 클래스 아이디와 학생 클래스 아이디를 비교하기 때문에 따로 필요 없을 것 같음
+* */
+
 @RestController
 @RequestMapping("/study/studentstatus")
 public class CounselController {
@@ -55,13 +59,8 @@ public class CounselController {
         return students;
     }
 
-
-    /*todo : 학생 조회 및 상담내역 수정시 접속 강사 principal의 classId와 학생 classId 비교 체크*/
-
-
     //2. 강사가 학생 개인의 상담내역 가져온다.
     //endPoint : http://localhost:8080/study/studentstatus?studentId={studentId}
-    //@PreAuthorize() 현재 counsel 권한이 따로 없음
     @RequestMapping(
             method = RequestMethod.POST,
             produces = {
@@ -69,14 +68,31 @@ public class CounselController {
                     MediaType.APPLICATION_XML_VALUE
             })
     public String readCounselText(Principal principal, @RequestParam("studentId")Long studentId){
-        // 학생Id로 counsel 내용을 불러온다.
-        String counselText = userService.loadCounselByStudentId(studentId);
-        return counselText;
+
+        // 1. 접속한 강사의 정보
+        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
+
+        //2. 접속한 강사로 classId를 찾는다.
+        Long classId = userService.loadClassIdByUserId(user.getUserId());
+
+        //3. 학생 아이디로 ClassId를 찾는다.
+        Long StudentClassId = userService.loadClassIdByStudentId(studentId);
+
+        // 강사의 클래스 아이디랑 학생의 클래스 아이디를 비교한다.
+        if(classId == StudentClassId){
+            // 학생Id로 counsel 내용을 불러온다.
+            String counselText = userService.loadCounselByStudentId(studentId);
+                return counselText;
+        }else {
+            return "담당 클래스의 학생이 아니어서 상담내역을 읽어올 수 없습니다.";
+        }
+
+
+
     }
 
     //3. 강사가 학생 개인의 상담내역을 작성, 수정한다.
     //endPoint : http://localhost:8080/study/studentstatus?studentId={studentId}
-    //@PreAuthorize() 현재 counsel 권한이 따로 없음
     @RequestMapping(
             path = "/write",
             method = RequestMethod.PATCH,
@@ -86,15 +102,33 @@ public class CounselController {
             })
     public String updateCounselText(Principal principal, @RequestParam("studentId")Long studentId, @RequestBody Student student){
 
+        //기존에 저장된 상담내역
         String counselData = userService.loadCounselByStudentId(studentId);
 
+        //새로운 상담내역
         Student newStudent = student;
         String newCounsel = newStudent.getCounsel();
 
-        if(newCounsel.equals(counselData)){
-            return userService.updateCounselByTeacher(studentId,counselData);
+        // 1. 접속한 강사의 정보
+        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
+
+        //2. 접속한 강사로 classId를 찾는다.
+        Long classId = userService.loadClassIdByUserId(user.getUserId());
+
+        //3. 학생 아이디로 ClassId를 찾는다.
+        Long StudentClassId = userService.loadClassIdByStudentId(studentId);
+
+        // 강사의 클래스 아이디랑 학생의 클래스 아이디를 비교한다.
+        if(classId == StudentClassId){
+            if(newCounsel.equals(counselData)){
+                return userService.updateCounselByTeacher(studentId,counselData);
+            }else {
+                return userService.updateCounselByTeacher(studentId,newCounsel);
+            }
         }else {
-            return userService.updateCounselByTeacher(studentId,newCounsel);
+            return "담당 클래스의 학생이 아니어서 상담내역을 수정할 수 없습니다.";
         }
+
+
     }
 }
