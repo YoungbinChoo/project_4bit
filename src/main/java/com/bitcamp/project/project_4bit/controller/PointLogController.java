@@ -46,7 +46,7 @@ public class PointLogController {
         }
     }
 
-    //포인트 더하는 메서드
+    //포인트 개별로 날리는 메서드
     // endpoint : http://localhost:8080/mypage/point
     @RequestMapping(
             method = RequestMethod.POST,
@@ -61,4 +61,6 @@ public class PointLogController {
         pointLog.setUser(user);
         return pointLogService.addedPointLog(pointLog);
     }
+
+    /*todo : User에 pointSum으로 더해주는 메서드*/
 }
