@@ -9,4 +9,5 @@ public interface TestQuizRepository extends JpaRepository<TestQuiz, Long> {
 
     TestQuiz findByTestQuizId(Long testQuizId);
 
+
 }
