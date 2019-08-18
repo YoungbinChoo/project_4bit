@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HwArticleRepository extends JpaRepository<HwArticle, Long> {
+
+    // hwArticleId로 HwArticle 덩어리를 찾아주는 메서드
     HwArticle findByHwArticleId(Long hwArticleId);
 
     // HwArticle 수정 (새로운 내용 전달받아서 갱신, 수정일 지금시간으로 갱신. 리턴은 int형으로 성공하면 1 실패하면 0)

@@ -13,4 +13,7 @@ public interface HwReplyRepository extends JpaRepository<HwReply, Long> {
     // 전달받은 hwArticleId값을 가진 hwReply들을 찾기(=해당 글에 달린 댓글만 찾기)
     @Query(value = "SELECT * FROM hw_reply WHERE hw_article_id=?1", nativeQuery = true)
     Page<HwReply> findAllByHwArticleId(Long hwArticleId, Pageable pageable);
+
+    // hwReplyId로 HwReply 덩어리를 찾아주는 메서드
+    HwReply findByHwReplyId(Long hwReplyId);
 }

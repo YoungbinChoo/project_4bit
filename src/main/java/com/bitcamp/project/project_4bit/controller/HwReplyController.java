@@ -3,6 +3,7 @@
 
 create : /hwreply/write?hwArticleId={hwArticleId}   POST    새 댓글 생성
 listOf : /hwreply/list?hwArticleId={hwArticleId}    POST    댓글 목록 읽기
+delete : /hwreply/list?hwArticleId={hwArticleId}&hwReplyId={hwReplyId}  DELETE  댓글 삭제
  */
 
 package com.bitcamp.project.project_4bit.controller;
@@ -90,7 +91,8 @@ public class HwReplyController {
 
     }
 
-    ///////////////////////////   HwReply 목록표시(과제댓글, 학생/강사 가능)   ///////////////////////////
+
+    ///////////////////////////   HwReply 목록표시   ///////////////////////////
     // http://localhost:8080/hwreply/list?hwArticleId={hwArticleId}
 
     // 권한 검증 필요함(why? 자기가 쓴 댓글 옆에는 x표시로 지울 수 있어야 하기 때문)
@@ -123,12 +125,76 @@ public class HwReplyController {
         Page<HwReply> hwReplyList = hwReplyService.listOfHwReplyByHwArticleId(hwArticleId, pageable);
         System.out.println("해당 hwArticle에 달린 댓글갯수: " + hwReplyList.getTotalElements() + "개");
 
-    //        // 3-1. hwReplyId로 댓글 원작성자의 userId 받아오기
+    //        // 4. hwReplyId로 댓글 원작성자의 userId 받아오기
 //        Long userIdOfHwReply = hwReplyService.loadHwReplyByHwReplyId(hwReplyId).getUser().getUserId();
 
         return new ResultItems<HwReply>(hwReplyList.stream().collect(Collectors.toList()), page, size, hwReplyList.getTotalElements());
     }
 
+
+
+
+    ///////////////////////////   HwReply 삭제   ///////////////////////////
+    // http://localhost:8080/hwreply/list?hwArticleId={hwArticleId}&hwReplyId={hwReplyId}
+
+    @PreAuthorize("hasAnyAuthority('SHW_WRITE')")
+    @RequestMapping(
+            path = "/list",
+            method = RequestMethod.DELETE,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public String delete(
+            Principal principal,
+            @RequestParam(name = "hwArticleId", defaultValue = "1", required = true) Long hwArticleId,
+        @RequestParam(name = "hwReplyId", defaultValue = "1", required = true) Long hwReplyId
+    ) {
+        String message = "";
+
+        // 권한 검증(학생/강사는 자신이 쓴 댓글만 삭제가능, 관리자는 글쓴이가 아니더라도 삭제 가능)
+        // 1. principal로 사용자의 userId 받아오기
+        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
+        Long userIdOfCurrentUser = user.getUserId();
+
+        // 2. hwReplyId로 원작성자의 userId 받아오기
+        Long userIdOfHwReply = hwReplyService.loadUserIdByHwReplyId(hwReplyId);
+
+        // 3-1. 관리자의 경우 모두 삭제허용
+        if(user.getRole().getRoleCode().equals("role_admin")) {
+            hwReplyService.deleteHwReply(hwReplyId);
+            if(hwReplyService.itemOfHwReply(hwReplyId).isPresent()==false) {
+                System.out.println("관리자(userId: " + userIdOfCurrentUser + ")가 유저(userId: " + userIdOfHwReply + ")의 댓글을 삭제했습니다");
+                message = "(hwArticleId: " + hwArticleId + ")번 글에 달린 (hwReplyId: " + hwReplyId + ")번 댓글이 성공적으로 삭제됐습니다";
+            }
+            else {
+                message = "댓글 삭제에 실패했습니다";
+            }
+        }
+        // 3-2. 학생, 강사의 경우 자기 댓글만 삭제허용
+        else if(user.getRole().getRoleCode().equals("role_student")||user.getRole().getRoleCode().equals("role_teacher")) {
+            if(userIdOfCurrentUser==userIdOfHwReply) {
+                hwReplyService.deleteHwReply(hwReplyId);
+                if(hwReplyService.itemOfHwReply(hwReplyId).isPresent()==false) {
+                    System.out.println("유저(userId: " + userIdOfHwReply + ")가 자신의 댓글을 삭제했습니다");
+                    message = "(hwArticleId: " + hwArticleId + ")번 글에 달린 (hwReplyId: " + hwReplyId + ")번 댓글이 성공적으로 삭제됐습니다";
+                }
+                else {
+                    message = "댓글 삭제에 실패했습니다";
+                }
+            }
+            else {
+                System.out.println("유저(userId: " + userIdOfCurrentUser + ")가 타인(userId: " + userIdOfHwReply + ")의 댓글을 삭제하려고 시도했습니다");
+                message = "본인이 작성한 댓글만 삭제할 수 있습니다";
+            }
+        }
+        // 3-3. 관리자/학생/강사 모두 아닌 경우 댓글 삭제 권한 없음
+        else {
+            message = "댓글을 삭제할 권한이 없습니다";
+        }
+        return message;
+    }
 
 
 
