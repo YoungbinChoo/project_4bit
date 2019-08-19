@@ -18,5 +18,4 @@ public interface TestQuizRepository extends JpaRepository<TestQuiz, Long> {
 //    시험을 전체 보여주는
     @Query(value = "SELECT * FROM test_quiz", nativeQuery =true)
     Page<TestQuiz> findAllByTestQuiz(Pageable pageable);
-
 }

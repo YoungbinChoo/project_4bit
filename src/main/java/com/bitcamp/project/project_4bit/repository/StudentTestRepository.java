@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StudentTestRepository extends JpaRepository<StudentTest,Long> {
 
+    @Query(value = "SELECT * FROM student_test WHERE student_test_id = ?1",nativeQuery = true)
     StudentTest findByStudentTestId(Long studentTestId);
 
     // 역할 : 완료된 시험 중 학생이 해당 시험을 클릭했을때 시험 점수를 보여준다
