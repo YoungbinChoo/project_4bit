@@ -71,4 +71,12 @@ public class TestQuizService {
         return testQuizRepository.findTestQuizIdByTestIdAndTestQuizNo(testId, no);
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 :  studentAnswer 수정에 필요한 testQuizId를 반환
+    @Transactional
+    public Long readTestQuizIdByTestIdAndQuizId(Long testId, Long quizId){
+        return testQuizRepository.findTestQuizIdByTestIdAndQuizId(testId, quizId);
+    }
 }
