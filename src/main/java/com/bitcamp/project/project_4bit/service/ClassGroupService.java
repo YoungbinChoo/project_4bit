@@ -1,9 +1,7 @@
 package com.bitcamp.project.project_4bit.service;
 
 import com.bitcamp.project.project_4bit.entity.BoardTypeList;
-import com.bitcamp.project.project_4bit.entity.Branch;
 import com.bitcamp.project.project_4bit.entity.ClassGroup;
-import com.bitcamp.project.project_4bit.entity.ConstraintDefine;
 import com.bitcamp.project.project_4bit.repository.BoardTypeListRepository;
 import com.bitcamp.project.project_4bit.repository.BranchRepository;
 import com.bitcamp.project.project_4bit.repository.ClassGroupRepository;
@@ -12,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 /*
 작성자     : 이중호, 황서영
 작성일시    : 19.08.14 16:00
@@ -55,8 +51,8 @@ public class ClassGroupService {
 
         // 1. 등록할 새로운 반의 classGroup 의 데이터를 세팅해줌
         newClassGroup.setClassName(classGroup.getClassName());
-//        newClassGroup.setClassStartDate(classGroup.getClassStartDate());
-//        newClassGroup.setClassEndDate(classGroup.getClassEndDate());
+        newClassGroup.setClassStartDate(classGroup.getClassStartDate());
+        newClassGroup.setClassEndDate(classGroup.getClassEndDate());
         newClassGroup.setSubject(classGroup.getSubject());
         newClassGroup.setBranch(classGroup.getBranch());
 
@@ -69,7 +65,6 @@ public class ClassGroupService {
         newClassBoard.setClassGroup(newClassGroup);
         newClassBoard.setBoardName(classGroup.getClassName() + " 자유게시판");
         newClassBoard.setConstraintDefine(constraintDefineRepository.findByConstraintName("class_board_constraint"));
-        newClassBoard.setIsnotice(false);
         newClassBoard.setArticleLastNumber(0);
 
         boardTypeListRepository.save(newClassBoard);
@@ -81,7 +76,6 @@ public class ClassGroupService {
         newClassNotice.setClassGroup(newClassGroup);
         newClassNotice.setBoardName(classGroup.getClassName() + " 공지게시판");
         newClassNotice.setConstraintDefine(constraintDefineRepository.findByConstraintName("class_notice_constraint"));
-        newClassNotice.setIsnotice(false);
         newClassNotice.setArticleLastNumber(0);
         boardTypeListRepository.save(newClassNotice);
 
@@ -91,7 +85,6 @@ public class ClassGroupService {
         newClassLibrary.setClassGroup(newClassGroup);
         newClassLibrary.setBoardName(classGroup.getClassName() + " 자료게시판");
         newClassLibrary.setConstraintDefine(constraintDefineRepository.findByConstraintName("class_library_constraint"));
-        newClassLibrary.setIsnotice(false);
         newClassLibrary.setArticleLastNumber(0);
         boardTypeListRepository.save(newClassLibrary);
 

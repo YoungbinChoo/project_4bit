@@ -19,7 +19,7 @@ public class HwReply implements Serializable {
     private Long hwReplyId;
 
     // 과제댓글 내용
-    @Column(name = "hwReplyContents")
+    @Column(name = "hw_reply_contents")
     private String hwReplyContents;
 
     // 과제댓글 작성일

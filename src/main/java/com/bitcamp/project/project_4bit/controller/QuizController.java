@@ -49,10 +49,10 @@ public class QuizController {
 
     /* 퀴즈 생성
      * input : param으로 사용자가 입력한 quiz가 전체 담겨옵니다.
-     * 참고사항 : 선생님 고유 권한이니까 WRITE_TQUIZ 지정했습니다.
+     * 참고사항 : 선생님 고유 권한이니까 TEST_WRITE 지정했습니다.
      * endpoint : http://localhost:8080/class/test/exbank/write
      * */
-    @PreAuthorize("hasAnyAuthority('TQUIZ_WRITE')")
+    @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
     @RequestMapping(
             path = "/write",
             method = RequestMethod.POST,
@@ -84,7 +84,6 @@ public class QuizController {
             method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResultItems<Quiz> listOfAllQuiz(
-//            @RequestParam(name = "subject", required = false) String subject,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size){
 
@@ -96,88 +95,42 @@ public class QuizController {
 
     // Todo: 이부분을 퀴즈 상세보기로 고쳐야(quiz id받아서 내용표시)
 //     http://localhost:8080/class/test/exbank/oneList?quizId={quizId}
-    @PreAuthorize("hasAnyAuthority('TQUIZ_READ')")
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
-            path = "/oneList",
+            path = "/detail",
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResultItems<Quiz> listOfOneQuiz(
-            @RequestParam(name = "quizId", required = false) Long quizId,
+    public Quiz listOfOneQuiz(
+            @RequestParam(name = "quizId", required = false) Long quizId){
+
+            return quizService.findOneByQuiz(quizId);
+    }
+
+    /* 퀴즈 검색
+     * 참고사항 : 문제 보기는 선생님의 읽기 권한이 필요
+     * 외부에서 quizSubject, quizChapter, quizLevel를 파라미터를 @RequestBody로 받아옴
+     * endpoint : http://localhost:8080/class/test/exbank/retrieve?subject={quizSubject}&chapter={quizChapter}&level={quizLevel}*/
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
+    @RequestMapping(
+            path = "/retrieve",
+            method = RequestMethod.GET,
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResultItems<Quiz> listOfQuizRetrieve(
+            @RequestParam(name = "subject", required = false) String quizSubject,
+            @RequestParam(name = "chapter", required = false) String quizChapter,
+            @RequestParam(name = "level", required = false) String quizLevel,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "5", required = false) int size){
 
-        Pageable pageable =PageRequest.of(page-1, size);
-        Page<Quiz> quizlist = quizService.findOneByQuiz(pageable,quizId);
-
-        return new ResultItems<Quiz>(quizlist.stream().collect(Collectors.toList()), page, size, quizlist.getTotalElements());
-    }
-
-
-
-
-    /*  퀴즈 과목으로 불러오기
-     * 참고사항 : 문제 보기는 선생님의 읽기 권한이 필요합니다.
-     *           외부에서 quizSubject를 파라미터로 받와야해서 @RequestBody로 받아왔습니다.
-     * endpoint : http://localhost:8080/class/test/exbank/subject/{quizSubject}
-     * */
-    @PreAuthorize("hasAnyAuthority('TQUIZ_READ')")
-    @RequestMapping(
-            path = "/subject",
-            method = RequestMethod.GET,
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResultItems<Quiz> listOfQuizSubjectRetrieve(
-            @RequestBody String quizSubject,
-            @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) int size){
-
         Pageable pageable = PageRequest.of(page-1, size);
-        Page<Quiz> quizList = quizService.findQuizByQuizSubject(pageable,quizSubject);
+        System.out.println("과목 : " + quizSubject);
+        System.out.println("챕터 : " + quizChapter);
+        System.out.println("난이도 : " + quizLevel);
+        Page<Quiz> quizList = quizService.findQuizByQuizSubjectAndQuizChapterAndQuizLevel(pageable, quizSubject,quizChapter,quizLevel);
 
+//        return quizList;
         return new ResultItems<Quiz>(quizList.stream().collect(Collectors.toList()), page, size, quizList.getTotalElements());
     }
-
-    /*  퀴즈 챕터로 불러오기
-     * 참고사항 : 문제 보기는 선생님의 읽기 권한이 필요합니다.
-     *           외부에서 quizChapter 를 파라미터로 받와야해서 @RequestBody로 받아왔습니다.
-     * endpoint : http://localhost:8080/class/test/exbank/chapter/{quizChapter}
-     * */
-    @PreAuthorize("hasAnyAuthority('TQUIZ_READ')")
-    @RequestMapping(
-            path = "/chapter",
-            method = RequestMethod.GET,
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResultItems<Quiz> listOfQuizChapterRetrieve(
-            @RequestBody String quizChapter,
-            @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) int size){
-
-        Pageable pageable = PageRequest.of(page-1, size);
-        Page<Quiz> quizList = quizService.findQuizByQuizChapter(pageable,quizChapter);
-        return new ResultItems<Quiz>(quizList.stream().collect(Collectors.toList()), page, size, quizList.getTotalElements());
-    }
-
-    /*  퀴즈 난이도별로 불러오기
-     * 참고사항 : 문제 보기는 선생님의 읽기 권한이 필요합니다.
-     *           외부에서 quizLevel 를 파라미터로 받와야해서 @RequestBody로 받아왔습니다.
-     * endpoint : http://localhost:8080/class/test/exbank/level/{quizLevel}
-     * */
-    @PreAuthorize("hasAnyAuthority('TQUIZ_READ')")
-    @RequestMapping(
-            path = "/level",
-            method = RequestMethod.GET,
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResultItems<Quiz> listOfQuizLevelRetrieve(
-            @RequestBody String quizLevel,
-            @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) int size){
-
-        Pageable pageable = PageRequest.of(page-1, size);
-        Page<Quiz> quizList = quizService.findQuizByQuizLevel(pageable,quizLevel);
-
-        return new ResultItems<Quiz>(quizList.stream().collect(Collectors.toList()), page, size, quizList.getTotalElements());
-    }
-
-
 
 
     /*  퀴즈 수정
@@ -219,7 +172,5 @@ public class QuizController {
 
         return quizService.updateQuiz(quiz.getQuizContents(), quiz.getQuizAnswer(), quiz.getQuizEachScore(), quiz.getQuizSubject(), quiz.getQuizChapter(), quiz.getQuizLevel(), quizId);
     }
-
-
 
 }

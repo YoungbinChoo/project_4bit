@@ -13,6 +13,7 @@ package com.bitcamp.project.project_4bit.controller;
 import com.bitcamp.project.project_4bit.entity.*;
 import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.*;
+import com.bitcamp.project.project_4bit.util.UserIdToClassIdConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,6 +52,9 @@ public class HomeworkController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private UserIdToClassIdConverter userIdToClassIdConverter;
 
 
     // Todo: 권한체크 강화? (authority체크만으로 넘어갈거면 불필요) - 불필요한듯
@@ -143,25 +147,20 @@ public class HomeworkController {
         // 1. principal에서 classId받아오기
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
         Long userId = user.getUserId();
-        Long classId = -1L;
+        Long classId = userIdToClassIdConverter.userIdToClassId(userId);
 
         // 1-1. 학생인 경우
         if(user.getRole().getRoleCode().equals("role_student")){
-            Long studentId = studentService.loadStudentIdByUserId(userId);
-            Student student = studentService.loadStudentByStudentId(studentId);
-            classId = student.getClassGroup().getClassId();
-            System.out.println("현재 로그인한 사용자는 학생이고, 학생번호는 : " + studentId + ", 반번호는 : "+ classId + "입니다");
+            System.out.println("현재 로그인한 사용자(userId: " + userId + ")는 학생이고, 반번호는 : "+ classId + "입니다");
         }
         // 1-2. 선생인 경우
         else if(user.getRole().getRoleCode().equals("role_teacher")) {
-            Long teacherId = teacherService.loadTeacherIdByUserId(userId);
-            classId = classTeacherLogService.loadClassIdByTeacherId(teacherId);
-            System.out.println("현재 로그인한 사용자는 강사이고, 강사번호는 : " + teacherId + ", 반번호는 : "+ classId + "입니다");
+            System.out.println("현재 로그인한 사용자(userId: " + userId + ")는 강사이고, 반번호는 : "+ classId + "입니다");
         }
         // 1-3. 그외의 경우
         else {
             // 반정보가 없는 권한없는 사용자(=차단해야)
-            System.out.println("과제목록을 볼 권한이 없는 사용자(유저번호: " + userId + ")가 접근했습니다");
+            System.out.println("과제목록을 볼 권한이 없는 사용자(userId: " + userId + ")가 접근했습니다");
         }
 
         // 2. 현재시간(=요청시간) 계산용 파트(진행중 과제만 표시하기 위해)

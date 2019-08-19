@@ -35,10 +35,10 @@ public class HwArticle implements Serializable {
     @Column(name = "hw_contents")
     private String hwContents;
 
-    // 과제 파일첨부 유무
-    @Column(name = "hw_isfile")
-    @Convert(converter = BooleanToStringConverter.class)
-    private Boolean hwIsFile;
+//    // 과제 파일첨부 유무
+//    @Column(name = "hw_isfile")
+//    @Convert(converter = BooleanToStringConverter.class)
+//    private Boolean hwIsFile;
 
     // 과제 고유번호(FK)
     @ManyToOne(fetch = FetchType.EAGER)
@@ -86,13 +86,13 @@ public class HwArticle implements Serializable {
         this.hwContents = hwContents;
     }
 
-    public Boolean getHwIsFile() {
-        return hwIsFile;
-    }
-
-    public void setHwIsFile(Boolean hwIsFile) {
-        this.hwIsFile = hwIsFile;
-    }
+//    public Boolean getHwIsFile() {
+//        return hwIsFile;
+//    }
+//
+//    public void setHwIsFile(Boolean hwIsFile) {
+//        this.hwIsFile = hwIsFile;
+//    }
 
     public Homework getHomework() {
         return homework;

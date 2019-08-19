@@ -30,7 +30,8 @@ public class HwArticleService {
         return hwArticleRepository.findAll(pageable);
     }
 
-    @Transactional
+    // hwArticleId를 받아서 해당하는 HwArticle 1개만 반환하는 메서드
+    @Transactional(readOnly = true)
     public Optional<HwArticle> itemOfHwArticle(Long hwArticleId) {
         return hwArticleRepository.findById(hwArticleId);
     }
