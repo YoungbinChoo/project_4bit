@@ -20,6 +20,7 @@ public class RoadmapController {
     private RoadmapService roadmapService;
 
     // 역할   : Roadmap 내용들 전체 출력
+    // http://localhost:8080/roadmap/list
     @PreAuthorize("hasAnyAuthority('ROADMAP_READ')")
     @RequestMapping(
             path = "/list",
@@ -40,6 +41,7 @@ public class RoadmapController {
 
 
     // 역할 : Roadmap 내용 하나를 조회
+    // http://localhost:8080/roadmap/view?roadmapStageNo=1
     @PreAuthorize("hasAnyAuthority('ROADMAP_READ')")
     @RequestMapping(
             path = "/view",
