@@ -32,6 +32,14 @@ public class TestQuizService {
         return testQuizRepository.findAllByTestQuiz(pageable);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 문제 번호를 반환
+    //      1. 문제 답을 가져오가 위해 문제 번호 필요
+    @Transactional
+    public Long readQuizId(Long testQuizId){
+        return testQuizRepository.findQuizByTestQuizId(testQuizId);
+    }
 
 
 }

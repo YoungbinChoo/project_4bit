@@ -19,4 +19,20 @@ public class StudentAnswerService {
         return studentAnswerRepository.save(studentAnswer);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 학생이 입력한 답을 반환
+    @Transactional
+    public String readStudentAnswer(Long studentanswerid){
+        return studentAnswerRepository.findStudentTestAnswerByContentStudentAnswerId(studentanswerid);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : QuizTestId 반환
+    @Transactional
+    public Long readQuizTestId(Long studentAnswerId){
+        return studentAnswerRepository.findTestQuizIdByStudentAnswerId(studentAnswerId);
+    }
+
 }
