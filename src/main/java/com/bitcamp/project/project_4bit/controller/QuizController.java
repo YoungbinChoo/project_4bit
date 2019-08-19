@@ -24,11 +24,10 @@ import java.util.stream.Collectors;
  * 순서
  * RequestMethod.타입, 메서드 명 : 설명
  * 1. POST,  createQuiz() : 퀴즈 생성
- * 2. GET,   listOfAllQuiz() : 전체퀴즈문제 불러오는 메서드
- * 3. GET,   listOfQuizSubjectRetrieve() : 과목별 퀴즈문제 불러오는 메서드
- * 4. GET,   listOfQuizChapterRetrieve() : 챕터별 퀴즈문제 불러오는 메서드
- * 5. GET,   listOfQuizLevelRetrieve() : 난이도별 퀴즈문제 불러오는 메서드
- * 6. PATCH, updateQuiz() : 퀴즈 수정
+ * 2. POST,   listOf() : 전체퀴즈문제 불러오는 메서드
+ * 3. GET,   retrieve() : 퀴즈 상세보기
+ * 4. GET,   listOfQuizRetrieve() : 복합검색 불러오는 메서드
+ * 5. PATCH,   update() : 퀴즈 수정
  *
  * 검색할때 프론트 단에서 과목별인지 챕터별인지 난이도별인지 구분해줄 수 있어야 함.
  * 수정할때 프론트에서 이미 저장되어있던 정보가 그대로 보인 상태에서 수정변경 되어야 함.
