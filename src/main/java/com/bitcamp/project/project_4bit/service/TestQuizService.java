@@ -39,6 +39,13 @@ public class TestQuizService {
     public int updateTestQuiz(int TestQuizNo, Long TestId, Long QuizId, Long TestQuizId){
         return testQuizRepository.updateTestQuiz(TestQuizNo, TestId, QuizId, TestQuizId);
     }
+
+    // 역할 : 시험 문제 삭제
+    @Transactional
+    public void deleteTestQuiz(Long testQuizId){
+        testQuizRepository.deleteById(testQuizId);
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 역할 : 문제 번호를 반환
@@ -48,9 +55,5 @@ public class TestQuizService {
         return testQuizRepository.findQuizByTestQuizId(testQuizId);
     }
 
-    // 역할 : 시험 문제 삭제
-    @Transactional
-    public void deleteTestQuiz(Long testQuizId){
-        testQuizRepository.deleteById(testQuizId);
-    }
+
 }
