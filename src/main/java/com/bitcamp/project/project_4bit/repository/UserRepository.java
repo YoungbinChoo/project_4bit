@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+
+// 작성자 : 황서영
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
