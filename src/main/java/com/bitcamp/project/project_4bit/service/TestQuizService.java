@@ -40,7 +40,6 @@ public class TestQuizService {
         return testQuizRepository.updateTestQuiz(TestQuizNo, TestId, QuizId, TestQuizId);
     }
 
-
     // 역할 : 시험 문제 삭제
     @Transactional
     public void deleteTestQuiz(Long testQuizId){

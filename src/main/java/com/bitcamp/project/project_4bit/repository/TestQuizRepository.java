@@ -12,11 +12,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TestQuizRepository extends JpaRepository<TestQuiz, Long> {
 
-//    나중에 학생들 답이랑 비교할 때 문제하나하나 비교하는 메서드
+//    시험문제를 고유번호로 전체 찾기
     @Query(value = "SELECT * FROM test_quiz WHERE test_quiz_id=?1", nativeQuery = true)
     TestQuiz findByTestQuizId(Long testQuizId);
 
-//    시험을 전체 보여주는
+//    시험문제 리스트를 전체 보여주기
     @Query(value = "SELECT * FROM test_quiz", nativeQuery =true)
     Page<TestQuiz> findAllByTestQuiz(Pageable pageable);
 

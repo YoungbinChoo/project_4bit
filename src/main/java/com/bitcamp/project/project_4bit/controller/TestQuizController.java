@@ -61,7 +61,7 @@ public class TestQuizController {
 //    endpoint : http://localhost:8080/class/testquiz/detail?testquizid={testQuizId}
     @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
-            path = "/detail",
+            path = "/view",
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public TestQuiz listOfOneTestQuiz(
