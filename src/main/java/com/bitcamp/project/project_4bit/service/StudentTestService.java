@@ -56,4 +56,14 @@ public class StudentTestService {
     public int readMinByTestId(Long testId){
         return studentTestRepository.findMinByTestId(testId);
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    // 역할 : studentTestRepository에서 넘긴 StudentTest 전체 정보를 반환
+    @Transactional
+    public StudentTest findStudentTest(Long studentTestId){
+        return studentTestRepository.findByStudentTestId(studentTestId);
+    }
 }

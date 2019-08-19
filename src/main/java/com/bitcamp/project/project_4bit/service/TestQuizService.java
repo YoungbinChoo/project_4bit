@@ -39,6 +39,14 @@ public class TestQuizService {
     public int updateTestQuiz(int TestQuizNo, Long TestId, Long QuizId, Long TestQuizId){
         return testQuizRepository.updateTestQuiz(TestQuizNo, TestId, QuizId, TestQuizId);
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 문제 번호를 반환
+    //      1. 문제 답을 가져오가 위해 문제 번호 필요
+    @Transactional
+    public Long readQuizId(Long testQuizId){
+        return testQuizRepository.findQuizByTestQuizId(testQuizId);
+    }
 
     // 역할 : 시험 문제 삭제
     @Transactional

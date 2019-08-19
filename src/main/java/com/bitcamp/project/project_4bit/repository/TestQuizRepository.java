@@ -25,4 +25,9 @@ public interface TestQuizRepository extends JpaRepository<TestQuiz, Long> {
     @Query(value = "UPDATE Test_quiz SET test_quiz_no=?1, test_id=?2, quiz_id=?3 WHERE test_quiz_id =?4", nativeQuery = true)
     int updateTestQuiz(int TestQuizNo, Long TestId, Long QuizId, Long TestQuizId);
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : quizId 반환
+    @Query(value = "SELECT quiz_id FROM test_quiz WHERE test_quiz_id = ?1", nativeQuery = true)
+    Long findQuizByTestQuizId(Long testQuizId);
 }

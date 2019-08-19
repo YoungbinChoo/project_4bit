@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
-    Student findByStudentId(Long studentTestId);
+    Student findByStudentId(Long studentId);
 
     // classId 를 통해서 소속 학생 전체 리스트를 뽑는 Jpa 쿼리
     Page<Student> findAllByClassGroup_ClassId(Long classId, Pageable pageable);

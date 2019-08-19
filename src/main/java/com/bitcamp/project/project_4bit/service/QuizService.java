@@ -59,4 +59,19 @@ public class QuizService {
         return quizRepository.updateQuiz(quizContents, quizAnswer, quizEachScore, quizSubject, quizChapter, quizLevel, quizId);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : quizId로 quizAnswer 찾기
+    //      1. 학생 답과 문제 답을 비교하기 위해 필요
+    @Transactional
+    public String readQuizAnswer(Long quizId){
+        return quizRepository.findQuizAnswerByQuizId(quizId);
+    }
+
+    // 역할 : quizId로 quizEachScore 찾기
+    //      1. 학생이 맞은 각 문제 점수 얻기
+    @Transactional
+    public int readQuizEachSCore(Long quizId){
+        return quizRepository.findquizEachScoreByQuizId(quizId);
+    }
 }
