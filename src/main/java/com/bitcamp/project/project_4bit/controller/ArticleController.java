@@ -74,9 +74,9 @@ public class ArticleController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE})
     public Article create(
-            Principal principal,
-            @PathVariable("boardId") String boardId,
-            @RequestBody Article article) {
+                 Principal principal,
+        @PathVariable("boardId") String boardId,
+        @RequestBody Article article) {
 
         // 1. 유저들의 정보(권한) 을 세팅해준다.
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
