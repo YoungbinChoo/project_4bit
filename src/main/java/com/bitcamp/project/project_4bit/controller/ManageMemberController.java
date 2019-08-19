@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.stream.Collectors;
 
+// 작성자 : 황서영
 // UserController 랑 같은 역할입니다.
 // admin 이 member를 관리하는 controller.
 @RestController

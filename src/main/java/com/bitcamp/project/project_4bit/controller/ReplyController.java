@@ -21,6 +21,7 @@ import com.bitcamp.project.project_4bit.service.ArticleService;
 import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
 import com.bitcamp.project.project_4bit.service.ReplyService;
 import com.bitcamp.project.project_4bit.service.UserService;
+import com.bitcamp.project.project_4bit.util.UserIdToClassIdConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,7 +47,9 @@ public class ReplyController {
     private ArticleService articleService;
 
     @Autowired
-    private UserService userService;
+    private UserIdToClassIdConverter userIdToClassIdConverter;
+
+
     // 댓글 작성
     // EndPoint : http://localhost:8080/reply/write?boardId=class_1_board&articleId=23
     @PreAuthorize("hasAnyAuthority('NOTICE_WRITE','JOB_WRITE','PRO_WRITE','CBOARD_WRITE','CNOTICE_WRITE','LIBRARY_WRITE')")
@@ -60,7 +63,6 @@ public class ReplyController {
     )
     public Reply create(
             Principal principal,
-            @RequestParam(name = "boardId", required = true) String boardId,
             @RequestParam(name = "articleId", required = true) Long articleId,
             @RequestBody Reply reply) {
 
@@ -71,8 +73,28 @@ public class ReplyController {
         // 2. 게시글(article)의 정보를 가져온다
         reply.setArticle(articleService.selectArticleId(articleId));
 
-
-        return replyService.createReply(articleId, reply);
+        // 3. 권한체크
+        // 3-1. 관리자면 모든 글에 댓글 달 수 있음
+        if(user.getRole().getRoleCode().equals("role_admin")){
+            return replyService.createReply(articleId, reply);
+        }else if(user.getRole().getRoleCode().equals("role_teacher") || user.getRole().getRoleCode().equals("role_student")){
+            // 3-2. 강사 or 학생 인 경우 notice, job, project 의 게시물에는 댓글을 작성 가능
+            if(reply.getArticle().getBoardTypeList().getBoardId().equals("notice") ||
+                    reply.getArticle().getBoardTypeList().getBoardId().equals("job") ||
+                    reply.getArticle().getBoardTypeList().getBoardId().equals("project")){
+                return replyService.createReply(articleId, reply);
+            }else{ // 3-3. 반별 게시물이라면 유저의 반정보를 비교하여 일치시에만 작성 가능.
+                // 현재 댓글을 작성하려는 유저의 반 정보를 가져옴
+                Long currentUserClassId = userIdToClassIdConverter.userIdToClassId(user.getUserId());
+                // 해당 반의 게시글이라면 댓글 작성 가능
+                if(currentUserClassId.equals(reply.getArticle().getBoardTypeList().getClassGroup().getClassId())){
+                    return replyService.createReply(articleId, reply);
+                }else{
+                    return null;
+                }
+            }
+        }
+        return null;
     }
 
     // 댓글 전체조회

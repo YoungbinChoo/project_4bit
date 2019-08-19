@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+//작성자 : 황서영
 // Admin이 학생과 강사를 등록해 주는 Service
 @Service
 public class RegisterMemberService {

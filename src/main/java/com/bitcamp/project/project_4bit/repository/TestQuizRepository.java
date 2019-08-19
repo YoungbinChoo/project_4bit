@@ -30,4 +30,16 @@ public interface TestQuizRepository extends JpaRepository<TestQuiz, Long> {
     // 역할 : quizId 반환
     @Query(value = "SELECT quiz_id FROM test_quiz WHERE test_quiz_id = ?1", nativeQuery = true)
     Long findQuizByTestQuizId(Long testQuizId);
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 강사가 한 시험에 몇개의 문제를 냈나 체크
+    //      >> 학생이 입력한 답과 문제 답을 각각 비교하는 메소드를 for문으로 하기 위해
+    @Query(value = "SELECT COUNT(quiz_id) FROM test_quiz WHERE test_id = ?1 GROUP BY test_id", nativeQuery = true)
+    int findQuizCountByTestId(Long testId);
+
+    // 역할 : testId와 no(시험지 내 번호)를 통해 testQuizId를 구한다
+    @Query(value = "SELECT test_quiz_id FROM test_quiz WHERE test_id = ?1 AND test_quiz_no = ?2", nativeQuery = true)
+    Long findTestQuizIdByTestIdAndTestQuizNo(Long testId, int no);
 }

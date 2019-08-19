@@ -56,4 +56,19 @@ public class TestQuizService {
     }
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : testQuizRepository에서 넘긴 문제 개수 반환
+    @Transactional
+    public int readQuizCount(Long testId){
+        return testQuizRepository.findQuizCountByTestId(testId);
+    }
+
+    // 역할 : testQuizRepository에서 넘긴 testQuizId를 반환
+    //        학생 답과 문제 답을 비교하기 위해
+    @Transactional
+    public Long readTestQuizId(Long testId, int no){
+        return testQuizRepository.findTestQuizIdByTestIdAndTestQuizNo(testId, no);
+    }
+
 }
