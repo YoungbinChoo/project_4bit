@@ -23,8 +23,8 @@ public class StudentAnswerService {
 
     // 역할 : 학생이 입력한 답을 반환
     @Transactional
-    public String readStudentAnswer(Long studentanswerid){
-        return studentAnswerRepository.findStudentTestAnswerByContentStudentAnswerId(studentanswerid);
+    public String readStudentAnswer(Long studentTestId, Long testQuizId){
+        return studentAnswerRepository.findStudentTestAnswerByStudentTestIdAndTestQuiz(studentTestId, testQuizId);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
