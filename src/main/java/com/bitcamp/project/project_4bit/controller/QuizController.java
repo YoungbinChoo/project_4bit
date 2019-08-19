@@ -141,14 +141,14 @@ public class QuizController {
      * endpoint : http://localhost:8080/class/test/exbank/{quizId}
      * */
     @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
-    @RequestMapping(
-            path = "/{quizId}",
-            method = RequestMethod.PATCH,
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE })
-    public int updateQuiz(
-            Principal principal,
-            @PathVariable(name = "quizId", required = true) Long quizId,
-            @RequestBody Quiz quiz) {
+        @RequestMapping(
+                path = "/{quizId}",
+                method = RequestMethod.PATCH,
+                produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE })
+        public int updateQuiz(
+                Principal principal,
+                @PathVariable(name = "quizId", required = true) Long quizId,
+                @RequestBody Quiz quiz) {
 
         //////////// param으로 넘어오는 homework의 구성 //////////////////////////////
         // 1. quiz_id  : 자동 생성 (건드리지 않음)
@@ -168,7 +168,6 @@ public class QuizController {
         ConstraintDefine constraintDefine = constraintDefineService.loadConstraintDefineByConstraintName("quiz_constraint");
         quiz.setUser(user);
         quiz.setConstraintDefine(constraintDefine);
-
 
         return quizService.updateQuiz(quiz.getQuizContents(), quiz.getQuizAnswer(), quiz.getQuizEachScore(), quiz.getQuizSubject(), quiz.getQuizChapter(), quiz.getQuizLevel(), quizId);
     }
