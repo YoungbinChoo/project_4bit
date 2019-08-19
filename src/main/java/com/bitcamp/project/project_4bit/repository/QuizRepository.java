@@ -41,10 +41,10 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 역할 : quizAnswer 반환
-    @Query(value = "SELECT quiz_answer FROM quiz WHERE quiz_id = 1?", nativeQuery = true)
+    @Query(value = "SELECT quiz_answer FROM quiz WHERE quiz_id = ?1", nativeQuery = true)
     String findQuizAnswerByQuizId(Long quizId);
 
     // 역할 : quizEachScore 반환 >> 얻은 점수를 체크
-    @Query(value = "SELECT quiz_each_score FROM quiz WHERE quiz_id = 1?", nativeQuery = true)
+    @Query(value = "SELECT quiz_each_score FROM quiz WHERE quiz_id = ?1", nativeQuery = true)
     int findquizEachScoreByQuizId(Long quizId);
 }

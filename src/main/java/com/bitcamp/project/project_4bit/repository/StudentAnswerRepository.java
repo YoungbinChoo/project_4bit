@@ -14,6 +14,6 @@ public interface StudentAnswerRepository extends JpaRepository<StudentAnswer, Lo
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @Query(value = "SELECT test_quiz_id FROM student_answer WHERE student_answer_id = 1?", nativeQuery = true)
+    @Query(value = "SELECT test_quiz_id FROM student_answer WHERE student_answer_id = ?1", nativeQuery = true)
     Long findTestQuizIdByStudentAnswerId(Long studentAnswerId);
 }
