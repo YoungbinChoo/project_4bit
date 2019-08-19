@@ -45,8 +45,8 @@ public class ManageMemberController {
         return (User) PrincipalUtil.from(principal);
     }
 
-    // 역할 : admin 이 member 를 등록 *프론트에서 roleCode 같이 submit 하도록 설계해야함*
-    // endpoint : http://localhost:8080/manage/member/new?role={roleCode}
+    // 역할 : admin 이 member 를 등록
+    // endpoint : http://localhost:8080/manage/member/new
     // studentBirth , ClassGroup 을 같이 넣어주면 학생이 등록, 빼면 강사가 등록된다.
     @PreAuthorize("hasAnyAuthority('MANAGE_WRITE')")
     @RequestMapping(
