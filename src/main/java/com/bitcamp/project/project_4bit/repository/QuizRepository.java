@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 /*
- * 작성일 : 2019.08.18
+ * 작성일 : 2019.08.13
+ * 수정일 : 2019.08.19
  * 메서드 순서
  * 1. findAllByQuiz();
  * 2. findOneByQuiz();
@@ -37,4 +38,13 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @Query(value = "UPDATE Quiz q SET q.quiz_contents =?1, q.quiz_answer =?2, q.quiz_each_score =?3, q.quiz_subject =?4, q.quiz_chapter =?5, q.quiz_level =?6 WHERE q.quiz_id =?7", nativeQuery = true)
     int updateQuiz(String quizContents, String quizAnswer, int quizEachScore, String quizSubject, String quizChapter, String quizLevel, Long quizId);
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : quizAnswer 반환
+    @Query(value = "SELECT quiz_answer FROM quiz WHERE quiz_id = ?1", nativeQuery = true)
+    String findQuizAnswerByQuizId(Long quizId);
+
+    // 역할 : quizEachScore 반환 >> 얻은 점수를 체크
+    @Query(value = "SELECT quiz_each_score FROM quiz WHERE quiz_id = ?1", nativeQuery = true)
+    int findquizEachScoreByQuizId(Long quizId);
 }

@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
+
+//작성자 : 황서영
 @RestController
 @RequestMapping("/mypage/point")
 public class PointLogController {

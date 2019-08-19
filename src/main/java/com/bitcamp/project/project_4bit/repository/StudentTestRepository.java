@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StudentTestRepository extends JpaRepository<StudentTest,Long> {
 
+    @Query(value = "SELECT * FROM student_test WHERE student_test_id = ?1",nativeQuery = true)
     StudentTest findByStudentTestId(Long studentTestId);
 
     // 역할 : 완료된 시험 중 학생이 해당 시험을 클릭했을때 시험 점수를 보여준다
@@ -24,13 +25,7 @@ public interface StudentTestRepository extends JpaRepository<StudentTest,Long> {
     @Query(value = "UPDATE student_test SET st_test_score=?1 WHERE test_id =?2 AND user_id = ?3", nativeQuery = true)
     int updateStudentTest(int stTestScore, Long testId, Long userId);
 
-
-
-
-
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     // 역할 : 해당 시험의 총점을 반환
     @Query(value = "SELECT SUM(st_test_score) FROM student_test WHERE test_id = ?1 GROUP BY test_id", nativeQuery = true)
@@ -48,4 +43,10 @@ public interface StudentTestRepository extends JpaRepository<StudentTest,Long> {
     @Query(value = "SELECT st_test_score FROM student_test WHERE test_id = ?1 ORDER BY st_test_score ASC LIMIT 1", nativeQuery = true)
     int findMinByTestId(Long testId);
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 학생 시험 점수를 구하여 stTestScore에 넣는 메소드를 만들기 위해 필요
+    //       testId와 userId로 studnetTestId를 조회
+    @Query(value = "SELECT student_test_id FROM student_test WHERE test_id = ?1 AND user_id = ?2", nativeQuery = true)
+    Long findStudentTestIdByTestIdAndUserId(Long testId, Long userId);
 }

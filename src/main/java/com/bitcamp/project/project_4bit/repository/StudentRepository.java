@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+
+// 작성자 : 황서영
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
-    Student findByStudentId(Long studentTestId);
+    Student findByStudentId(Long studentId);
 
     // classId 를 통해서 소속 학생 전체 리스트를 뽑는 Jpa 쿼리
     Page<Student> findAllByClassGroup_ClassId(Long classId, Pageable pageable);

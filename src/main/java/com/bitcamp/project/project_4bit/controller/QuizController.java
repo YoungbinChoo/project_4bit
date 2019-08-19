@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 /*
  * 작성일 : 2019.08.13
+ * 수정일 : 2019.08.19
  * 순서
  * RequestMethod.타입, 메서드 명 : 설명
  * 1. POST,  createQuiz() : 퀴즈 생성
@@ -37,7 +38,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/class/test/exbank")
 public class QuizController {
 
-
     @Autowired
     private LocalUserDetailsService userDetailsService;
 
@@ -47,7 +47,7 @@ public class QuizController {
     @Autowired
     private QuizService quizService;
 
-    /* 퀴즈 생성
+    /* quiz 출제 (= 시험글쓰기)
      * input : param으로 사용자가 입력한 quiz가 전체 담겨옵니다.
      * 참고사항 : 선생님 고유 권한이니까 TEST_WRITE 지정했습니다.
      * endpoint : http://localhost:8080/class/test/exbank/write
@@ -72,7 +72,7 @@ public class QuizController {
         return quizService.createQuiz(quiz);
     }
 
-    /*  퀴즈 전체 목록 불러오기
+    /*  Quiz 목록읽기 (= 게시판)
      * 참고사항 : 문제 생성및 보기는 선생님의 읽기 쓰기 권한이 필요합니다.
      *           전체 리스트를 보여주면 되기 때문에 따로 외부에서 받아오는 param은 없고
      *           pageable 을 해줘야해서 ResultItems을 했습니다.
@@ -83,7 +83,7 @@ public class QuizController {
             path = "/list",
             method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResultItems<Quiz> listOfAllQuiz(
+    public ResultItems<Quiz> listOf(
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size){
 
@@ -94,13 +94,14 @@ public class QuizController {
     }
 
     // Todo: 이부분을 퀴즈 상세보기로 고쳐야(quiz id받아서 내용표시)
-//     http://localhost:8080/class/test/exbank/oneList?quizId={quizId}
+//    Quiz 상세보기 (=게시물)
+//     http://localhost:8080/class/test/exbank/view?quizId={quizId}
     @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
-            path = "/detail",
+            path = "/view",
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public Quiz listOfOneQuiz(
+    public Quiz retrieve(
             @RequestParam(name = "quizId", required = false) Long quizId){
 
             return quizService.findOneByQuiz(quizId);
@@ -128,10 +129,8 @@ public class QuizController {
         System.out.println("난이도 : " + quizLevel);
         Page<Quiz> quizList = quizService.findQuizByQuizSubjectAndQuizChapterAndQuizLevel(pageable, quizSubject,quizChapter,quizLevel);
 
-//        return quizList;
         return new ResultItems<Quiz>(quizList.stream().collect(Collectors.toList()), page, size, quizList.getTotalElements());
     }
-
 
     /*  퀴즈 수정
      * 참고사항 : 퀴즈문제 수정은 선생님 고유 권한입니다. write_tquiz를 지정했습니다.
@@ -141,34 +140,33 @@ public class QuizController {
      * endpoint : http://localhost:8080/class/test/exbank/{quizId}
      * */
     @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
-    @RequestMapping(
-            path = "/{quizId}",
-            method = RequestMethod.PATCH,
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE })
-    public int updateQuiz(
-            Principal principal,
-            @PathVariable(name = "quizId", required = true) Long quizId,
-            @RequestBody Quiz quiz) {
+        @RequestMapping(
+                path = "/{quizId}",
+                method = RequestMethod.PATCH,
+                produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE })
+        public int update(
+                Principal principal,
+                @PathVariable(name = "quizId", required = true) Long quizId,
+                @RequestBody Quiz quiz) {
 
-        //////////// param으로 넘어오는 homework의 구성 //////////////////////////////
-        // 1. quiz_id  : 자동 생성 (건드리지 않음)
-        // 2. quiz_Contents  : quiz에서 받아옴
-        // 3. quiz_Answer  : quiz에서 받아옴
-        // 4. quiz_each_score  : 선생님이 입력 하는게 아니고 레벨이 상중하 에 따라 자동 지정 : 중 5 상 7 하 3
-        // 5. quiz_subject  : quiz에서 받아옴
-        // 6. quiz_chapter  : quiz에서 받아옴
-        // 7. quiz_level  : quiz에서 받아옴
-        // 8. quiz_answerType  : quiz에서 받아옴
-        // 9. quiz_explain  : quiz에서 받아옴
-        // 10. user_id  : (컨트롤러에서 principal기반으로 입력해줘야)
-        // 11. constraint_name  : (컨트롤러에서 hardfix로 입력해주면 될듯)
-        ///////////////////////////////////////////////////////////////////////////////
+/*       quiz의 구성
+         1. quiz_id  : 자동 생성 (건드리지 않음)
+         2. quiz_Contents  : quiz에서 받아옴
+         3. quiz_Answer  : quiz에서 받아옴
+         4. quiz_each_score  : 선생님이 입력 하는게 아니고 레벨이 상중하 에 따라 자동 지정 : 중 5 상 7 하 3
+         5. quiz_subject  : quiz에서 받아옴
+         6. quiz_chapter  : quiz에서 받아옴
+         7. quiz_level  : quiz에서 받아옴
+         8. quiz_answerType  : quiz에서 받아옴
+         9. quiz_explain  : quiz에서 받아옴
+         10. user_id  : (컨트롤러에서 principal기반으로 입력해줘야)
+         11. constraint_name  : (컨트롤러에서 hardfix로 입력해주면 될듯)
+        */
 
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
         ConstraintDefine constraintDefine = constraintDefineService.loadConstraintDefineByConstraintName("quiz_constraint");
         quiz.setUser(user);
         quiz.setConstraintDefine(constraintDefine);
-
 
         return quizService.updateQuiz(quiz.getQuizContents(), quiz.getQuizAnswer(), quiz.getQuizEachScore(), quiz.getQuizSubject(), quiz.getQuizChapter(), quiz.getQuizLevel(), quizId);
     }

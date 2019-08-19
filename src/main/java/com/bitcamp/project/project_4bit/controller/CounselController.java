@@ -49,14 +49,20 @@ public class CounselController {
         // 1. 접속한 강사의 정보
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
 
-        //2. 접속한 강사로 classId를 찾는다.
-        Long classId = userService.loadClassIdByUserId(user.getUserId());
+        if(user.getRole().getRoleCode().equals("role_teacher")|| user.getRole().getRoleCode().equals("role_admin")){
+            //2. 접속한 강사로 classId를 찾는다.
+            Long classId = userService.loadClassIdByUserId(user.getUserId());
 
-        //3. classId로 학생 리스트를 뽑는다.
-        Pageable pageable = PageRequest.of(page-1, size);
-        Page<Student> students = userService.listOfStudentByClassId(classId,pageable);
+            //3. classId로 학생 리스트를 뽑는다.
+            Pageable pageable = PageRequest.of(page-1, size);
+            Page<Student> students = userService.listOfStudentByClassId(classId,pageable);
 
-        return students;
+            return students;
+        }else {
+            return null; // 강사나 어드민이 아니면 null 반환
+        }
+
+
     }
 
     //2. 강사가 학생 개인의 상담내역 가져온다.
@@ -72,22 +78,24 @@ public class CounselController {
         // 1. 접속한 강사의 정보
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
 
-        //2. 접속한 강사로 classId를 찾는다.
-        Long classId = userService.loadClassIdByUserId(user.getUserId());
+        if(user.getRole().getRoleCode().equals("role_teacher")|| user.getRole().getRoleCode().equals("role_admin")){
+            //2. 접속한 강사로 classId를 찾는다.
+            Long classId = userService.loadClassIdByUserId(user.getUserId());
 
-        //3. 학생 아이디로 ClassId를 찾는다.
-        Long StudentClassId = userService.loadClassIdByStudentId(studentId);
+            //3. 학생 아이디로 ClassId를 찾는다.
+            Long StudentClassId = userService.loadClassIdByStudentId(studentId);
 
-        // 강사의 클래스 아이디랑 학생의 클래스 아이디를 비교한다.
-        if(classId == StudentClassId){
-            // 학생Id로 counsel 내용을 불러온다.
-            String counselText = userService.loadCounselByStudentId(studentId);
+            // 강사의 클래스 아이디랑 학생의 클래스 아이디를 비교한다.
+            if(classId == StudentClassId || user.getRole().getRoleCode().equals("role_admin")){
+                // 학생Id로 counsel 내용을 불러온다.
+                String counselText = userService.loadCounselByStudentId(studentId);
                 return counselText;
+            }else {
+                return "담당 클래스의 학생이 아니어서 상담내역을 읽어올 수 없습니다.";
+            }
         }else {
-            return "담당 클래스의 학생이 아니어서 상담내역을 읽어올 수 없습니다.";
+            return "권한이 없습니다.";
         }
-
-
 
     }
 
@@ -112,23 +120,25 @@ public class CounselController {
         // 1. 접속한 강사의 정보
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
 
-        //2. 접속한 강사로 classId를 찾는다.
-        Long classId = userService.loadClassIdByUserId(user.getUserId());
+        if(user.getRole().getRoleCode().equals("role_teacher")|| user.getRole().getRoleCode().equals("role_admin")){
+            //2. 접속한 강사로 classId를 찾는다.
+            Long classId = userService.loadClassIdByUserId(user.getUserId());
 
-        //3. 학생 아이디로 ClassId를 찾는다.
-        Long StudentClassId = userService.loadClassIdByStudentId(studentId);
+            //3. 학생 아이디로 ClassId를 찾는다.
+            Long StudentClassId = userService.loadClassIdByStudentId(studentId);
 
-        // 강사의 클래스 아이디랑 학생의 클래스 아이디를 비교한다.
-        if(classId == StudentClassId){
-            if(newCounsel.equals(counselData)){
-                return userService.updateCounselByTeacher(studentId,counselData);
+            // 강사의 클래스 아이디랑 학생의 클래스 아이디를 비교한다.
+            if(classId == StudentClassId || user.getRole().getRoleCode().equals("role_admin")){
+                if(newCounsel.equals(counselData)){
+                    return userService.updateCounselByTeacher(studentId,counselData);
+                }else {
+                    return userService.updateCounselByTeacher(studentId,newCounsel);
+                }
             }else {
-                return userService.updateCounselByTeacher(studentId,newCounsel);
+                return "담당 클래스의 학생이 아니어서 상담내역을 수정할 수 없습니다.";
             }
         }else {
-            return "담당 클래스의 학생이 아니어서 상담내역을 수정할 수 없습니다.";
+            return "권한이 없습니다.";
         }
-
-
     }
 }
