@@ -39,9 +39,8 @@ public class RoadmapController {
         return new ResultItems<Roadmap>(roadmapList.stream().collect(Collectors.toList()), page, size, roadmapList.getTotalElements());
     }
 
-
     // 역할 : Roadmap 내용 하나를 조회
-    // http://localhost:8080/roadmap/view?roadmapStageNo=1
+    // http://localhost:8080/roadmap/view?roadmapStageNo={roadmapStageNo}
     @PreAuthorize("hasAnyAuthority('ROADMAP_READ')")
     @RequestMapping(
             path = "/view",

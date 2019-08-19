@@ -46,7 +46,7 @@ public class RoadmapExerciseController {
     }
 
     // 역할 : RoadmapExercise 내용 하나를 조회
-    // http://localhost:8080/roadmapexercise/view?exerciseSequence=1
+    // http://localhost:8080/roadmapexercise/view?exerciseSequence={exerciseSequence}
     @PreAuthorize("hasAnyAuthority('ROADMAP_READ')")
     @RequestMapping(
             path = "/view",
