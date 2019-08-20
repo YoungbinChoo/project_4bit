@@ -1,5 +1,7 @@
 package com.bitcamp.project.project_4bit.util;
 
+
+// 파일 업로드할때 json으로 보여주는 클래스
 public class UploadFileResponse {
 
     private String replaceFileName;

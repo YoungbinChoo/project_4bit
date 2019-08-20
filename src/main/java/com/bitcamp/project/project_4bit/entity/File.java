@@ -20,27 +20,25 @@ public class File implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fileId;
 
-    // file_origin_name
+    // 원래 파일명
     @Column(name = "file_origin_name")
     private String fileOriginName;
 
-    // file_name 파일명
+    // 바뀐 파일명
     @Column(name = "file_name")
     private String fileName;
 
     // file_size 파일크기
     @Column(name = "file_size")
-    private Long fileSize;       // int 형으로 해야될지 Integer로 해야될지 고민
+    private Long fileSize;
 
-
-//    @Column(name = "file_reg_date", updatable = false, insertable = false)
-//    private Date fileRegDate;
-
+    // 업로드한 곳의 IP
     @Column(name = "file_upload_ip")
     private String fileUploadIp;
 
-    @Column(name = "file_content_type")
-    private String fileContentType;
+    // 파일의 확장명
+    @Column(name = "file_extend_name")
+    private String fileExtendName;
 
     // user_id
     @ManyToOne(fetch = FetchType.EAGER)
@@ -57,7 +55,6 @@ public class File implements Serializable {
     public void setFileId(Long fileId) {
         this.fileId = fileId;
     }
-
 
     public String getFileOriginName() {
         return fileOriginName;
@@ -83,14 +80,6 @@ public class File implements Serializable {
         this.fileSize = fileSize;
     }
 
-//    public Date getFileRegDate() {
-//        return fileRegDate;
-//    }
-//
-//    public void setFileRegDate(Date fileRegDate) {
-//        this.fileRegDate = fileRegDate;
-//    }
-
     public String getFileUploadIp() {
         return fileUploadIp;
     }
@@ -99,12 +88,12 @@ public class File implements Serializable {
         this.fileUploadIp = fileUploadIp;
     }
 
-    public String getFileContentType() {
-        return fileContentType;
+    public String getFileExtendName() {
+        return fileExtendName;
     }
 
-    public void setFileContentType(String fileContentType) {
-        this.fileContentType = fileContentType;
+    public void setFileExtendName(String fileExtendName) {
+        this.fileExtendName = fileExtendName;
     }
 
     public User getUser() {

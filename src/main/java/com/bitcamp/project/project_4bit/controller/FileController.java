@@ -30,10 +30,11 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
+    // 파일 한개를 업로드
     @PostMapping(value = "/file",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
         public UploadFileResponse uploadFile(@RequestParam("file")MultipartFile file, HttpServletRequest request, Principal principal){
-        String replaceFileName = fileService.storeFile(file, request, principal);
+        String replaceFileName = fileService.storeFile(file, request, principal);           // request : IP 때문에 넘김(누가 넘겼는지)
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/fileupload/files/")
@@ -41,9 +42,10 @@ public class FileController {
                 .toUriString();
 
         // header에 accept : application/json 해줘야 함
-        return new UploadFileResponse(file.getOriginalFilename(), replaceFileName, fileDownloadUri, file.getContentType(),file.getSize());
+        return new UploadFileResponse(file.getOriginalFilename(), replaceFileName, fileDownloadUri, file.getContentType(),file.getSize());      // fileDownloadUri : 사용자가 다운로드할 URL
     }
 
+    // 여러 파일을 업로드
     @PostMapping(value = "/files")
     public List<UploadFileResponse> uploadFiles(@RequestParam("files") MultipartFile[] files, HttpServletRequest request, Principal principal){
         return Arrays.asList(files)
@@ -52,6 +54,7 @@ public class FileController {
                 .collect(Collectors.toList());
     }
 
+    // 파일 다운로드
     @GetMapping("/files/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName){
 
@@ -59,29 +62,21 @@ public class FileController {
         Resource resource = fileService.loadFileAsResource(fileName);
 
         // Try to determine file's content type
-        String contentType = null;
+        String extendName = null;
         try{
-            contentType = fileService.retrieveFileContentType(fileName);
+            extendName = fileService.retrieveFileContentType(fileName);
         }catch (Exception e){
             logger.info("Could not determine file type.");
         }
 
         // Fallback to the default content type if type could not be determined
-        if(contentType == null){
-            contentType = "application/octet-stream";
+        if(extendName == null){
+            extendName = "application/octet-stream";           // 확장명이 null 일때 application/octet-stream으로 세팅해준다.
         }
 
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
+                .contentType(MediaType.parseMediaType(extendName))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
-
-
-
-
-
-
-
-
 }
