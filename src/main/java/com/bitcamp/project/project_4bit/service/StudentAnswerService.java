@@ -29,10 +29,17 @@ public class StudentAnswerService {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // 역할 : QuizTestId 반환
+    // 역할 : testQuizId 반환
     @Transactional
     public Long readQuizTestId(Long studentAnswerId){
         return studentAnswerRepository.findTestQuizIdByStudentAnswerId(studentAnswerId);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : studentAnswer 수정
+    @Transactional
+    public int updateStudentAnswer(String studentTestAnswerContent, Long studentTestId, Long testQuizId){
+        return studentAnswerRepository.updateStudentAnswer(studentTestAnswerContent, studentTestId, testQuizId);
+    }
 }

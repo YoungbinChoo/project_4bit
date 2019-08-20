@@ -42,4 +42,11 @@ public interface TestQuizRepository extends JpaRepository<TestQuiz, Long> {
     // 역할 : testId와 no(시험지 내 번호)를 통해 testQuizId를 구한다
     @Query(value = "SELECT test_quiz_id FROM test_quiz WHERE test_id = ?1 AND test_quiz_no = ?2", nativeQuery = true)
     Long findTestQuizIdByTestIdAndTestQuizNo(Long testId, int no);
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 :  studentAnswer 수정에 필요한 testQuizId를 반환
+    @Query(value = "SELECT test_quiz_id FROM test_quiz WHERE test_id = ?1 AND quiz_id = ?2", nativeQuery = true)
+    Long findTestQuizIdByTestIdAndQuizId(Long testId, Long quizId);
 }

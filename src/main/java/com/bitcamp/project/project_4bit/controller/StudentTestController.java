@@ -167,4 +167,34 @@ public class StudentTestController {
 
         return successOrFail;
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : studentTestId가 있는지 구분
+    //       기존 studentTestId가 있는 경우 studentAnswerController의 updateStudentAnswer()로 가고
+    //       없는 경우 StudentTestCotroller의 createStudentTest()로 간다
+    // 엔드포인트 :  http://localhost:8080/class/test/apply/testId={testId}/userId={userId}
+    @RequestMapping(
+            path = "/class/test/apply/testId={testId}/userId={userId}",
+            method = RequestMethod.POST,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public void startStudentTest(
+            @PathVariable("testId")Long testId,
+            @PathVariable("userId")Long userId){
+
+        Long studentTestId = studentTestService.readStudentTestId(testId, userId);
+
+        if(studentTestId == null){
+            System.out.println("학생 시험 번호가 없습니다");
+//            createStudentTest();
+        } else{
+            System.out.println("이미 만들어진 학생 시험 번호가 있습니다 기존 시험 페이지로 이동합니다");
+        }
+    }
+
 }

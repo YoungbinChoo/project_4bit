@@ -3,6 +3,7 @@ package com.bitcamp.project.project_4bit.controller;
 import com.bitcamp.project.project_4bit.entity.StudentAnswer;
 import com.bitcamp.project.project_4bit.entity.StudentTest;
 import com.bitcamp.project.project_4bit.entity.TestQuiz;
+import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.service.*;
 import com.bitcamp.project.project_4bit.util.UserIdToClassIdConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +99,54 @@ public class StudentAnswerController {
             return 0;
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    // 역할 : studentAnswer 수정
+    // 엔드포인트 : http://localhost:8080/class/test/apply/testId={testId}/quizId={quizId}/edit
+    @PreAuthorize("hasAnyAuthority('STEST_WRITE')")
+    @RequestMapping(
+            path = "/class/test/apply/testId={testId}/quizId={quizId}/edit",
+            method = RequestMethod.PATCH,
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE })
+    public int updateTestQuiz(
+            Principal principal,
+            @PathVariable(name="testId") Long testId,
+            @PathVariable(name="testId") Long quizId,
+            @RequestBody StudentAnswer studentAnswer){
+
+        /* ------------------------------------- [User 얻기] ------------------------------------- */
+        // 1. principal으로 User정보 얻음
+        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
+
+
+        /* ------------------------------------- [userId 얻기] ------------------------------------- */
+        // 2. user에서 userId 얻음
+        Long userId = user.getUserId();
+        System.out.println("유저_번호 : " + userId);
+
+        /* ------------------------------------- [studentTestId 얻기] ------------------------------------- */
+        Long studentTestId = studentTestService.readStudentTestId(testId, userId);
+        System.out.println("학생_시험_번호 : " + studentTestId);
+
+        /* ------------------------------------- [testQuizId 얻기] ------------------------------------- */
+        Long testQuizId = testQuizService.readTestQuizIdByTestIdAndQuizId(testId, quizId);
+        System.out.println("시험_문제_번호 : " + testQuizId);
+
+
+        System.out.println("학생_답 : " + studentAnswer.getStudentTestAnswerContent());
+
+        int successOrFail = studentAnswerService.updateStudentAnswer(studentAnswer.getStudentTestAnswerContent(), studentTestId, testQuizId);
+
+        if(successOrFail == 0){
+            System.out.println("수정에 실패했습니다");
+        }else{
+            System.out.println("수정에 성공했습니다");
+        }
+
+        return successOrFail;
+    }
+
 
 }
