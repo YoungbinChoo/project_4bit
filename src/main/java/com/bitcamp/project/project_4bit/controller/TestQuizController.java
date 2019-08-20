@@ -47,7 +47,7 @@ public class TestQuizController {
 
         System.out.println("시험 : " + testId);
         System.out.println("문제 : " + quizId);
-
+        
         TestGroup testGroup = testGroupService.findOneByTestId(testId);
         Quiz quiz = quizService.findOneByQuiz(quizId);
 

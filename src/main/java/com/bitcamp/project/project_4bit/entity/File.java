@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 //게시물 파일 테이블
 @Entity
@@ -44,6 +45,10 @@ public class File implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+
+//    @ManyToMany(mappedBy = "File")
+//    private Set<Article> articles;
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -103,4 +108,8 @@ public class File implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
+
+
+
 }

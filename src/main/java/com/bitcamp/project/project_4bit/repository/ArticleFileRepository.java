@@ -4,4 +4,5 @@ import com.bitcamp.project.project_4bit.entity.ArticleFile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleFileRepository extends JpaRepository<ArticleFile, Long> {
+    ArticleFile findByArticleFileId(Long articleFileId);
 }

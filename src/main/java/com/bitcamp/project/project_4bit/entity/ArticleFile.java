@@ -10,23 +10,18 @@ import java.io.Serializable;
 @DynamicInsert
 public class ArticleFile implements Serializable {
 
-    // PK : article_file_id
     @Id
-    @Column(columnDefinition = "BIGINT", name = "article_file_id", updatable = false, nullable = false)
+    @Column(name = "article_file_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long articleFileId;
 
-    // FK : 게시물_고유번호 article_id
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "file_id")
+    private File file;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "article_id")
     private Article article;
-
-    // FK : 파일_고유번호 file_id
-    @ManyToOne(fetch = FetchType.EAGER)
-    private File file;
-
-
-
 
     public Long getArticleFileId() {
         return articleFileId;
@@ -34,6 +29,14 @@ public class ArticleFile implements Serializable {
 
     public void setArticleFileId(Long articleFileId) {
         this.articleFileId = articleFileId;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 
     public Article getArticle() {
@@ -44,11 +47,4 @@ public class ArticleFile implements Serializable {
         this.article = article;
     }
 
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
 }

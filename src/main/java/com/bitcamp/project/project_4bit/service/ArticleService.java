@@ -2,7 +2,11 @@ package com.bitcamp.project.project_4bit.service;
 
 
 import com.bitcamp.project.project_4bit.entity.Article;
+import com.bitcamp.project.project_4bit.entity.ArticleFile;
+import com.bitcamp.project.project_4bit.entity.File;
+import com.bitcamp.project.project_4bit.repository.ArticleFileRepository;
 import com.bitcamp.project.project_4bit.repository.ArticleRepository;
+import com.bitcamp.project.project_4bit.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,11 +32,18 @@ public class ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
 
+    @Autowired
+    private ArticleFileRepository articleFileRepository;
+
+    @Autowired
+    private FileRepository fileRepository;
+
     // 역할    :게시글 쓰기 (controller 에서 사용)
     // 설명    : 실제 DB에 접근해서 .save() 를 통해 저장한다. Article 클래스 안의 내용을 article 객체로 반환하여 DB에 저장한다.
     //           .save() 가 insert 문을 생성해준다.
     @Transactional
-    public Article createArticle(Article article) {
+    public Article createArticle(Article article)
+    {
         return articleRepository.save(article);
     }
 
@@ -87,5 +98,7 @@ public class ArticleService {
     public Long findArticleOwnerId(Long articleId){
         return articleRepository.findArticleOwner(articleId);
     }
+
+
 
 }

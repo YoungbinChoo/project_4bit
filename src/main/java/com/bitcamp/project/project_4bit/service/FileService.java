@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -103,4 +104,15 @@ public class FileService {
         String extendName = fileRepository.findByFileName(fileName).getFileExtendName();
         return extendName;
     }
+
+    @Transactional
+    public File findFileId(String fileName){
+        return fileRepository.findByFileName(fileName);
+    }
+
+    @Transactional
+    public File selectFileId(Long fileId){
+        return fileRepository.findByFileId(fileId);
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.bitcamp.project.project_4bit.controller;
 
+import com.bitcamp.project.project_4bit.entity.Article;
+import com.bitcamp.project.project_4bit.service.ArticleFileService;
 import com.bitcamp.project.project_4bit.service.FileService;
 import com.bitcamp.project.project_4bit.util.UploadFileResponse;
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.LongFunction;
 import java.util.stream.Collectors;
 
 
@@ -30,10 +33,17 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private ArticleFileController articleFileController;
+
     // 파일 한개를 업로드
     @PostMapping(value = "/file",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-        public UploadFileResponse uploadFile(@RequestParam("file")MultipartFile file, HttpServletRequest request, Principal principal){
+        public UploadFileResponse uploadFile(
+            @RequestParam("file")MultipartFile file,
+            @RequestParam(name = "articleId") Long articleId,
+            HttpServletRequest request,
+            Principal principal){
         String replaceFileName = fileService.storeFile(file, request, principal);           // request : IP 때문에 넘김(누가 넘겼는지)
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -41,16 +51,24 @@ public class FileController {
                 .path(replaceFileName)
                 .toUriString();
 
+        Long fileId = fileService.findFileId(replaceFileName).getFileId();
+
+        articleFileController.createArticleFile(articleId,fileId);
+
         // header에 accept : application/json 해줘야 함
         return new UploadFileResponse(file.getOriginalFilename(), replaceFileName, fileDownloadUri, file.getContentType(),file.getSize());      // fileDownloadUri : 사용자가 다운로드할 URL
     }
 
     // 여러 파일을 업로드
     @PostMapping(value = "/files")
-    public List<UploadFileResponse> uploadFiles(@RequestParam("files") MultipartFile[] files, HttpServletRequest request, Principal principal){
+    public List<UploadFileResponse> uploadFiles(
+            @RequestParam("files") MultipartFile[] files,
+            @RequestParam(name = "articleId") Long articleId,
+            HttpServletRequest request,
+            Principal principal){
         return Arrays.asList(files)
                 .stream()
-                .map(file -> uploadFile(file, request, principal))
+                .map(file -> uploadFile(file, articleId, request, principal))
                 .collect(Collectors.toList());
     }
 

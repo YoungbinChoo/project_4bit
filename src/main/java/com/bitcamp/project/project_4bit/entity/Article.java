@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 // article 테이블
 @Entity
@@ -76,6 +77,13 @@ public class Article implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "article_file",
+//            joinColumns = @JoinColumn(name = "article_id"),
+//            inverseJoinColumns = @JoinColumn(name = "file_id")
+//    )
+//    private Set<File> files;
 
 
     public Long getArticleId() {
@@ -181,4 +189,12 @@ public class Article implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
+//    public Set<File> getFiles() {
+//        return files;
+//    }
+//
+//    public void setFiles(Set<File> files) {
+//        this.files = files;
+//    }
 }
