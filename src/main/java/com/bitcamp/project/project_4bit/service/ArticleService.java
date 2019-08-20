@@ -54,6 +54,11 @@ public class ArticleService {
         return articleRepository.findByBoardTypeList_BoardIdAndArticleId(boardId,articleId);
     }
 
+    @Transactional
+    public Optional<Article> itemOfArticleId(Long articleId){
+        return articleRepository.findById(articleId);
+    }
+
     // 역할    : 게시글 제목, 내용을 수정
     // 설명    : Article 의 articleTitle, articleContents 를 수정하여 save 를 통해 다시 저장하는 작업이다.
     //          반환형이 int 인 이유는 articleRepository 에서 커스텀 쿼리를 사용하는데

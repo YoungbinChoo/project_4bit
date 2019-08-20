@@ -41,4 +41,9 @@ public class BoardTypeListService {
 
         return newArticleLastNumber;
     }
+
+    @Transactional
+    public Long selectClassId(String boardId){
+        return boardTypeListRepository.findByBoardId(boardId).getClassGroup().getClassId();
+    }
 }

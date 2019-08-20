@@ -1,14 +1,17 @@
 package com.bitcamp.project.project_4bit.entity;
 
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 //게시물 파일 테이블
 @Entity
-@Table(name = "article_file")
+@Table(name = "file")
 @DynamicInsert
+@DynamicUpdate
 public class File implements Serializable {
 
     // PK : file_id 파일_고유번호     AutoIncrement를 사용
@@ -17,17 +20,25 @@ public class File implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fileId;
 
-    // file_url 파일주소
-    @Column(name = "file_url")
-    private String fileUrl;
+    // 원래 파일명
+    @Column(name = "file_origin_name")
+    private String fileOriginName;
 
-    // file_name 파일명
+    // 바뀐 파일명
     @Column(name = "file_name")
     private String fileName;
 
-    // file_size 파일크기기
+    // file_size 파일크기
     @Column(name = "file_size")
-    private Integer fileSize;       // int 형으로 해야될지 Integer로 해야될지 고민
+    private Long fileSize;
+
+    // 업로드한 곳의 IP
+    @Column(name = "file_upload_ip")
+    private String fileUploadIp;
+
+    // 파일의 확장명
+    @Column(name = "file_extend_name")
+    private String fileExtendName;
 
     // user_id
     @ManyToOne(fetch = FetchType.EAGER)
@@ -45,14 +56,13 @@ public class File implements Serializable {
         this.fileId = fileId;
     }
 
-    public String getFileUrl() {
-        return fileUrl;
+    public String getFileOriginName() {
+        return fileOriginName;
     }
 
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
+    public void setFileOriginName(String fileOriginName) {
+        this.fileOriginName = fileOriginName;
     }
-
 
     public String getFileName() {
         return fileName;
@@ -62,12 +72,28 @@ public class File implements Serializable {
         this.fileName = fileName;
     }
 
-    public Integer getFileSize() {
+    public Long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(Integer fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    public String getFileUploadIp() {
+        return fileUploadIp;
+    }
+
+    public void setFileUploadIp(String fileUploadIp) {
+        this.fileUploadIp = fileUploadIp;
+    }
+
+    public String getFileExtendName() {
+        return fileExtendName;
+    }
+
+    public void setFileExtendName(String fileExtendName) {
+        this.fileExtendName = fileExtendName;
     }
 
     public User getUser() {
