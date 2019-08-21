@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /*
  * 작성일 : 2019.08.13
- * 수정일 : 2019.08.19
+ * 수정일 : 2019.08.21
  * 메서드 순서
  * 1. createQuiz(Quiz quiz) : 퀴즈 생성
  * 2. findAllByQuiz(Pageable pageable) : 전체퀴즈문제 불러오는 메서드
@@ -20,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
  *   : 퀴즈 복합 검색(과목, 챕터, 난이도)하는 메서드
  * 5. updateQuiz(String quizContents, String quizAnswer, int quizEachScore, String quizSubject, String quizChapter, String quizLevel, Long quizId)
  *   : 퀴즈 수정
+ * 6. readQuizAnswer(Long quizId) : quizId로 quizAnswer 찾기 (학생 답과 문제 답을 비교하기 위해 필요)
+ * 7. readQuizEachSCore(Long quizId) : quizId로 quizEachScore 찾기 (학생이 맞은 각 문제 점수 얻기)
+ * 8. deleteQuiz(Long quizId) : 문제 삭제
  *  */
 
 
@@ -59,8 +62,6 @@ public class QuizService {
         return quizRepository.updateQuiz(quizContents, quizAnswer, quizEachScore, quizSubject, quizChapter, quizLevel, quizId);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     // 역할 : quizId로 quizAnswer 찾기
     //      1. 학생 답과 문제 답을 비교하기 위해 필요
     @Transactional
@@ -74,4 +75,11 @@ public class QuizService {
     public int readQuizEachSCore(Long quizId){
         return quizRepository.findquizEachScoreByQuizId(quizId);
     }
+
+    // 역할 : 문제 삭제
+    @Transactional
+    public void deleteQuiz(Long quizId){
+        quizRepository.deleteById(quizId);
+    }
+
 }

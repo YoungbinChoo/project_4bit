@@ -12,6 +12,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+/*
+ * 작성일 : 2019.08.13
+ * 수정일 : 2019.08.21
+ * 순서
+ * RequestMethod.타입, 메서드 명 : 설명
+ * 1. POST,  createTestQuiz() : 시험문제 생성
+ * 2. GET,  listOfOneTestQuiz() : 시험문제 1개 불러오기
+ * 3. GET,   listOfTestQuiz() : 시험문제 전체보기
+ * 4. PATCH,   updateTestQuiz() : 시험문제 수정
+ * 5. DELETE,  deleteTestQuiz() : 시험문제 삭제
+ *
+ * 수정할때 프론트에서 이미 저장되어있던 정보가 그대로 보인 상태에서 수정변경 되어야 함.
+ * 선생님 별로 삭제할 수 있는 권한?
+ * */
+
 
 
 @RestController
@@ -34,7 +49,7 @@ public class TestQuizController {
             path = "/write",
             method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public TestQuiz createQuiz(
+    public TestQuiz createTestQuiz(
             @RequestBody TestQuiz testQuiz,
             @RequestParam(name = "testId", required = false) Long testId,
             @RequestParam(name = "quizId", required = false) Long quizId){
