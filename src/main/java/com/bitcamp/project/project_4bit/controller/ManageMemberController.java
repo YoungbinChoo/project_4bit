@@ -154,6 +154,7 @@ public class ManageMemberController {
             })
     public User delete(
             Principal principal,
+
             @RequestParam("userId") Long userId){
 
         userService.deleteUser(userId);

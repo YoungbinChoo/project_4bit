@@ -2,6 +2,7 @@ package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.Student;
 import com.bitcamp.project.project_4bit.entity.User;
+import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
 import com.bitcamp.project.project_4bit.service.StudentService;
 import com.bitcamp.project.project_4bit.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.stream.Collectors;
 
 /*작성자 : 황서영
 * 컨트롤러에 권한 따로 주지 않았는데 담당강사의 클래스 아이디와 학생 클래스 아이디를 비교하기 때문에 따로 필요 없을 것 같음
@@ -42,9 +44,9 @@ public class CounselController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public Page<Student> listOf(Principal principal,
-                                @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-                                @RequestParam(name = "size", defaultValue = "15", required = false) int size){
+    public ResultItems<Student> listOf(Principal principal,
+                                       @RequestParam(name = "page", defaultValue = "1", required = false) int page,
+                                       @RequestParam(name = "size", defaultValue = "15", required = false) int size){
 
         // 1. 접속한 강사의 정보
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
@@ -57,7 +59,7 @@ public class CounselController {
             Pageable pageable = PageRequest.of(page-1, size);
             Page<Student> students = userService.listOfStudentByClassId(classId,pageable);
 
-            return students;
+            return new ResultItems<Student>(students.stream().collect(Collectors.toList()),page,size,students.getTotalElements());
         }else {
             return null; // 강사나 어드민이 아니면 null 반환
         }
