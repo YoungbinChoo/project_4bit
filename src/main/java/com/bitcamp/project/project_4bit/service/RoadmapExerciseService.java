@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+import java.util.Random;
+
 @Service
 public class RoadmapExerciseService {
 
@@ -22,10 +25,17 @@ public class RoadmapExerciseService {
         return roadmapExerciseRepository.findAll(pageable);
     }
 
-    // 역할    : ExerciseSequence를 통해 내용 상세보기
+    // 역할    : ExerciseSequence를 랜덤생성하여 문제 출제
     @Transactional(readOnly = true)
-    public Long itemOfRoadmapExerciseAndExerciseSequence(Long exerciseSequence){
-        return roadmapExerciseRepository.findByRoadmapExercise_ExerciseSequence(exerciseSequence);
+    public RoadmapExercise itemOfRoadmapExerciseAndExerciseSequence(Integer roadmapStageNo){
+        Long[] exerciseArray = roadmapExerciseRepository.findByRoadmapExercise_ExerciseSequence(roadmapStageNo);
+        int randomNum = new Random().nextInt(5);
+        System.out.println("랜덤생성된 숫자: " + randomNum);
+
+        Long selectedExerciseSequence = exerciseArray[randomNum];
+        System.out.println("선택된 ExerciseSequence: " + selectedExerciseSequence);
+
+        return roadmapExerciseRepository.findByExerciseSequence(selectedExerciseSequence);
     }
 
 }
