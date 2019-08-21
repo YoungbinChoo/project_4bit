@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.*;
  * 선생님 별로 삭제할 수 있는 권한?
  * */
 
-
-
 @RestController
 @RequestMapping("/class/testquiz")
 public class TestQuizController {
