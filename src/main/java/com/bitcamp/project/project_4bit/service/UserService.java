@@ -196,6 +196,12 @@ public class UserService {
         return studentRepository.findCounselByStudentId(studentId);
     }
 
+    // 강사가 학생을 선택하면 그 학생을 넘겨주는 서비스
+    @Transactional
+    public Student loadStudentByStudentId(Long studentId) {
+        return studentRepository.findByStudentId(studentId);
+    }
+
     //강사가 학생의 counsel 내용을 작성, 수정하는 서비스
     @Transactional
     public String updateCounselByTeacher(Long studentId, String counsel){
