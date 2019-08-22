@@ -92,6 +92,7 @@ public class ArticleController {
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
         article.setUser(user);
 
+
         // 2. BoardTypeListService에서 boardId를 구해온다.
         article.setBoardTypeList(boardTypeListService.selectBoardId(boardId));
 

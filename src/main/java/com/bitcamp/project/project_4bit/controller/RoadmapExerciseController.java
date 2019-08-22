@@ -58,7 +58,6 @@ public class RoadmapExerciseController {
     )
     public Long retrieve(
             @RequestParam(name = "exerciseSequence", required = true) Long exerciseSequence) {
-
         return roadmapExerciseService.itemOfRoadmapExerciseAndExerciseSequence(exerciseSequence);
     }
 }
