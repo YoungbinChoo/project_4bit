@@ -15,4 +15,10 @@ public interface PointLogRepository extends JpaRepository<PointLog, Long> {
     @Query(value = "INSERT INTO point_log (point_added, point_from, point_event_time, user_id ) VALUE (10, '과제 제출',now(), ?1 )", nativeQuery = true)
     int updatePoinLogHomework(Long userId);
 
+    //시험 점수 포인트 업데이트
+    @Modifying
+    @Query(value = "INSERT INTO point_log (point_added, point_from, point_event_time, user_id ) VALUE (?2, '시험 점수',now(), ?1 )", nativeQuery = true)
+    int updatePoinLogTest(Long userId, int studentScore);
+
+
 }
