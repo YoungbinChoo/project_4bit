@@ -52,7 +52,7 @@ public class MyInfoController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public String update(Principal principal,
+    public User update(Principal principal,
                       @RequestParam(name = "userId", required = true) Long userId,
                       @RequestBody User user
                       ) {
@@ -61,8 +61,10 @@ public class MyInfoController {
         User userMe = (User) userDetailsService.loadUserByUsername(principal.getName());
 
         if (userMe.getUserId() == userId) {
-            return userService.updateUserBySelf(userId, user);
+
+            String userUpdate = userService.updateUserBySelf(userId, user);
+            return userMe; // update 된 유저를 프론트로 전달하기 위해 변경
         }
-        return "본인이 아니어서 수정 불가합니다"; //todo: 본인이 아니면 수정 exception 날려줘야 함.
+        return null; //todo: 본인이 아니면 수정 exception 날려줘야 함.
     }
 }

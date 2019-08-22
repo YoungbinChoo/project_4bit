@@ -2,6 +2,8 @@ package com.bitcamp.project.project_4bit.service;
 
 import com.bitcamp.project.project_4bit.entity.HwArticle;
 import com.bitcamp.project.project_4bit.repository.HwArticleRepository;
+import com.bitcamp.project.project_4bit.repository.PointLogRepository;
+import com.bitcamp.project.project_4bit.repository.UserRepository;
 import com.bitcamp.project.project_4bit.util.UserIdToClassIdConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,8 +22,18 @@ public class HwArticleService {
     @Autowired
     private UserIdToClassIdConverter userIdToClassIdConverter;
 
+    @Autowired
+    private PointLogRepository pointLogRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Transactional
     public HwArticle createHwArticle(HwArticle hwArticle) {
+
+        Long userId = hwArticle.getUser().getUserId();
+        pointLogRepository.updatePoinLogHomework(userId);
+        userRepository.updatePointSum(userId,10);
         return hwArticleRepository.save(hwArticle);
     }
 

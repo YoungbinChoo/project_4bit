@@ -111,7 +111,7 @@ public class CounselController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public String updateCounselText(Principal principal, @RequestParam("studentId")Long studentId, @RequestBody Student student){
+    public int updateCounselText(Principal principal, @RequestParam("studentId")Long studentId, @RequestBody Student student){
 
         //기존에 저장된 상담내역
         String counselData = userService.loadCounselByStudentId(studentId);
@@ -136,15 +136,17 @@ public class CounselController {
             // 강사의 클래스 아이디랑 학생의 클래스 아이디를 비교한다.
             if(classId == StudentClassId || user.getRole().getRoleCode().equals("role_admin")){
                 if(newCounsel.equals(counselData)){
+
                     return userService.updateCounselByTeacher(studentId,counselData);
                 }else {
+
                     return userService.updateCounselByTeacher(studentId,newCounsel);
                 }
             }else {
-                return "담당 클래스의 학생이 아니어서 상담내역을 수정할 수 없습니다.";
+                return 0; // exception 처리 해야됨
             }
         }else {
-            return "권한이 없습니다.";
+            return 0; // exception 처리 해야됨
         }
     }
 }
