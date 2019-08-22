@@ -70,4 +70,8 @@ public interface TestGroupRepository extends JpaRepository<TestGroup, Long> {
     int updateTestGroup(int sum, double avg, int max, int min, Long testId);
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 작성된 시험의 user_id (owner)를 찾음
+    @Query(value = "SELECT user_id FROM test_group WHERE test_id=?1", nativeQuery = true)
+    Long findTestGroupOwner(Long testId);
 }

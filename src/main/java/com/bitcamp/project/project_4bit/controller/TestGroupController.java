@@ -340,6 +340,10 @@ public class TestGroupController {
             Principal principal,
             @PathVariable("testId") Long testId,
             @RequestBody TestGroup testGroup) {
+        int trueOrFalse =0;
+
+        Long testOwner = testGroupService.findTestGroupOwnerId(testId);
+        System.out.println("작성자 : " + testOwner);
 
         /* ------------------------------------- [User 얻기] ------------------------------------- */
         // principal으로 User정보 획득
@@ -348,7 +352,7 @@ public class TestGroupController {
         /* ------------------------------------- [teacherId 얻기] ------------------------------------- */
         // userId로 teacher에서 teacherId를 획득
         Long userId = user.getUserId();
-
+        System.out.println("유저_번호 : " + userId);
         // 4. userIdToClassIdConverter에서 userId가 강사인 경우 classId를 찾는 방법을 통해 classId를 얻는다
         // TODO 권한 중요 >> 강사만 들어올 수 있게 해야함
         Long classId = userIdToClassIdConverter.userIdToClassId(userId);
@@ -370,14 +374,17 @@ public class TestGroupController {
         System.out.println("변환_후_시작_시간" + testStartTime);
         System.out.println("변환_후_종료_시간" + testEndTime);
 
+        if (user.getRole().getRoleCode().equals("role_teacher")) {
+            if (testOwner == userId) {
+                trueOrFalse
+                        = testGroupService.updateTestGroup(testGroup.getTestName(), testStartTime, testEndTime, testGroup.getTestDescription(), testId, classId);
 
-        int trueOrFalse
-                = testGroupService.updateTestGroup(testGroup.getTestName(), testStartTime, testEndTime, testGroup.getTestDescription(), testId, classId);
-
-        if(trueOrFalse == 0){
-            System.out.println("수정에 실패했습니다");
-        } else{
-            System.out.println("수정에 성공했습니다");
+                if(trueOrFalse == 0){
+                    System.out.println("수정에 실패했습니다");
+                } else {
+                    System.out.println("수정에 성공했습니다");
+                }
+            }
         }
 
         return trueOrFalse;
