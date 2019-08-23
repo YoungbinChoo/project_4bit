@@ -23,12 +23,10 @@ public class ClassGroup implements Serializable {
     private String className;
 
     @Column(name = "class_start_date")
-    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date classStartDate;
 
     @Column(name = "class_end_date")
-    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date classEndDate;
 

@@ -17,4 +17,11 @@ public interface ClassTeacherLogRepository extends JpaRepository<ClassTeacherLog
     Long findClassIdByTeacherId(Long teacherId);
 
 
+    // teacherId 를 통해서 해당 teacher 정보 찾는 쿼리
+    @Query(value = "SELECT * FROM project_4bit.class_teacher_log l WHERE l.teacher_id=?1 ORDER BY l.class_teacher_event_time DESC LIMIT 1", nativeQuery = true)
+    ClassTeacherLog findAllByTeacher_TeacherId(Long teacherId);
+
+
+
+
 }

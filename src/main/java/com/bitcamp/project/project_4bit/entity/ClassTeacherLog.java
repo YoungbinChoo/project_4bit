@@ -13,7 +13,7 @@ import java.util.Date;
 public class ClassTeacherLog implements Serializable {
 
     @Id
-    @Column(columnDefinition = "BIGINT", name = "class_teacher_id", updatable = false, nullable = false)
+    @Column(columnDefinition = "BIGINT", name = "class_teacher_log_id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long classTeacherId;
 
