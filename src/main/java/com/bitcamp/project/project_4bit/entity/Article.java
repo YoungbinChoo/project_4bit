@@ -3,6 +3,7 @@ package com.bitcamp.project.project_4bit.entity;
 import com.bitcamp.project.project_4bit.util.BooleanToStringConverter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,7 +33,7 @@ public class Article implements Serializable {
     private Date articleCreateDate;
 
     //article_update_date(수정일)
-    @CreationTimestamp
+    @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "article_update_date")
     private Date articleUpdateDate;

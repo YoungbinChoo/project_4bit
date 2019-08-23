@@ -21,7 +21,8 @@ public class HwArticleService {
     private UserIdToClassIdConverter userIdToClassIdConverter;
 
     @Transactional
-    public HwArticle createHwArticle(HwArticle hwArticle) {
+    public HwArticle createHwArticle(HwArticle hwArticle)
+    {
         return hwArticleRepository.save(hwArticle);
     }
 

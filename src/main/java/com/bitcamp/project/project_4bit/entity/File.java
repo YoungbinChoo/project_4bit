@@ -108,8 +108,4 @@ public class File implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-
-
-
-
 }
