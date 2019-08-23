@@ -9,10 +9,12 @@ package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.Homework;
 import com.bitcamp.project.project_4bit.entity.HwArticle;
+import com.bitcamp.project.project_4bit.entity.PointLog;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.service.HomeworkService;
 import com.bitcamp.project.project_4bit.service.HwArticleService;
 import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
+import com.bitcamp.project.project_4bit.service.PointLogService;
 import com.bitcamp.project.project_4bit.util.UserIdToClassIdConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -37,6 +39,9 @@ public class HwArticleController {
 
     @Autowired
     private UserIdToClassIdConverter userIdToClassIdConverter;
+
+    @Autowired
+    private PointLogService pointLogService;
 
 
 
@@ -78,6 +83,7 @@ public class HwArticleController {
         // 7. user_id 세팅
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
         hwArticle.setUser(user);
+
 
         // 세팅 완료된 hwArticle 덩어리를 hwArticleService를 통해 저장(=create)
         return hwArticleService.createHwArticle(hwArticle);
