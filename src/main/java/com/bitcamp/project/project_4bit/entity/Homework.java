@@ -24,9 +24,8 @@ public class Homework implements Serializable {
     private String hwName;
 
     // 제출기한
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "hw_deadline")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date hwDeadLine;
 
     // 과제 출제일

@@ -81,10 +81,13 @@ public class HomeworkController {
         // 11. 반_고유번호 : homework에 없음 (컨트롤러에서 principal기반으로 입력해줘야)
         ///////////////////////////////////////////////////////////////////////////////
 
+
         // 4. 과제출제일 & 5. 과제수정일 세팅
         Date date = new Date();     // 새로운 시스템 시간 생성(서버 현재시간)
         homework.setHwCreateDate(date); // 생성된 시간을 출제일에 세팅
         homework.setHwUpdateDate(date); // 생성된 시간을 수정일에 세팅 (추후 update 메서드에서는 수정일만 세팅해야)
+
+
 
         // 8. 과제제출파일첨부유무 세팅
         // homework_file(첨부파일) 테이블을 뒤져서 HW_id가 일치하는 파일이 존재하면 Y, 아니면 N으로 세팅
@@ -119,6 +122,7 @@ public class HomeworkController {
         // 11-4 classId로 classGroup테이블에서 classGroup정보를 받아다 homework에 세팅
         ClassGroup classGroup = classGroupService.laodClassGroupByClassId(classId);
         homework.setClassGroup(classGroup);
+
 
         // 완전히 모든항목이 세팅된 homework를 homeworkService에게 인자로 넘겨주면서 종료
         return homeworkService.createHomework(homework);
@@ -199,7 +203,8 @@ public class HomeworkController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Homework retrieve(Principal principal, @RequestParam(name = "hwno", defaultValue = "1", required = true) Long hwId) {
+    public Homework retrieve(
+            Principal principal, @RequestParam(name = "hwno", defaultValue = "1", required = true) Long hwId) {
         return homeworkService.itemOfHomework(hwId).get();
     }
 

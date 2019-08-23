@@ -2,6 +2,7 @@ package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.ConstraintDefine;
 import com.bitcamp.project.project_4bit.entity.Quiz;
+import com.bitcamp.project.project_4bit.entity.TestGroup;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.ConstraintDefineService;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 /*
  * 작성일 : 2019.08.13
- * 수정일 : 2019.08.19
+ * 수정일 : 2019.08.21
  * 순서
  * RequestMethod.타입, 메서드 명 : 설명
  * 1. POST,  createQuiz() : 퀴즈 생성
@@ -28,9 +29,11 @@ import java.util.stream.Collectors;
  * 3. GET,   retrieve() : 퀴즈 상세보기
  * 4. GET,   listOfQuizRetrieve() : 복합검색 불러오는 메서드
  * 5. PATCH,   update() : 퀴즈 수정
+ * 6. DELETE,  delete() : 퀴즈문제 삭제
  *
  * 검색할때 프론트 단에서 과목별인지 챕터별인지 난이도별인지 구분해줄 수 있어야 함.
  * 수정할때 프론트에서 이미 저장되어있던 정보가 그대로 보인 상태에서 수정변경 되어야 함.
+ * 선생님 별로 삭제할 수 있는 권한?
  * */
 
 @RestController
@@ -51,7 +54,7 @@ public class QuizController {
      * 참고사항 : 선생님 고유 권한이니까 TEST_WRITE 지정했습니다.
      * endpoint : http://localhost:8080/class/test/exbank/write
      * */
-    @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
+    @PreAuthorize("hasAnyAuthority('TEST_WRITE','TEST_READ')")
     @RequestMapping(
             path = "/write",
             method = RequestMethod.POST,
@@ -77,7 +80,7 @@ public class QuizController {
      *           pageable 을 해줘야해서 ResultItems을 했습니다.
      * endpoint : http://localhost:8080/class/test/exbank/list
      * */
-    @PreAuthorize("hasAnyAuthority('TEST_READ')")
+    @PreAuthorize("hasAnyAuthority('TEST_READ','TEST_WRITE')")
     @RequestMapping(
             path = "/list",
             method = RequestMethod.POST,
@@ -168,6 +171,30 @@ public class QuizController {
         quiz.setConstraintDefine(constraintDefine);
 
         return quizService.updateQuiz(quiz.getQuizContents(), quiz.getQuizAnswer(), quiz.getQuizEachScore(), quiz.getQuizSubject(), quiz.getQuizChapter(), quiz.getQuizLevel(), quizId);
+    }
+
+
+    // 역할 : 시험 삭제
+    // 엔드포인트 : http://localhost:8080/class/test/exbank/delete/quizId={quizId}
+    @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
+    @RequestMapping(
+            path = "/delete/quizId={quizId}",
+            method = RequestMethod.DELETE,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public Quiz deleteQuiz(@PathVariable("quizId") Long quizId) {
+
+        System.out.println("문제_번호 : " + quizId);
+
+        quizService.deleteQuiz(quizId);
+
+        Quiz quiz = new Quiz();
+        quiz.setQuizId(quizId);
+
+        return quiz;
     }
 
 }
