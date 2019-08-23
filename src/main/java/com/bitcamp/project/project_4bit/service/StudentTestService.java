@@ -1,7 +1,9 @@
 package com.bitcamp.project.project_4bit.service;
 
 import com.bitcamp.project.project_4bit.entity.StudentTest;
+import com.bitcamp.project.project_4bit.repository.PointLogRepository;
 import com.bitcamp.project.project_4bit.repository.StudentTestRepository;
+import com.bitcamp.project.project_4bit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +13,12 @@ public class StudentTestService {
 
     @Autowired
     private StudentTestRepository studentTestRepository;
+
+    @Autowired
+    private PointLogRepository pointLogRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     // 역할 : StudentTest 생성
     @Transactional
@@ -27,6 +35,10 @@ public class StudentTestService {
     // 역할 : studentTestRepository에서 수정 성공 여부를 반환한다(성공 : 1, 실패 : 0)
     @Transactional
     public int updateStudentTest(int studentScore, Long testId, Long userId){
+
+        pointLogRepository.updatePoinLogTest(userId , studentScore);
+        userRepository.updatePointSum(userId, studentScore);
+
         return studentTestRepository.updateStudentTest(studentScore, testId, userId);
     }
 

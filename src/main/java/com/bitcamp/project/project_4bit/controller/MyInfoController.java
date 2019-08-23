@@ -1,6 +1,7 @@
 package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.User;
+import com.bitcamp.project.project_4bit.repository.UserRepository;
 import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
 import com.bitcamp.project.project_4bit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class MyInfoController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     // 회원 개인 정보 읽어오는 컨트롤러
     //endpoint : http://localhost:8080/mypage/myinfo?userId={userId}
@@ -52,7 +56,7 @@ public class MyInfoController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public String update(Principal principal,
+    public User update(Principal principal,
                       @RequestParam(name = "userId", required = true) Long userId,
                       @RequestBody User user
                       ) {
@@ -61,8 +65,14 @@ public class MyInfoController {
         User userMe = (User) userDetailsService.loadUserByUsername(principal.getName());
 
         if (userMe.getUserId() == userId) {
-            return userService.updateUserBySelf(userId, user);
+
+            String userUpdate = userService.updateUserBySelf(userId, user);
+
+            User newUser = userRepository.findByUserId(userId);
+
+
+            return newUser; // update 된 유저를 프론트로 전달하기 위해 변경
         }
-        return "본인이 아니어서 수정 불가합니다"; //todo: 본인이 아니면 수정 exception 날려줘야 함.
+        return null; //todo: 본인이 아니면 수정 exception 날려줘야 함.
     }
 }
