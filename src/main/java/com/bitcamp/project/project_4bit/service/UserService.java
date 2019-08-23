@@ -128,6 +128,14 @@ public class UserService {
 
 //=====================================     학생/강사   ===========================================================
 
+
+    // 유저 정보 변경 후 새로운 유저 반환하려 만들어 봄
+    @Transactional
+    public User updateNewUser(Long userId){
+        return userRepository.findByUserId(userId);
+    }
+
+
     // 본인(학생/강사)이 본인의 개인정보를 수정하는 service
     @Transactional
     public String updateUserBySelf(Long userId, User user){

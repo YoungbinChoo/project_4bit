@@ -23,9 +23,6 @@ public class MyInfoController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserRepository userRepository;
-
     // 회원 개인 정보 읽어오는 컨트롤러
     //endpoint : http://localhost:8080/mypage/myinfo?userId={userId}
     @PreAuthorize("hasAnyAuthority('ME_READ')")
@@ -68,9 +65,7 @@ public class MyInfoController {
 
             String userUpdate = userService.updateUserBySelf(userId, user);
 
-            User newUser = userRepository.findByUserId(userId);
-
-
+            User newUser = userService.updateNewUser(userId);
             return newUser; // update 된 유저를 프론트로 전달하기 위해 변경
         }
         return null; //todo: 본인이 아니면 수정 exception 날려줘야 함.
