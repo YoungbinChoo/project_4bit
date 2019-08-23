@@ -61,6 +61,9 @@ public class Student implements Serializable {
     @Column(name = "counsel")
     private String counsel;
 
+    // 출석ID
+    @Column(name = "attend_id")
+    private String attendId;
 
 
     public Long getStudentId() {
@@ -149,5 +152,13 @@ public class Student implements Serializable {
 
     public void setCounsel(String counsel) {
         this.counsel = counsel;
+    }
+
+    public String getAttendId() {
+        return attendId;
+    }
+
+    public void setAttendId(String attendId) {
+        this.attendId = attendId;
     }
 }

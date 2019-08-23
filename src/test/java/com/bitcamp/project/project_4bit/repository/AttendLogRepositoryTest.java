@@ -40,12 +40,12 @@ public class AttendLogRepositoryTest {
         Date today = new Date(); //오늘날짜 체크
 
         AttendLog attendLog = new AttendLog();
-        attendLog.setEventTime(today);
-        attendLog.setEventName(true);
+        attendLog.setEventAttendTime(today);
+        attendLog.setEventName("IN");
         attendLog.setStudent(student);
 
         AttendLog saved = entityManager.persist(attendLog);
         Assert.assertNotNull(saved);
-        Assert.assertEquals(saved.getEventTime(),attendLog.getEventTime());
+        Assert.assertEquals(saved.getEventAttendTime(),attendLog.getEventAttendTime());
     }
 }

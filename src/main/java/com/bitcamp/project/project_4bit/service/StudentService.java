@@ -24,6 +24,9 @@ public class StudentService {
         return studentRepository.findOneByUserId(userId);
     }
 
-
+    @Transactional
+    public Student selectStudentByAttendId(String attendId) {
+        return studentRepository.findOneByAttendId(attendId);
+    }
 
 }
