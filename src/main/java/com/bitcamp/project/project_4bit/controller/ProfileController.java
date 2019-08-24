@@ -21,8 +21,6 @@ public class ProfileController {
     @Autowired
     private ProfileService profileService;
 
-    @Autowired
-    private LocalUserDetailsService userDetailsService;
 
     @PreAuthorize("hasAnyAuthority('ME_WRITE','ME_READ')")
     @RequestMapping(
@@ -32,9 +30,9 @@ public class ProfileController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public Admin adminProfileInfo(@RequestParam(name = "adminId", required = true) Long adminId){
+    public Admin adminProfileInfo(@RequestParam(name = "userId", required = true) Long userId){
 
-        return profileService.selectAdmin(adminId);
+        return profileService.selectAdmin(userId);
     }
 
     @PreAuthorize("hasAnyAuthority('ME_WRITE','ME_READ')")
@@ -45,9 +43,9 @@ public class ProfileController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public ClassTeacherLog teacherProfileInfo(@RequestParam(name = "teacherId", required = true) Long teacherId){
+    public ClassTeacherLog teacherProfileInfo(@RequestParam(name = "userId", required = true) Long userId){
 
-        return profileService.selectTeacher(teacherId);
+        return profileService.selectTeacher(userId);
     }
 
     @PreAuthorize("hasAnyAuthority('ME_WRITE','ME_READ')")
@@ -58,9 +56,9 @@ public class ProfileController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public Student studentProfileInfo(@RequestParam(name = "studentId", required = true) Long studentId){
+    public Student studentProfileInfo(@RequestParam(name = "userId", required = true) Long userId){
 
-        return profileService.selectStudent(studentId);
+        return profileService.selectStudent(userId);
     }
 
 
