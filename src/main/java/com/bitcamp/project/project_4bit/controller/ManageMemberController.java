@@ -1,10 +1,12 @@
 package com.bitcamp.project.project_4bit.controller;
 
+import com.bitcamp.project.project_4bit.entity.AttendLog;
 import com.bitcamp.project.project_4bit.entity.Student;
 import com.bitcamp.project.project_4bit.entity.Teacher;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.model.RegisterMember;
 import com.bitcamp.project.project_4bit.model.ResultItems;
+import com.bitcamp.project.project_4bit.service.AttendLogService;
 import com.bitcamp.project.project_4bit.service.RegisterMemberService;
 import com.bitcamp.project.project_4bit.service.UserService;
 import com.bitcamp.project.project_4bit.util.PrincipalUtil;
@@ -31,7 +33,6 @@ public class ManageMemberController {
 
     @Autowired
     private RegisterMemberService registerMemberService;
-
 
     // 역할 :  Principal 을 사용하여 접속한 User를 찾음
     @RequestMapping(

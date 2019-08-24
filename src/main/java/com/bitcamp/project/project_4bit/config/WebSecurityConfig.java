@@ -116,7 +116,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
     }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http

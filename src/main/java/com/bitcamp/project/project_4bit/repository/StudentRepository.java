@@ -43,4 +43,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value = "UPDATE student s SET s.counsel=?2 WHERE s.student_id=?1", nativeQuery = true)
     int updateCounsel(Long studentId, String counsel);
 
+    // 출석Id 로 학생정보 찾기
+    @Query(value = "SELECT * FROM student WHERE attend_id =?1", nativeQuery = true)
+    Student findOneByAttendId(String attendId);
+
+
 }

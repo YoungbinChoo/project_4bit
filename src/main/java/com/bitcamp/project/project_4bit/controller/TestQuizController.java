@@ -103,7 +103,7 @@ public class TestQuizController {
      *            quizId를 받아와 수정 할 수 있게 했습니다.
      * endpoint : http://localhost:8080/class/testquiz/{testquizId}
      * */
-    @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
+    @PreAuthorize("hasAnyAuthority('TEST_WRITE','TEST_READ')")
     @RequestMapping(
             path = "/{testquizId}",
             method = RequestMethod.PATCH,
