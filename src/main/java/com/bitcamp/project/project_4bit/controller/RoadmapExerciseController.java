@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -45,8 +46,8 @@ public class RoadmapExerciseController {
         return new ResultItems<RoadmapExercise>(roadmapExerciseList.stream().collect(Collectors.toList()), page, size, roadmapExerciseList.getTotalElements());
     }
 
-    // 역할 : RoadmapExercise 내용 하나를 조회
-    // http://localhost:8080/roadmapexercise/view?exerciseSequence={exerciseSequence}
+    // 역할 : roadmapStageNo에 해당하는 문제 하나를 조회
+    // http://localhost:8080/roadmapexercise/view?roadmapStageNo={roadmapStageNo}
     @PreAuthorize("hasAnyAuthority('ROADMAP_READ')")
     @RequestMapping(
             path = "/view",
@@ -56,9 +57,9 @@ public class RoadmapExerciseController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Long retrieve(
-            @RequestParam(name = "exerciseSequence", required = true) Long exerciseSequence) {
+    public RoadmapExercise retrieve(
+            @RequestParam(name = "roadmapStageNo", required = true) Integer roadmapStageNo) {
 
-        return roadmapExerciseService.itemOfRoadmapExerciseAndExerciseSequence(exerciseSequence);
+        return roadmapExerciseService.itemOfRoadmapExerciseAndExerciseSequence(roadmapStageNo);
     }
 }
