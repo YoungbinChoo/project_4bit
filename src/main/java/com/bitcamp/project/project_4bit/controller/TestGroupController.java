@@ -64,31 +64,36 @@ public class TestGroupController {
         /* ------------------------------------- [User 얻기] ------------------------------------- */
         // 1. principal을 이용해 user 전체 정보를 얻음
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
-        testGroup.setUser(user);
-
-        /* ------------------------------------- [classId 얻기] ------------------------------------- */
-
-        // 2. user 정보에서 userId를 얻음
-        Long userId = user.getUserId();
-
-        // 4. userIdToClassIdConverter에서 userId가 강사인 경우 classId를 찾는 방법을 통해 classId를 얻는다
-        // TODO 권한 중요 >> 강사만 들어올 수 있게 해야함
-        Long classId = userIdToClassIdConverter.userIdToClassId(userId);
-
-        System.out.println("생성_반_Id : " + classId);
-
-        // 5. classId로 classGroup 전체 정보를 얻는다 (DB : class_group / java : ClassGroup)
-        ClassGroup classGroup = classGroupService.laodClassGroupByClassId(classId);
-        testGroup.setClassGroup(classGroup);
-
-        /* ------------------------------------- [ConstraintDefine 얻기] ------------------------------------- */
-        // 시험만 사용할 것이기에 시험 제약 조건명은 test_constraint로 고정한다
-        // 6. constraintName으로 constraintDefine 전체 정보를 얻는다 (DB : constraint_define / java : constraintDefine)
-        ConstraintDefine constraintDefine = constraintDefineService.loadConstraintDefineByConstraintName("test_constraint");
-        testGroup.setConstraintDefine(constraintDefine);
+        if (user.getRole().getRoleCode().equals("role_teacher")) {
+            testGroup.setUser(user);
 
 
-        return testGroupService.createTestGroup(testGroup);
+            /* ------------------------------------- [classId 얻기] ------------------------------------- */
+
+            // 2. user 정보에서 userId를 얻음
+            Long userId = user.getUserId();
+
+            // 4. userIdToClassIdConverter에서 userId가 강사인 경우 classId를 찾는 방법을 통해 classId를 얻는다
+            // TODO 권한 중요 >> 강사만 들어올 수 있게 해야함
+            Long classId = userIdToClassIdConverter.userIdToClassId(userId);
+
+            System.out.println("생성_반_Id : " + classId);
+
+            // 5. classId로 classGroup 전체 정보를 얻는다 (DB : class_group / java : ClassGroup)
+            ClassGroup classGroup = classGroupService.laodClassGroupByClassId(classId);
+            testGroup.setClassGroup(classGroup);
+
+            /* ------------------------------------- [ConstraintDefine 얻기] ------------------------------------- */
+            // 시험만 사용할 것이기에 시험 제약 조건명은 test_constraint로 고정한다
+            // 6. constraintName으로 constraintDefine 전체 정보를 얻는다 (DB : constraint_define / java : constraintDefine)
+            ConstraintDefine constraintDefine = constraintDefineService.loadConstraintDefineByConstraintName("test_constraint");
+            testGroup.setConstraintDefine(constraintDefine);
+
+
+            return testGroupService.createTestGroup(testGroup);
+        } else{
+            return null;
+        }
     }
 
 
@@ -405,15 +410,34 @@ public class TestGroupController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public TestGroup deleteTestGroup(@PathVariable("testId") Long testId) {
+    public TestGroup deleteTestGroup(
+            Principal principal,
+            @PathVariable("testId") Long testId) {
 
-        System.out.println("시험_번호 : " + testId);
+        Long testOwner = testGroupService.findTestGroupOwnerId(testId);
+        System.out.println("작성자 : " + testOwner);
 
-        testGroupService.deleteTestGroup(testId);
+//        /* ------------------------------------- [userId 얻기] ------------------------------------- */
+        // principal으로 User정보 획득
+        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
 
-        TestGroup testGroup = new TestGroup();
-        testGroup.setTestId(testId);
-        return testGroup;
+        Long userId = user.getUserId();
+        System.out.println("유저_번호 : " + userId);
+
+        if (user.getRole().getRoleCode().equals("role_teacher")) {
+            if (testOwner == userId) {
+
+                System.out.println("시험_번호 : " + testId);
+
+                testGroupService.deleteTestGroup(testId);
+
+                TestGroup testGroup = new TestGroup();
+                testGroup.setTestId(testId);
+                return testGroup;
+            }
+        }
+
+        return null;
     }
 
 

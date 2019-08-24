@@ -79,4 +79,12 @@ public class TestQuizService {
     public Long readTestQuizIdByTestIdAndQuizId(Long testId, Long quizId){
         return testQuizRepository.findTestQuizIdByTestIdAndQuizId(testId, quizId);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할: testQuiz 전체 출력 testId로 출력
+    @Transactional
+    public Page<TestQuiz> findAllOfTestQuizByTestId(Long testId, Pageable pageable){
+        return testQuizRepository.findTestQuizByTestQuizId(testId, pageable);
+    }
 }
