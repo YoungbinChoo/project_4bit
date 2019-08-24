@@ -58,13 +58,33 @@ public class UserService {
         return user;
     }
 
-    // 관리자가 반을 선택하면 학생을 뽑아오는 Service
-    @Transactional
-    public Page<Student> listOfStudentByClassId(Long classId, Pageable pageable){
 
-        Page<Student> students = studentRepository.findAllByClassGroup_ClassId(classId,pageable);
+    // 강사가 반을 선택하면 학생을 뽑아오는 Service
+    @Transactional
+    public Page<Student> listOfStudentByClassId(Long classId,Pageable pageable){
+
+        Page<Student> students = studentRepository.findAllByClassGroup_ClassId(classId, pageable);
 
         return students;
+    }
+
+
+    // 관리자화면 학생 전체 조회 Service
+    @Transactional
+    public Page<Student> listOfStudentByAdmin(Pageable pageable){
+
+        Page<Student> students = studentRepository.findAll(pageable);
+
+        return students;
+    }
+
+    // 관리자화면 강사 전체 조회 Service
+    @Transactional
+    public Page<Teacher> listOfTeacherByAdmin(Pageable pageable){
+
+        Page<Teacher> teachers = teacherRepository.findAll(pageable);
+
+        return teachers;
     }
 
 
