@@ -53,6 +53,14 @@ public interface TestQuizRepository extends JpaRepository<TestQuiz, Long> {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 역할 : testQuiz 전체 출력  testId에 따라
-    @Query(value = "SELECT * FROM test_quiz WHERE test_id = ?1 ", nativeQuery = true)
-    Page<TestQuiz>  findTestQuizByTestQuizId(Long testId, Pageable pageable);
+    @Query(value = "SELECT * FROM test_quiz WHERE test_id = ?1", nativeQuery = true)
+    Page<TestQuiz> findTestQuizByTestQuizId(Long testId, Pageable pageable);
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : testQuiz를 testId로 삭제 >> 시험이 삭제되면 시험 문제도 삭제되어야 한다
+    @Modifying
+    @Query(value = "DELETE FROM test_quiz WHERE test_id = ?1", nativeQuery = true)
+    void deleteByTestId(Long testId);
 }

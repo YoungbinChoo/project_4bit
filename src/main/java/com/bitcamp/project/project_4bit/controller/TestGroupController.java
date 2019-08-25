@@ -45,6 +45,11 @@ public class TestGroupController {
     private StudentTestService studentTestService;
 
 
+    @Autowired
+    private TestQuizService testQuizService;
+
+
+
     // 역할 : 시험 작성
     // 주의사항 : teacherId를 구하기 위해 class_teacher_log 테이블 사용 >>  값이 들어있는지 확인해야해요
     // 엔드포인트 : http://localhost:8080/class/test/write
@@ -264,7 +269,7 @@ public class TestGroupController {
 
         System.out.println("설명_반_Id : " + classId);
 
-
+        System.out.println("상세_시험_번호 : "+ testId);
         // 반환형은 TestGroup인데 얻어오는 타입은 Optional<>형이므로 .get()을 해줘야 한다
         return testGroupService.itemOfTestGroup(classId, testId).get();
     }
@@ -417,7 +422,7 @@ public class TestGroupController {
         Long testOwner = testGroupService.findTestGroupOwnerId(testId);
         System.out.println("작성자 : " + testOwner);
 
-//        /* ------------------------------------- [userId 얻기] ------------------------------------- */
+//      /* ------------------------------------- [userId 얻기] ------------------------------------- */
         // principal으로 User정보 획득
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
 
@@ -430,10 +435,12 @@ public class TestGroupController {
                 System.out.println("시험_번호 : " + testId);
 
                 testGroupService.deleteTestGroup(testId);
+                testQuizService.deleteTestQuizByTestId(testId);
 
-                TestGroup testGroup = new TestGroup();
-                testGroup.setTestId(testId);
-                return testGroup;
+                System.out.println("삭제_성공");
+//                TestGroup testGroup = new TestGroup();
+//                testGroup.setTestId(testId);
+//                return testGroup;
             }
         }
 

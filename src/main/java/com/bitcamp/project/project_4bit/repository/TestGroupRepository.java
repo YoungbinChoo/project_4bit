@@ -58,7 +58,12 @@ public interface TestGroupRepository extends JpaRepository<TestGroup, Long> {
     @Query(value = "UPDATE test_group SET test_name=?1, test_start_time=?2, test_end_time=?3, test_description=?4 WHERE test_id =?5 AND class_id = ?6", nativeQuery = true)
     int updateTestGroup(String testName, String testStartTime, String testEndTime, String testDescription, Long testId, Long classId);
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // 역할 : 시험 삭제
+    @Modifying
+    @Query(value = "DELETE FROM test_group WHERE test_id =?1", nativeQuery = true)
+    void deleteByTestId(Long testId);
 
 
 

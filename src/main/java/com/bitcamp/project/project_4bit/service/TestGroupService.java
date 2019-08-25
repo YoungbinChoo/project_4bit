@@ -81,7 +81,8 @@ public class TestGroupService {
     // 역할 : 시험 삭제
     @Transactional
     public void deleteTestGroup(Long testId){
-        testGroupRepository.deleteById(testId);
+        System.out.println("테스트그룹_시험_번호 : "+ testId);
+        testGroupRepository.deleteByTestId(testId);
      }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
