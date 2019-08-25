@@ -98,7 +98,7 @@ public class QuizController {
     // Todo: 이부분을 퀴즈 상세보기로 고쳐야(quiz id받아서 내용표시)
 //    Quiz 상세보기 (=게시물)
 //     http://localhost:8080/class/test/exbank/view?quizId={quizId}
-    @PreAuthorize("hasAnyAuthority('TEST_READ')")
+    @PreAuthorize("hasAnyAuthority('TEST_READ','TEST_WRITE')")
     @RequestMapping(
             path = "/view",
             method = RequestMethod.GET,
