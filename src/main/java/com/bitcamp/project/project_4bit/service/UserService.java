@@ -58,13 +58,33 @@ public class UserService {
         return user;
     }
 
-    // 관리자가 반을 선택하면 학생을 뽑아오는 Service
-    @Transactional
-    public Page<Student> listOfStudentByClassId(Long classId, Pageable pageable){
 
-        Page<Student> students = studentRepository.findAllByClassGroup_ClassId(classId,pageable);
+    // 강사가 반을 선택하면 학생을 뽑아오는 Service
+    @Transactional
+    public Page<Student> listOfStudentByClassId(Long classId,Pageable pageable){
+
+        Page<Student> students = studentRepository.findAllByClassGroup_ClassId(classId, pageable);
 
         return students;
+    }
+
+
+    // 관리자화면 학생 전체 조회 Service
+    @Transactional
+    public Page<Student> listOfStudentByAdmin(Pageable pageable){
+
+        Page<Student> students = studentRepository.findAll(pageable);
+
+        return students;
+    }
+
+    // 관리자화면 강사 전체 조회 Service
+    @Transactional
+    public Page<Teacher> listOfTeacherByAdmin(Pageable pageable){
+
+        Page<Teacher> teachers = teacherRepository.findAll(pageable);
+
+        return teachers;
     }
 
 
@@ -127,6 +147,14 @@ public class UserService {
     }
 
 //=====================================     학생/강사   ===========================================================
+
+
+    // 유저 정보 변경 후 새로운 유저 반환하려 만들어 봄
+    @Transactional
+    public User updateNewUser(Long userId){
+        return userRepository.findByUserId(userId);
+    }
+
 
     // 본인(학생/강사)이 본인의 개인정보를 수정하는 service
     @Transactional
@@ -196,15 +224,21 @@ public class UserService {
         return studentRepository.findCounselByStudentId(studentId);
     }
 
+    // 강사가 학생을 선택하면 그 학생을 넘겨주는 서비스
+    @Transactional
+    public Student loadStudentByStudentId(Long studentId) {
+        return studentRepository.findByStudentId(studentId);
+    }
+
     //강사가 학생의 counsel 내용을 작성, 수정하는 서비스
     @Transactional
-    public String updateCounselByTeacher(Long studentId, String counsel){
+    public int updateCounselByTeacher(Long studentId, String counsel){
         int updateNewCounsel = studentRepository.updateCounsel(studentId,counsel);
 
         if(updateNewCounsel == 1){
-            return "학생 상담내역을 저장하였습니다.";
+            return 1;
         }else {
-            return "학생 상담내역 저장에 실패하였습니다.";
+            return 0;
         }
     }
 }

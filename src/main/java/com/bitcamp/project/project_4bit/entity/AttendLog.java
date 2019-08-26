@@ -16,42 +16,51 @@ public class AttendLog implements Serializable {
     @Id
     @Column(columnDefinition = "BIGINT", name = "attend_log_id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long attendlogId;
+    private Long attendLogId;
 
-    @CreationTimestamp
+//    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "event_time", updatable = false, nullable = false)
-    private Date eventTime;
+    @Column(name = "event_attend_time", updatable = false, nullable = false)
+    private Date eventAttendTime;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id")
     private Student student;
 
     @Column(name = "event_name")
-    @Convert(converter =  BolleanToInoutConverter.class)
-    private Boolean eventName;
+//    @Convert(converter =  BolleanToInoutConverter.class)
+    private String eventName;
 
-    public Long getAttendlogId() {
-        return attendlogId;
+    public Long getAttendLogId() {
+        return attendLogId;
     }
 
-    public void setAttendlogId(Long attendlogId) {
-        this.attendlogId = attendlogId;
+    public void setAttendLogId(Long attendLogId) {
+        this.attendLogId = attendLogId;
     }
 
-    public Date getEventTime() {
-        return eventTime;
+    public Date getEventAttendTime() {
+        return eventAttendTime;
     }
 
-    public void setEventTime(Date eventTime) {
-        this.eventTime = eventTime;
+    public void setEventAttendTime(Date eventAttendTime) {
+        this.eventAttendTime = eventAttendTime;
     }
 
-    public Boolean getEventName() {
+//    public Boolean getEventName() {
+//        return eventName;
+//    }
+//
+//    public void setEventName(Boolean eventName) {
+//        this.eventName = eventName;
+//    }
+
+
+    public String getEventName() {
         return eventName;
     }
 
-    public void setEventName(Boolean eventName) {
+    public void setEventName(String eventName) {
         this.eventName = eventName;
     }
 

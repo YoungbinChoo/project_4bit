@@ -12,6 +12,12 @@ import org.springframework.stereotype.Repository;
 // 작성자 : 황서영
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
+
+    // userId 로 학생정보 찾기
+    Student findByUser_UserId(Long userId);
+
+
+    // studentId 로 학생정보 찾기
     Student findByStudentId(Long studentId);
 
     // classId 를 통해서 소속 학생 전체 리스트를 뽑는 Jpa 쿼리
@@ -38,5 +44,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Modifying
     @Query(value = "UPDATE student s SET s.counsel=?2 WHERE s.student_id=?1", nativeQuery = true)
     int updateCounsel(Long studentId, String counsel);
+
+    // 출석Id 로 학생정보 찾기
+    @Query(value = "SELECT * FROM student WHERE attend_id =?1", nativeQuery = true)
+    Student findOneByAttendId(String attendId);
+
 
 }

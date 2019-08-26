@@ -1,6 +1,7 @@
 package com.bitcamp.project.project_4bit.controller;
 import com.bitcamp.project.project_4bit.entity.PointLog;
 import com.bitcamp.project.project_4bit.entity.User;
+import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
 import com.bitcamp.project.project_4bit.service.PointLogService;
 import org.hibernate.type.PrimitiveCharacterArrayNClobType;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.util.stream.Collectors;
 
 
 //작성자 : 황서영
@@ -32,22 +34,24 @@ public class PointLogController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Page<PointLog> readPointLog(
+    public ResultItems<PointLog> readPointLog(
                         Principal principal,
                         @RequestParam("userId") Long userId,@RequestParam(name = "page", defaultValue = "1", required = false) int page,
-                        @RequestParam(name = "size", defaultValue = "10", required = false) int size){
+                        @RequestParam(name = "size", defaultValue = "15", required = false) int size){
 
         User user = (User)userDetailsService.loadUserByUsername(principal.getName());
 
         if (user.getUserId() == userId){
             Pageable pageable = PageRequest.of(page - 1, size);
             Page<PointLog> pointLogs = pointLogService.listofPointLog(pageable);
-            return pointLogs;
+            return new ResultItems<PointLog>(pointLogs.stream().collect(Collectors.toList()),page,size,pointLogs.getTotalElements());
         }else {
             return null; // todo: 내정보가 아니라면 exception 처리 해주어야 함
         }
     }
 
+
+    // 과제, 시험에서 바로 포인트 날릴거라서 사실상 필요 없는 메서드
     //포인트 개별로 날리는 메서드
     // endpoint : http://localhost:8080/mypage/point
     @RequestMapping(

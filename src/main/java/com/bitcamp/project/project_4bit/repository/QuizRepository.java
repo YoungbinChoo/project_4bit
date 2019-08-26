@@ -9,12 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 /*
  * 작성일 : 2019.08.13
- * 수정일 : 2019.08.19
+ * 수정일 : 2019.08.21
  * 메서드 순서
  * 1. findAllByQuiz();
  * 2. findOneByQuiz();
  * 3. findQuizByQuizSubjectAndQuizChapterAndQuizLevel();
  * 4. updateQuiz();
+ * 5. findQuizAnswerByQuizId(Long quizId);
+ * 6. findquizEachScoreByQuizId(Long quizId);
  * */
 
 

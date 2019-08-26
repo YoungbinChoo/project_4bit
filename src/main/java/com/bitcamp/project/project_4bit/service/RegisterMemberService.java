@@ -1,17 +1,14 @@
 package com.bitcamp.project.project_4bit.service;
 
-import com.bitcamp.project.project_4bit.entity.Role;
-import com.bitcamp.project.project_4bit.entity.Student;
-import com.bitcamp.project.project_4bit.entity.Teacher;
-import com.bitcamp.project.project_4bit.entity.User;
+import com.bitcamp.project.project_4bit.entity.*;
 import com.bitcamp.project.project_4bit.model.RegisterMember;
-import com.bitcamp.project.project_4bit.repository.RoleRepository;
-import com.bitcamp.project.project_4bit.repository.StudentRepository;
-import com.bitcamp.project.project_4bit.repository.TeacherRepository;
-import com.bitcamp.project.project_4bit.repository.UserRepository;
+import com.bitcamp.project.project_4bit.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 //작성자 : 황서영
 // Admin이 학생과 강사를 등록해 주는 Service
@@ -29,6 +26,9 @@ public class RegisterMemberService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private AttendLogRepository attendLogRepository;
 
     // 강사(Teacher)를 등록하는 Service
     @Transactional
@@ -73,6 +73,20 @@ public class RegisterMemberService {
         student.setStudentBirth(registerMember.getStudentBirth());
         student.setClassGroup(registerMember.getClassGroup());
         studentRepository.save(student);
+
+        // 5. attendLog 에 기본 세팅을 위해 학생 등록과 함께 저장해줌.
+        AttendLog attendLog1 = new AttendLog();
+        attendLog1.setEventName("INIT1");
+        attendLog1.setStudent(student);
+        Date nowTime = new Timestamp(System.currentTimeMillis());
+        attendLog1.setEventAttendTime(nowTime);
+        attendLogRepository.save(attendLog1);
+
+        AttendLog attendLog2 = new AttendLog();
+        attendLog2.setStudent(student);
+        attendLog2.setEventAttendTime(nowTime);
+        attendLogRepository.save(attendLog2);
+
 
         // 5. 컨트롤러에서 반환된 유저(학생)정보를 사용
         return user_s;

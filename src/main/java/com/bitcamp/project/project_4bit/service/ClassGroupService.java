@@ -2,13 +2,19 @@ package com.bitcamp.project.project_4bit.service;
 
 import com.bitcamp.project.project_4bit.entity.BoardTypeList;
 import com.bitcamp.project.project_4bit.entity.ClassGroup;
+import com.bitcamp.project.project_4bit.entity.Student;
 import com.bitcamp.project.project_4bit.repository.BoardTypeListRepository;
 import com.bitcamp.project.project_4bit.repository.BranchRepository;
 import com.bitcamp.project.project_4bit.repository.ClassGroupRepository;
 import com.bitcamp.project.project_4bit.repository.ConstraintDefineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /*
 작성자     : 이중호, 황서영
@@ -91,5 +97,10 @@ public class ClassGroupService {
         return newClassGroup;
     }
 
+    // 반 리스트를 출력
+    @Transactional
+    public Page<ClassGroup> listOfClassGroup(Pageable pageable){
+        return classGroupRepository.findAll(pageable);
+    }
 
 }
