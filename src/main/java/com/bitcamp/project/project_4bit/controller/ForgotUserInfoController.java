@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 @RestController
 @RequestMapping("/forgot")
@@ -33,6 +36,10 @@ public class ForgotUserInfoController {
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public String sendPasswordResetEmail(@RequestParam(name = "address") String address) {
         System.out.println("입력받은 이메일 주소:" + address);
+        SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy년 MM월 dd일 HH:mm");
+        Date now = new Date();
+        String requestedTime = format1.format(now);
+        System.out.println(requestedTime);
 
         // 사용자가 입력한 이메일 유효한지 확인
         User user = userRepository.findByEmail(address);
@@ -53,8 +60,8 @@ public class ForgotUserInfoController {
             String msgSubject = "4Bit Portal Team: 임시 비밀번호 발급 안내";
 
             // 보낼 이메일 본문
-            String msgText = "안녕하세요 " + userName + "님, 4Bit Portal 입니다.\n" +
-                    userName + "님께서 요청하신 임시 비밀번호를 보내드립니다.\n" +
+            String msgText = userName + "님 안녕하세요, 4Bit Portal 입니다.\n" +
+                    userName + "님께서 "+ requestedTime +"에 요청하신 임시 비밀번호를 보내드립니다.\n" +
                     "아래 임시 비밀번호로 로그인 하신 후, 마이페이지에서 새로운 비밀번호로 변경하시기 바랍니다. \n\n" +
                     "임시 비밀번호: " + tempPassword + "\n" +
                     "(만일 본인이 비밀번호를 요청한 적 없으면 4bitportal@gmail.com으로 연락주세요)";
