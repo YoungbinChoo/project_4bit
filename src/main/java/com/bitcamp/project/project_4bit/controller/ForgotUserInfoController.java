@@ -29,6 +29,30 @@ public class ForgotUserInfoController {
     @Autowired
     private RandomKeyGenerator randomKeyGenerator;
 
+
+
+
+    // ID찾기 (등록된 이름과 연락처가 일치하면 화면에 ID 바로 표시)
+    @RequestMapping(
+            path = "/username",
+            method = RequestMethod.POST,
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public String findUsername(@RequestParam(name = "name") String name, @RequestParam(name = "phone") String phone) {
+        System.out.println("입력받은 이름: " + name + ", 입력받은 연락처: " + phone);
+
+        // 사용자가 입력한 이름/연락처 정보가 유효한지 확인
+        User user = userRepository.findByNameAndPhone(name, phone);
+        if (user == null) {
+            return "해당 이름 또는 연락처로 가입된 회원정보가 존재하지 않습니다.";
+        } else {
+            String username = user.getUsername();
+            return "회원님의 ID는 " + username + " 입니다";
+        }
+    }
+
+
+
+    // 비밀번호 찾기 (등록된 메일로 임시 비밀번호 발송)
     @Transactional
     @RequestMapping(
             path = "/password",
@@ -72,5 +96,9 @@ public class ForgotUserInfoController {
             return "요청하신 이메일 주소 " + address + "로 임시비밀번호를 보내드렸습니다";
         }
     }
+
+
+
+
 }
 
