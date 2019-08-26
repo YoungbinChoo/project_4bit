@@ -90,7 +90,7 @@ public class TestQuizService {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // 역할 : 시험 문제 (testId로) 삭제 >> 시험 삭제시 시험 문제도 삭제되어야 함
+    // 역할 : 시험 문제 (testId로) 삭제
     @Transactional
     public void deleteTestQuizByTestId(Long testId){
         System.out.println("테스트퀴즈_시험_번호 : " + testId);

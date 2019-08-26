@@ -132,7 +132,7 @@ public class TestQuizController {
     }
 
     // 역할 : 시험문제 삭제
-    // 엔드포인트 : http://localhost:8080/class/test/testId={testId}/delete
+    // 엔드포인트 : http://localhost:8080/class/testquiz/delete/testquizId={testquizId}
     @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
     @RequestMapping(
             path = "/delete/testquizId={testquizId}",
@@ -180,5 +180,24 @@ public class TestQuizController {
             return null;
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 시험 문제 삭제 >> testId로 관련된 시험 문제 전체 삭제
+    // 엔드포인트 : http://localhost:8080/class/testquiz/testId={testId}/delete
+    @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
+    @RequestMapping(
+            path = "/testId={testId}/delete",
+            method = RequestMethod.DELETE,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE})
+    public void deleteTestQuizByTestId(@PathVariable("testId") Long testId) {
+        System.out.println("시험_번호 : " + testId);
+
+        testQuizService.deleteTestQuizByTestId(testId);
+
+    }
+
 
 }
