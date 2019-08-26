@@ -46,23 +46,28 @@ public class StudentAnswerController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public StudentAnswer createStudentAnswer(
+    public String createStudentAnswer(
             Principal principal,
             @RequestBody StudentAnswer studentAnswer,
             @PathVariable("studentTestId") Long studentTestId,
             @PathVariable("testQuizId") Long testQuizId){
 
-        System.out.println("학생_시험_번호 : " + studentTestId);
+//        System.out.println("학생_시험_번호 : " + studentTestId);
 
         StudentTest studentTest = studentTestService.findStudentTest(studentTestId);
         studentAnswer.setStudentTest(studentTest);
 
-        System.out.println("시험_문제_번호 : " + testQuizId);
+//        System.out.println("시험_문제_번호 : " + testQuizId);
 
         TestQuiz testQuiz = testQuizService.findByTestQuizId(testQuizId);
         studentAnswer.setTestQuiz(testQuiz);
 
-        return studentAnswerService.createStudentAnswer(studentAnswer);
+//        return studentAnswerService.createStudentAnswer(studentAnswer);
+        if(studentAnswerService.createStudentAnswer(studentAnswer) == null){
+            return "실패";
+        } else {
+            return "성공";
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
