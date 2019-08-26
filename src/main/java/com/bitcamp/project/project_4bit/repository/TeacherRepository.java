@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     Teacher findByTeacherId(Long teacherId);
 
+    // UserId 를 사용하여 강사 정보 찾기
+    Teacher findByUser_UserId(Long userId);
+
     @Query(value = "SELECT t.teacher_id FROM teacher t WHERE user_id=?1", nativeQuery = true)
     Long findOneByUserId(Long UserId);
 }

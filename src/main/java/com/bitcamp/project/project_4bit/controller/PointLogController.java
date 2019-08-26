@@ -37,7 +37,7 @@ public class PointLogController {
     public ResultItems<PointLog> readPointLog(
                         Principal principal,
                         @RequestParam("userId") Long userId,@RequestParam(name = "page", defaultValue = "1", required = false) int page,
-                        @RequestParam(name = "size", defaultValue = "10", required = false) int size){
+                        @RequestParam(name = "size", defaultValue = "15", required = false) int size){
 
         User user = (User)userDetailsService.loadUserByUsername(principal.getName());
 

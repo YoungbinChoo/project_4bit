@@ -2,6 +2,7 @@ package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.AttendLog;
 import com.bitcamp.project.project_4bit.entity.Student;
+import com.bitcamp.project.project_4bit.entity.Teacher;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.model.RegisterMember;
 import com.bitcamp.project.project_4bit.model.ResultItems;
@@ -74,9 +75,8 @@ public class ManageMemberController {
     }
 
 
-    // classId 로 강사를 찾아오는 Controller
-    // Class_Teacher_Log 테이블에 데이터가 들어가있어야 조회가 된다.
-    // EndPoint : http://localhost:8080/manage/member/teacher?classId={classId}
+    // 강사 리스트 전체 뽑는걸로 수정
+    // EndPoint : http://localhost:8080/manage/member/teacher
     @PreAuthorize("hasAnyAuthority('MANAGE_READ')")
     @RequestMapping(
             path = "/teacher",
@@ -85,12 +85,16 @@ public class ManageMemberController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public User selectTeacherOfClassId(Principal principal,@RequestParam("classId") Long classId){
-        return userService.selectOfTeacher(classId);
+    public ResultItems<Teacher> listOfTeacher(Principal principal,
+                                       @RequestParam(name = "page", defaultValue = "1", required = false) int page,
+                                       @RequestParam(name = "size", defaultValue = "15", required = false) int size){
+        Pageable pageable = PageRequest.of(page-1, size);
+        Page<Teacher> teachers = userService.listOfTeacherByAdmin(pageable);
+        return new ResultItems<Teacher>(teachers.stream().collect(Collectors.toList()),page, size, teachers.getTotalElements());
     }
 
-    // classId 로 학생리스트를 찾아오는 컨트롤러
-    // EndPoint : http://localhost:8080/manage/member/student/list?classId={classId}
+    // 학생 리스트 전체 뽑는 걸로 수정
+    // EndPoint : http://localhost:8080/manage/member/student/list
     @PreAuthorize("hasAnyAuthority('MANAGE_READ')")
     @RequestMapping(
             path = "/student/list",
@@ -99,13 +103,12 @@ public class ManageMemberController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public ResultItems<Student> listOf(
+    public ResultItems<Student> listOfStudent(
             Principal principal,
-            @RequestParam(name = "classId", required = true) Long classId,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "15", required = false) int size) {
         Pageable pageable = PageRequest.of(page-1, size);
-        Page<Student> students = userService.listOfStudentByClassId(classId,pageable);
+        Page<Student> students = userService.listOfStudentByAdmin(pageable);
 
         return new ResultItems<Student>(students.stream().collect(Collectors.toList()),page, size, students.getTotalElements());
     }
