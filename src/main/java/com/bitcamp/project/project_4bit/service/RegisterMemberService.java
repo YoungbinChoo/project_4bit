@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 //작성자 : 황서영
 // Admin이 학생과 강사를 등록해 주는 Service
 @Service
@@ -72,9 +75,18 @@ public class RegisterMemberService {
         studentRepository.save(student);
 
         // 5. attendLog 에 기본 세팅을 위해 학생 등록과 함께 저장해줌.
-        AttendLog attendLog = new AttendLog();
-        attendLog.setStudent(student);
-        attendLogRepository.save(attendLog);
+        AttendLog attendLog1 = new AttendLog();
+        attendLog1.setEventName("INIT1");
+        attendLog1.setStudent(student);
+        Date nowTime = new Timestamp(System.currentTimeMillis());
+        attendLog1.setEventAttendTime(nowTime);
+        attendLogRepository.save(attendLog1);
+
+        AttendLog attendLog2 = new AttendLog();
+        attendLog2.setStudent(student);
+        attendLog2.setEventAttendTime(nowTime);
+        attendLogRepository.save(attendLog2);
+
 
         // 5. 컨트롤러에서 반환된 유저(학생)정보를 사용
         return user_s;

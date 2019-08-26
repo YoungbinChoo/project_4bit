@@ -22,4 +22,7 @@ public interface HomeworkRepository extends JpaRepository<Homework, Long> {
     // 현재 진행중인 과제만(hw_deadline > 요청된 시간) 찾기
     @Query(value = "SELECT * FROM homework WHERE class_id=?1 AND hw_deadline > ?2", nativeQuery = true)
     Page<Homework> findAllByClassIdAndRequestedTime(Long classId, String requestedTime, Pageable pageable);
+
+
+
 }

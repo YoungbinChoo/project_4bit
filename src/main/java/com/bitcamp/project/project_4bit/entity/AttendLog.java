@@ -18,7 +18,7 @@ public class AttendLog implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long attendLogId;
 
-    @CreationTimestamp
+//    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "event_attend_time", updatable = false, nullable = false)
     private Date eventAttendTime;
