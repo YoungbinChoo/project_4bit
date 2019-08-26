@@ -33,6 +33,7 @@ public class ForgotUserInfoController {
 
 
     // ID찾기 (등록된 이름과 연락처가 일치하면 화면에 ID 바로 표시)
+    // http://localhost:8080/forgot/username?name=학생테스트1&phone=010-6666-6666
     @RequestMapping(
             path = "/username",
             method = RequestMethod.POST,
@@ -53,6 +54,7 @@ public class ForgotUserInfoController {
 
 
     // 비밀번호 찾기 (등록된 메일로 임시 비밀번호 발송)
+    // http://localhost:8080/forgot/password?address=youngbinchoo@gmail.com
     @Transactional
     @RequestMapping(
             path = "/password",
