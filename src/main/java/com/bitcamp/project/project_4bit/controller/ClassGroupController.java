@@ -2,6 +2,7 @@ package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.ClassGroup;
 import com.bitcamp.project.project_4bit.entity.ClassTeacherLog;
+import com.bitcamp.project.project_4bit.entity.Teacher;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.repository.ClassGroupRepository;
@@ -31,7 +32,6 @@ public class ClassGroupController {
 
 
     /*todo : startDate, endDate 입력 해결해야함 : 현재 계속 now()로 들어가고 있음*/
-
     // 역할 : admin 이 class 를 등록
     // endpoint : http://localhost:8080/manage/class/new
     @PreAuthorize("hasAnyAuthority('MANAGE_WRITE')")
@@ -71,4 +71,5 @@ public class ClassGroupController {
         }
         return null;
     }
+
 }
