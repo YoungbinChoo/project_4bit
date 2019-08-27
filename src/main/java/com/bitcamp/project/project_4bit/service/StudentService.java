@@ -1,8 +1,10 @@
 package com.bitcamp.project.project_4bit.service;
 
 import com.bitcamp.project.project_4bit.entity.Student;
+import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

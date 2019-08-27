@@ -3,6 +3,8 @@ package com.bitcamp.project.project_4bit.service;
 import com.bitcamp.project.project_4bit.entity.AttendLog;
 import com.bitcamp.project.project_4bit.repository.AttendLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +23,6 @@ public class AttendLogService {
         return attendLogRepository.findEventNameByStudentId(studentId);
     }
 
-    // 마지막에서 두번째 EventName 을 찾음
-    @Transactional
-    public AttendLog selectSecondAttendLog(Long studentId) {
-        return attendLogRepository.findSecondEventNameByStudentId(studentId);
-    }
 
     // 저장
     @Transactional
@@ -33,10 +30,19 @@ public class AttendLogService {
         return attendLogRepository.save(attendLog);
     }
 
-
-    // 수정
     @Transactional
-    public int updateEvent(Long studentId, String eventName){
-        return attendLogRepository.updateEventName(studentId, eventName);
+    public AttendLog findAttendLog(Long studentId){
+        return attendLogRepository.findByMaxAttendIdOfStudent(studentId);
+    }
+
+    // 학생 ID 로 학생 출석현황 조회
+    @Transactional
+    public AttendLog findStudentAttendLog(Long studentId){
+        return attendLogRepository.findAllByStudent_StudentId(studentId);
+    }
+
+    @Transactional
+    public Page<AttendLog> listOfAttendLogByStudentId(Long studentId, Pageable pageable){
+        return attendLogRepository.findAllByStudent_StudentId(studentId, pageable);
     }
 }

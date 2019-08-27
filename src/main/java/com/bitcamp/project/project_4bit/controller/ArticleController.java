@@ -163,7 +163,7 @@ public class ArticleController {
         // 1. 반별 게시판들을 해당 반이 아닌 사람들은 보지 못하도록 하기위해 유저 정보를 받아옴
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
         // 2. 해당 유저의 반 고유번호를 얻어옴
-        Long currentUserClassId = userIdToClassIdConverter.userIdToClassId(user.getUserId());
+        Long currentUserClassId = userIdToClassIdConverter .userIdToClassId(user.getUserId());
 
         // 3. 게시글들을 모두 articleList에 저장
         Pageable pageable = PageRequest.of(page - 1, size);

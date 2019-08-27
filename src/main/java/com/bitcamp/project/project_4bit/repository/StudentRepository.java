@@ -50,4 +50,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Student findOneByAttendId(String attendId);
 
 
+
 }
