@@ -79,4 +79,21 @@ public class TestQuizService {
     public Long readTestQuizIdByTestIdAndQuizId(Long testId, Long quizId){
         return testQuizRepository.findTestQuizIdByTestIdAndQuizId(testId, quizId);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할: testQuiz 전체 출력 testId로 출력
+    @Transactional
+    public Page<TestQuiz> findAllOfTestQuizByTestId(Long testId, Pageable pageable){
+        return testQuizRepository.findTestQuizByTestQuizId(testId, pageable);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 시험 문제 (testId로) 삭제
+    @Transactional
+    public void deleteTestQuizByTestId(Long testId){
+        System.out.println("테스트퀴즈_시험_번호 : " + testId);
+        testQuizRepository.deleteByTestId(testId);
+    }
 }

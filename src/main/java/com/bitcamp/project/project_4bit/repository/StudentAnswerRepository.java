@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StudentAnswerRepository extends JpaRepository<StudentAnswer, Long> {
 
+    @Query(value = "INSERT INTO `project_4bit`.`student_answer` (`student_test_answer_content`, `student_test_id`, `test_quiz_id`) VALUES (?1, ?2, ?3)", nativeQuery = true)
+    StudentAnswer createStudentAnswer(String answer, Long studentTestId,Long testQuizId);
+
     // 역할 : studentAnswerId으로 학생 입력한 답을 검색
     @Query(value = "SELECT student_test_answer_content FROM student_answer WHERE student_test_id = ?1 AND test_quiz_id = ?2", nativeQuery = true)
     String findStudentTestAnswerByStudentTestIdAndTestQuiz(Long studentTestId, Long testQuizId);

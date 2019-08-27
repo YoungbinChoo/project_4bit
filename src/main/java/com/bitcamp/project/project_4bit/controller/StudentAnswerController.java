@@ -40,29 +40,34 @@ public class StudentAnswerController {
     @PreAuthorize("hasAnyAuthority('STEST_WRITE')")
     @RequestMapping(
             method = RequestMethod.POST,
-            path = "/class/test/answer/write/studenttestId={studenttestid}/testquizid={testquizid}",
+            path = "/class/test/answer/write/studentTestId={studentTestId}/testQuizId={testQuizId}",
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public StudentAnswer createStudentAnswer(
+    public String createStudentAnswer(
             Principal principal,
             @RequestBody StudentAnswer studentAnswer,
-            @PathVariable("studenttestid") Long studenttestid,
-            @PathVariable("testquizid") Long testquizid){
+            @PathVariable("studentTestId") Long studentTestId,
+            @PathVariable("testQuizId") Long testQuizId){
 
-        System.out.println("학생_시험_번호 : " + studenttestid);
+//        System.out.println("학생_시험_번호 : " + studentTestId);
 
-        StudentTest studentTest = studentTestService.findStudentTest(studenttestid);
+        StudentTest studentTest = studentTestService.findStudentTest(studentTestId);
         studentAnswer.setStudentTest(studentTest);
 
-        System.out.println("시험_문제_번호 : " + testquizid);
+//        System.out.println("시험_문제_번호 : " + testQuizId);
 
-        TestQuiz testQuiz = testQuizService.findByTestQuizId(testquizid);
+        TestQuiz testQuiz = testQuizService.findByTestQuizId(testQuizId);
         studentAnswer.setTestQuiz(testQuiz);
 
-        return studentAnswerService.createStudentAnswer(studentAnswer);
+//        return studentAnswerService.createStudentAnswer(studentAnswer);
+        if(studentAnswerService.createStudentAnswer(studentAnswer) == null){
+            return "실패";
+        } else {
+            return "성공";
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

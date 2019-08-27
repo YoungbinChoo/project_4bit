@@ -21,6 +21,4 @@ public interface ClassTeacherLogRepository extends JpaRepository<ClassTeacherLog
     ClassTeacherLog findAllByTeacher_TeacherId(Long teacherId);
 
 
-
-
 }

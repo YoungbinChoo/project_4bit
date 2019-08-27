@@ -3,15 +3,19 @@ package com.bitcamp.project.project_4bit.controller;
 import com.bitcamp.project.project_4bit.entity.Quiz;
 import com.bitcamp.project.project_4bit.entity.TestGroup;
 import com.bitcamp.project.project_4bit.entity.TestQuiz;
+import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.QuizService;
 import com.bitcamp.project.project_4bit.service.TestGroupService;
 import com.bitcamp.project.project_4bit.service.TestQuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 /*
  * 작성일 : 2019.08.13
  * 수정일 : 2019.08.21
@@ -127,8 +131,8 @@ public class TestQuizController {
        return testQuizService.updateTestQuiz(testQuizNo, testId, quizId, testquizId);
     }
 
-    // 역할 : 시험 삭제
-    // 엔드포인트 : http://localhost:8080/class/test/testId={testId}/delete
+    // 역할 : 시험문제 삭제
+    // 엔드포인트 : http://localhost:8080/class/testquiz/delete/testquizId={testquizId}
     @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
     @RequestMapping(
             path = "/delete/testquizId={testquizId}",
@@ -146,4 +150,54 @@ public class TestQuizController {
 
         return testQuiz;
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //    testQuiz 전체 >> testId을 이용해 전체 출력
+//    endpoint : http://localhost:8080/class/testquiz/list/testId={testId}
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
+    @RequestMapping(
+            path = "/list/testId={testId}",
+            method = RequestMethod.GET,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            })
+    public ResultItems<TestQuiz> listOfTestQuiz(
+            @PathVariable(name = "testId") Long testId,
+            @RequestParam(name = "page", defaultValue = "1", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size){
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        System.out.println("문제리스트_시험_번호 : " + testId);
+
+        Page<TestQuiz> listOfTestQuiz =  testQuizService.findAllOfTestQuizByTestId(testId, pageable);
+
+        if(listOfTestQuiz.getTotalElements() > 0) {
+            return new ResultItems<TestQuiz>(listOfTestQuiz.stream().collect(Collectors.toList()), page, size, listOfTestQuiz.getTotalElements());
+        }else{
+            return null;
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 시험 문제 삭제 >> testId로 관련된 시험 문제 전체 삭제
+    // 엔드포인트 : http://localhost:8080/class/testquiz/testId={testId}/delete
+    @PreAuthorize("hasAnyAuthority('TEST_WRITE')")
+    @RequestMapping(
+            path = "/testId={testId}/delete",
+            method = RequestMethod.DELETE,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE})
+    public void deleteTestQuizByTestId(@PathVariable("testId") Long testId) {
+        System.out.println("시험_번호 : " + testId);
+
+        testQuizService.deleteTestQuizByTestId(testId);
+
+    }
+
+
 }
