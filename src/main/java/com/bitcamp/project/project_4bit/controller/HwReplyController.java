@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -131,6 +132,21 @@ public class HwReplyController {
         return new ResultItems<HwReply>(hwReplyList.stream().collect(Collectors.toList()), page, size, hwReplyList.getTotalElements());
     }
 
+
+    // HwReply 하나 조회
+    @PreAuthorize("hasAnyAuthority('NOTICE_READ','JOB_READ','PRO_READ','CBOARD_READ','CNOTICE_READ','LIBRARY_READ')")
+    @RequestMapping(
+            path = "/view",
+            method = RequestMethod.GET,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )public HwReply retrieve(
+            @RequestParam(name = "hwArticleId", required = true) Long hwArticleId){
+
+                return hwReplyService.itemOfHwReply(hwArticleId).get();
+    }
 
 
 

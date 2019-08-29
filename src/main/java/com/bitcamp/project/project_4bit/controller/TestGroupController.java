@@ -65,7 +65,6 @@ public class TestGroupController {
     public TestGroup createTestGroup(
             Principal principal,
             @RequestBody TestGroup testGroup){
-
         /* ------------------------------------- [User 얻기] ------------------------------------- */
         // 1. principal을 이용해 user 전체 정보를 얻음
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
