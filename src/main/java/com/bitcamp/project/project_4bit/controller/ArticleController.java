@@ -1,19 +1,18 @@
 package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.Article;
-import com.bitcamp.project.project_4bit.entity.Student;
 import com.bitcamp.project.project_4bit.entity.User;
+import com.bitcamp.project.project_4bit.exception.AuthException;
 import com.bitcamp.project.project_4bit.model.ResultItems;
-import com.bitcamp.project.project_4bit.repository.StudentRepository;
 import com.bitcamp.project.project_4bit.service.ArticleService;
 import com.bitcamp.project.project_4bit.service.BoardTypeListService;
 import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
-import com.bitcamp.project.project_4bit.service.StudentService;
 import com.bitcamp.project.project_4bit.util.UserIdToClassIdConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +75,9 @@ public class ArticleController {
     //          어느 게시판에 게시글을 쓸 건지 정해주어야되므로 setBoardTypeList()를 사용하여 설정해줍니다.
     //          selectBoardId() 는 BoardTypeListService 안에 있습니다.
     // EndPoint :  http://localhost:8080/board/class_1_board/write
+
+
+
     @PreAuthorize("hasAnyAuthority('NOTICE_WRITE','JOB_WRITE','PRO_WRITE','CBOARD_WRITE','CNOTICE_WRITE','LIBRARY_WRITE')")
     @RequestMapping(
             path = "/{boardId}/write",
@@ -87,6 +89,7 @@ public class ArticleController {
                  Principal principal,
         @PathVariable("boardId") String boardId,
         @RequestBody Article article) {
+
 
         // 1. 유저들의 정보(권한) 을 세팅해준다.
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
@@ -104,7 +107,8 @@ public class ArticleController {
         if (user.getRole().getRoleCode().equals("role_student")) {
             if (boardId.equals("notice") || boardId.equals("job") || boardId.equals("project")
                     || boardId.equals("class_" + article.getBoardTypeList().getClassGroup().getClassId() + "_notice")) {
-                return null;
+
+                throw new AuthException("관리자의 권한이 필요합니다.");
             } else {      // 그 외( class_n_board, class_n_library 엔 글을 씀
                 // 현재 글쓴이(학생)의 반 고유번호를 뽑아옴
                 Long currentUserClassId = userIdToClassIdConverter.userIdToClassId(user.getUserId());
@@ -113,12 +117,12 @@ public class ArticleController {
                 if (currentUserClassId.equals(article.getBoardTypeList().getClassGroup().getClassId())) {
                     return articleService.createArticle(article);       // 일치되면 글 작성
                 } else {      // 일치가 안되면 막음
-                    return null;
+                    throw new AuthException("해당 반 학생이 아닙니다.");
                 }
             }
         } else if (user.getRole().getRoleCode().equals("role_teacher")) {      // 4-2. 강사라면 notice, job, project 에 글을 쓰는 것을 막음
             if (boardId.equals("notice") || boardId.equals("job") || boardId.equals("project")) {
-                return null;
+                throw new AuthException("관리자의 권한이 필요합니다.");
             } else {      // 그 외는 허가
 
                 // 현재 글쓴이(강사)의 반 번호를 뽑아옴
@@ -128,13 +132,13 @@ public class ArticleController {
                 if (currentUserClassId.equals(article.getBoardTypeList().getClassGroup().getClassId())) {     // 일치되면 글 작성
                     return articleService.createArticle(article);
                 } else {                  // 일치가 안되면 막음
-                    return null;
+                    throw new AuthException("해당 반 강사님이 아닙니다.");
                 }
             }
         } else if (user.getRole().getRoleCode().equals("role_admin")) {        // 4-3. 관리자면 모든 board 에 글을 쓸 수 있음
             return articleService.createArticle(article);
         }
-        return null;        // 학생, 강사, 관리자의 권한이 없다면 막음.
+        throw new AuthException("로그인이 필요합니다.");        // 학생, 강사, 관리자의 권한이 없다면 막음.
     }
 
 
@@ -160,7 +164,7 @@ public class ArticleController {
         // 1. 반별 게시판들을 해당 반이 아닌 사람들은 보지 못하도록 하기위해 유저 정보를 받아옴
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
         // 2. 해당 유저의 반 고유번호를 얻어옴
-        Long currentUserClassId = userIdToClassIdConverter.userIdToClassId(user.getUserId());
+        Long currentUserClassId = userIdToClassIdConverter .userIdToClassId(user.getUserId());
 
         // 3. 게시글들을 모두 articleList에 저장
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -178,11 +182,11 @@ public class ArticleController {
                 if (currentUserClassId.equals(boardTypeListService.selectClassId(boardId))) {
                     return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
                 } else { // 4-2-(3). 해당 반이 아니라면 열람 불가
-                    return null;
+                    throw new AuthException("해당 반의 강사/학생 이 아닙니다.");
                 }
             }
         }
-        return null; // 위의 세 권한 이외면 열람 불가
+        throw new AuthException("로그인이 필요합니다."); // 위의 세 권한 이외면 열람 불가
     }
 
 
@@ -227,11 +231,11 @@ public class ArticleController {
                 if (currentUserClassId.equals(boardTypeListService.selectClassId(boardId))) {
                     return articleService.itemOfArticleAndBoardId(articleId, boardId).get();
                 } else {
-                    return null;
+                    throw new AuthException("로그인이 필요합니다.");
                 }
             }
         }
-        return null;
+        throw new AuthException("로그인이 필요합니다.");
     }
 
     // 역할 : 해당 게시물을 수정
@@ -268,10 +272,10 @@ public class ArticleController {
             if (articleOwner == article.getUser().getUserId()) {
                 return articleService.updateArticle(article.getArticleTitle(), article.getArticleContents(), articleId);
             } else {
-                return 0;
+                throw new AuthException("수정할 수 있는 권한이 없습니다.");
             }
         }
-        return 0;
+        throw new AuthException("로그인이 필요합니다.");
     }
 
 
@@ -306,7 +310,7 @@ public class ArticleController {
         if(user.getRole().getRoleCode().equals("role_admin")) {
             // 해당 게시글이 없다면 삭제 불가.
             if(articleService.itemOfArticleId(articleId).isPresent()==false){
-                return null;
+                throw new NullPointerException("해당 게시글이 존재하지 않습니다");
             }else{  // 해당 게시글이 있다면 삭제
                 articleService.deleteArticle(articleId);
                 Article deleteArticle = new Article();
@@ -318,7 +322,7 @@ public class ArticleController {
             if(articleOwner == article.getUser().getUserId()){
                 // 해당 게시글이 없다면 삭제 불가
                 if(articleService.itemOfArticleId(articleId).isPresent()==false){
-                    return null;
+                    throw new NullPointerException("해당 게시글이 존재하지 않습니다");
                 }else{
                     // 있다면 삭제
                     articleService.deleteArticle(articleId);
@@ -328,6 +332,6 @@ public class ArticleController {
                 }
             }
         }
-        return null;        // 관리자 강사 학생 이외에는 삭제 불가.
+        throw new NullPointerException("해당 게시글이 존재하지 않습니다");
     }
 }

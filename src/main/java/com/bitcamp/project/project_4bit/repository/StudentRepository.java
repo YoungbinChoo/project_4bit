@@ -8,12 +8,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 // 작성자 : 황서영
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
+
     // userId 로 학생정보 찾기
     Student findByUser_UserId(Long userId);
+
 
     // studentId 로 학생정보 찾기
     Student findByStudentId(Long studentId);

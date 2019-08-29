@@ -13,11 +13,14 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    // 1. 유저의 username으로 찾는 쿼리
+    // 1. 유저를 username/userId/email로 찾는 쿼리
     User findByUsername(String username);
 
-
     User findByUserId(Long userId);
+
+    User findByEmail(String email);
+
+    User findByNameAndPhone(String name, String phone);
 
     // 2. userId를 통해 찾는 쿼리
     Optional<User> findById(Long userId);
@@ -37,4 +40,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = "UPDATE user u SET u.point_sum = u.point_sum+?2 WHERE u.user_id =?1", nativeQuery = true)
     int updatePointSum(Long userId, int point);
+
+    // 6. Password 변경하는 쿼리
+    @Modifying
+    @Query(value = "UPDATE user u SET u.password =?2 WHERE u.user_id=?1", nativeQuery = true)
+    int updateUserPassword(Long userId, String password);
 }
