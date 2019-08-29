@@ -16,16 +16,7 @@ public class StudentAnswerService {
     // 역할 : 학생 답 생성
     @Transactional
     public StudentAnswer createStudentAnswer(StudentAnswer studentAnswer){
-        String answer = studentAnswer.getStudentTestAnswerContent();
-        Long studentTestId = studentAnswer.getStudentTest().getStudentTestId();
-        Long testQuizId = studentAnswer.getTestQuiz().getTestQuizId();
-
-        System.out.println("학생 답 : " + answer);
-        System.out.println("학생_시험_번호 : "+ studentTestId);
-        System.out.println("시험_문제_번호 : "+testQuizId);
-
-//        return studentAnswerRepository.createStudentAnswer(answer, studentTestId, testQuizId);
-        return studentAnswerRepository.save(studentAnswer);
+      return studentAnswerRepository.save(studentAnswer);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
