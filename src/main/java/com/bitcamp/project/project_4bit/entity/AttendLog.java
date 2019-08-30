@@ -23,6 +23,9 @@ public class AttendLog implements Serializable {
     @Column(name = "event_attend_time", updatable = false, nullable = false)
     private Date eventAttendTime;
 
+    @Column(name = "daily_attend_count")
+    private int dailyAttendCount;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id")
     private Student student;
@@ -70,5 +73,13 @@ public class AttendLog implements Serializable {
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+    public int getDailyAttendCount() {
+        return dailyAttendCount;
+    }
+
+    public void setDailyAttendCount(int dailyAttendCount) {
+        this.dailyAttendCount = dailyAttendCount;
     }
 }

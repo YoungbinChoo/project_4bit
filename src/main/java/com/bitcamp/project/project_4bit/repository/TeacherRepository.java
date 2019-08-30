@@ -14,4 +14,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
     @Query(value = "SELECT t.teacher_id FROM teacher t WHERE user_id=?1", nativeQuery = true)
     Long findOneByUserId(Long UserId);
+
+
 }

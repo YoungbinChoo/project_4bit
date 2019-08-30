@@ -26,6 +26,4 @@ public interface ClassTeacherLogRepository extends JpaRepository<ClassTeacherLog
             "(SELECT class_id, MAX(class_teacher_event_time) FROM class_teacher_log GROUP BY class_id)", nativeQuery = true)
     Page<ClassTeacherLog> findAll_LastClassGroupLog(Pageable pageable);
 
-
-
 }

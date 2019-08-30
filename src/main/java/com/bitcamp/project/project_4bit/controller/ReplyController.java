@@ -13,14 +13,12 @@ package com.bitcamp.project.project_4bit.controller;
 4. delete    댓글 삭제
 * */
 
-import com.bitcamp.project.project_4bit.entity.Article;
 import com.bitcamp.project.project_4bit.entity.Reply;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.ArticleService;
 import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
 import com.bitcamp.project.project_4bit.service.ReplyService;
-import com.bitcamp.project.project_4bit.service.UserService;
 import com.bitcamp.project.project_4bit.util.UserIdToClassIdConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -185,5 +183,48 @@ public class ReplyController {
         Reply deleteReply = new Reply();
         deleteReply.setReplyId(replyId);
         return deleteReply;
+    }
+
+    // 역할 : 해당 게시판의 게시물 하나를 조회
+    // 설명 : 우선 boardId 로 게시판을 구별해주고 그 게시판에 해당 게시물이 있으면 조회가 되게 합니다.
+    //        boardId 를 비교하여 조회하기 때문에 boardId 와 aritlceId 가 DB에 저장되있는 것과 일치해야됨
+    // EndPoint : http://localhost:8080/reply/view?boardId=class_1_board&articleId=28&replyId=1
+    @PreAuthorize("hasAnyAuthority('NOTICE_READ','JOB_READ','PRO_READ','CBOARD_READ','CNOTICE_READ','LIBRARY_READ')")
+    @RequestMapping(
+            path = "/view",
+            method = RequestMethod.GET,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public Reply retrieve(
+            Principal principal,
+            @RequestParam(name = "boardId", required = true) String boardId,
+            @RequestParam(name = "articleId", required = true) Long articleId,
+            @RequestParam(name = "replyId", required = true) Long replyId) {
+
+        // 1. 반별 게시판들을 해당 반이 아닌 사람들은 보지 못하도록 하기위해 유저 정보를 받아옴
+        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
+        // 2. 해당 유저의 반 고유번호를 얻어옴
+        Long currentUserClassId = userIdToClassIdConverter.userIdToClassId(user.getUserId());
+//
+//        // 3. 권한을 비교하여 관리자면 모든 게시물 상세조회 가능, 학생, 강사라면 다른반별 게시물들은 열람 불가능
+//        if (user.getRole().getRoleCode().equals("role_admin")) {  // 3-1 관리자는 모든 게시물 상세조회 가능
+//            return articleService.itemOfArticleAndBoardId(articleId, boardId).get();
+//        } else if (user.getRole().getRoleCode().equals("role_teacher") || user.getRole().getRoleCode().equals("role_student")) { // 3-2 강사와 학생이라면
+//            if (boardId.equals("notice") || boardId.equals("job") || boardId.equals("project")) {
+//                // notice, job, project 는 모든 반 열람 가능
+//                return articleService.itemOfArticleAndBoardId(articleId, boardId).get();
+//            } else {
+//                // 3-3. 반별 게시물들은 유저의 반 정보와 게시글의 반 정보를 비교해서 일치 시 열람 가능
+//                if (currentUserClassId.equals(boardTypeListService.selectClassId(boardId))) {
+//                    return articleService.itemOfArticleAndBoardId(articleId, boardId).get();
+//                } else {
+//                    return null;
+//                }
+//            }
+//        }
+        return replyService.itemOfArticleAndBoardIdAndReplyId(articleId,replyId).get();
     }
 }

@@ -8,11 +8,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
     // 해당 articleId에 대한 모든 reply을 출력
     Page<Reply> findAllByArticle_ArticleId(Long articleId, Pageable pageable);
+
+    // 해당 BoardId, articleId에 해당하는 reply 하나를 조회
+    @Query(value = "SELECT * FROM reply r WHERE r.article_id=?1 AND r.reply_id=?2 ", nativeQuery = true)
+    Optional<Reply> findByReply_ArticleIdAndReplyId(Long articleId, Long replyId);
 
 //    // reply의 ownerId 찾기
 //    Long findUserIdByReply_ReplyId(Long replyId);

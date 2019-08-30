@@ -7,13 +7,12 @@ import com.bitcamp.project.project_4bit.util.RandomKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -26,6 +25,7 @@ public class ForgotUserInfoController {
     @Autowired
     private UserRepository userRepository;
 
+
     @Autowired
     private RandomKeyGenerator randomKeyGenerator;
 
@@ -34,20 +34,26 @@ public class ForgotUserInfoController {
 
     // ID찾기 (등록된 이름과 연락처가 일치하면 화면에 ID 바로 표시)
     // http://localhost:8080/forgot/username?name=학생테스트1&phone=010-6666-6666
-    @RequestMapping(
+    @PostMapping(
             path = "/username",
-            method = RequestMethod.POST,
+//            method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public String findUsername(@RequestParam(name = "name") String name, @RequestParam(name = "phone") String phone) {
+    public Map<String,String> findUsername(@RequestParam(name = "name") String name, @RequestParam(name = "phone") String phone) {
         System.out.println("입력받은 이름: " + name + ", 입력받은 연락처: " + phone);
 
         // 사용자가 입력한 이름/연락처 정보가 유효한지 확인
         User user = userRepository.findByNameAndPhone(name, phone);
+
+        Map<String,String> result =new HashMap<>();
+
         if (user == null) {
-            return "해당 이름 또는 연락처로 가입된 회원정보가 존재하지 않습니다.";
+//            return "해당 이름 또는 연락처로 가입된 회원정보가 존재하지 않습니다.";
+            result.put("nothing", "해당 이름 또는 연락처로 가입된 회원정보가 존재하지 않습니다.");
+            return result;
         } else {
             String username = user.getUsername();
-            return "회원님의 ID는 " + username + " 입니다";
+            result.put(name,"회원님의 ID는" + username + " 입니다");
+            return result;
         }
     }
 
@@ -60,17 +66,22 @@ public class ForgotUserInfoController {
             path = "/password",
             method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public String sendPasswordResetEmail(@RequestParam(name = "address") String address) {
+    public Map<String,String> sendPasswordResetEmail(@RequestParam(name = "address") String address) {
+
         System.out.println("입력받은 이메일 주소:" + address);
         SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy년 MM월 dd일 HH:mm");
         Date now = new Date();
         String requestedTime = format1.format(now);
         System.out.println(requestedTime);
 
+        Map<String,String> resultMap =new HashMap<>();
+
+
         // 사용자가 입력한 이메일 유효한지 확인
         User user = userRepository.findByEmail(address);
         if (user == null) {
-            return "해당 이메일로 가입된 회원정보가 존재하지 않습니다.";
+            resultMap.put("undefine","해당 이메일로 가입된 회원정보가 존재하지 않습니다.");
+            return resultMap;
         } else {
 
             String userName = user.getName();
@@ -95,12 +106,37 @@ public class ForgotUserInfoController {
             // mailService 통해서 메일 전송 (메일주소, 제목, 본문)
             mailService.sendEmail(address, msgSubject, msgText);
 
-            return "요청하신 이메일 주소 " + address + "로 임시비밀번호를 보내드렸습니다";
+            resultMap.put(userName,"요청하신 이메일 주소 " + address + "로 임시비밀번호를 보내드렸습니다");
+
+            return resultMap;
         }
     }
 
+    @RequestMapping(
+            path = "/compare",
+            method = RequestMethod.GET,
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public Boolean compareUserInfo(@RequestParam("username") String username,
+                                   @RequestParam("name") String name,
+                                   @RequestParam("phone") String phone) {
 
+        // 사용자가 입력한 ID/이름/연락처 정보가 유효한지 확인
+        User user = userRepository.findByUsernameAndNameAndPhone(username,name, phone);
 
+        if (user == null) {
+            return false;
+        } else {
+            String userId = user.getUsername();
+            String userName = user.getName();
+            String userPhone = user.getPhone();
 
+            if(userId.equals(username) && userName.equals(name) && userPhone.equals(phone)){
+                return true;
+            }else {
+                return false;
+            }
+        }
+    }
 }
+
 
