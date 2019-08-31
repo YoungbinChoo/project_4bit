@@ -98,9 +98,5 @@ public class ForgotUserInfoController {
             return "요청하신 이메일 주소 " + address + "로 임시비밀번호를 보내드렸습니다";
         }
     }
-
-
-
-
 }
 

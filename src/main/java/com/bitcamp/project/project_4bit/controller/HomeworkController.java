@@ -204,7 +204,7 @@ public class HomeworkController {
             }
     )
     public Homework retrieve(
-            Principal principal, @RequestParam(name = "hwno", defaultValue = "1", required = true) Long hwId) {
+            Principal principal, @RequestParam(name = "hwId", defaultValue = "1", required = true) Long hwId) {
         return homeworkService.itemOfHomework(hwId).get();
     }
 
