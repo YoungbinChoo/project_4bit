@@ -49,4 +49,18 @@ public interface TestQuizRepository extends JpaRepository<TestQuiz, Long> {
     // 역할 :  studentAnswer 수정에 필요한 testQuizId를 반환
     @Query(value = "SELECT test_quiz_id FROM test_quiz WHERE test_id = ?1 AND quiz_id = ?2", nativeQuery = true)
     Long findTestQuizIdByTestIdAndQuizId(Long testId, Long quizId);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : testQuiz 전체 출력  testId에 따라
+    @Query(value = "SELECT * FROM test_quiz WHERE test_id = ?1", nativeQuery = true)
+    Page<TestQuiz> findTestQuizByTestQuizId(Long testId, Pageable pageable);
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : testQuiz를 testId로 삭제
+    @Modifying
+    @Query(value = "DELETE FROM test_quiz WHERE test_id = ?1", nativeQuery = true)
+    void deleteByTestId(Long testId);
 }

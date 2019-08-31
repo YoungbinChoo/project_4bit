@@ -241,6 +241,7 @@ public class HomeworkController {
             System.out.println("작성자 신원 일치 확인");
             // 업데이트 수행, 성공여부 0 or 1로 받아옴
             int isUpdateSuccess = homeworkService.updateHomework(hwId, homework);
+            System.out.println("DeadLine >>>>>>>>>>>>> " + homework.getHwDeadLine());
             if (isUpdateSuccess == 0)
                 return "수정에 실패했습니다";
             else if (isUpdateSuccess == 1)

@@ -79,7 +79,7 @@ public class ManageMemberController {
     // EndPoint : http://localhost:8080/manage/member/teacher
     @PreAuthorize("hasAnyAuthority('MANAGE_READ')")
     @RequestMapping(
-            path = "/teacher",
+            path = "/teacher/list",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
