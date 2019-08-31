@@ -204,11 +204,11 @@ public class HomeworkController {
             }
     )
     public Homework retrieve(
-            Principal principal, @RequestParam(name = "hwId", defaultValue = "1", required = true) Long hwId) {
+            Principal principal, @RequestParam(name = "hwno", required = true) Long hwId) {
+        System.out.println("번호 : " + hwId);
         return homeworkService.itemOfHomework(hwId).get();
     }
-
-
+    
     // Todo: 관리자는 작성자가 아니어도 수정 가능하게 해야하는지?(현재는 불가능)
     ///////////////////////////   Homework 수정 (강사만)   ///////////////////////////
     // http://localhost:8080/class/assignment/view?hwno={hwno}
