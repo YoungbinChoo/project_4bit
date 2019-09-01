@@ -101,7 +101,7 @@ public class ClassGroupService {
     // 반 리스트를 출력
     @Transactional
     public Page<ClassTeacherLog> listOfClassGroup(Pageable pageable){
-        return classTeacherLogRepository.findAll(pageable);
+        return classTeacherLogRepository.findAll_LastClassGroupLog(pageable);
     }
 
 }

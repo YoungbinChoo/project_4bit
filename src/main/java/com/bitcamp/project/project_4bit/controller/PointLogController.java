@@ -51,6 +51,7 @@ public class PointLogController {
     }
 
 
+
     // 과제, 시험에서 바로 포인트 날릴거라서 사실상 필요 없는 메서드
     //포인트 개별로 날리는 메서드
     // endpoint : http://localhost:8080/mypage/point
