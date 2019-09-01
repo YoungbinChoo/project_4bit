@@ -363,7 +363,6 @@ public class TestGroupController {
         Long userId = user.getUserId();
         System.out.println("유저_번호 : " + userId);
         // 4. userIdToClassIdConverter에서 userId가 강사인 경우 classId를 찾는 방법을 통해 classId를 얻는다
-        // TODO 권한 중요 >> 강사만 들어올 수 있게 해야함
         Long classId = userIdToClassIdConverter.userIdToClassId(userId);
 
         System.out.println("컨트롤_반_Id : " + classId);
@@ -374,19 +373,19 @@ public class TestGroupController {
         System.out.println("변환_전_시작_시간" + testGroup.getTestStartTime());
         System.out.println("변환_전_종료_시간" + testGroup.getTestEndTime());
 
-        Date startTime = testGroup.getTestStartTime();
-        String testStartTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTime));
-
-        Date endTime = testGroup.getTestEndTime();
-        String testEndTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(endTime));
-
-        System.out.println("변환_후_시작_시간" + testStartTime);
-        System.out.println("변환_후_종료_시간" + testEndTime);
+//        Date startTime = testGroup.getTestStartTime();
+//        String testStartTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTime));
+//
+//        Date endTime = testGroup.getTestEndTime();
+//        String testEndTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(endTime));
+//
+//        System.out.println("변환_후_시작_시간" + testStartTime);
+//        System.out.println("변환_후_종료_시간" + testEndTime);
 
         if (user.getRole().getRoleCode().equals("role_teacher")) {
             if (testOwner == userId) {
                 trueOrFalse
-                        = testGroupService.updateTestGroup(testGroup.getTestName(), testStartTime, testEndTime, testGroup.getTestDescription(), testId, classId);
+                        = testGroupService.updateTestGroup(testGroup.getTestName(), testGroup.getTestStartTime(), testGroup.getTestEndTime(), testGroup.getTestDescription(), testId, classId);
 
                 if(trueOrFalse == 0){
                     System.out.println("수정에 실패했습니다");

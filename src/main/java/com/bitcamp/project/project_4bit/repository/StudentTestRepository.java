@@ -49,4 +49,5 @@ public interface StudentTestRepository extends JpaRepository<StudentTest,Long> {
     //       testId와 userId로 studnetTestId를 조회
     @Query(value = "SELECT student_test_id FROM student_test WHERE test_id = ?1 AND user_id = ?2", nativeQuery = true)
     Long findStudentTestIdByTestIdAndUserId(Long testId, Long userId);
+
 }
