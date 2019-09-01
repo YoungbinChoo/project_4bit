@@ -56,7 +56,7 @@ public class HwArticleController {
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public HwArticle create(Principal principal,
                             @RequestBody HwArticle hwArticle,
-                            @RequestParam(name = "hwno", defaultValue = "1", required = true) Long hwId) {
+                            @RequestParam(name = "hwno", required = true) Long hwId) {
 
         //////////// param으로 넘어오는 HwArticle 구성 //////////////////////////////
 //        1. HW_article_id : 사용자입력X, 자동부여
@@ -84,6 +84,7 @@ public class HwArticleController {
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
         hwArticle.setUser(user);
 
+        System.out.println("들어온 hwContents: " + hwArticle.getHwContents());
 
         // 세팅 완료된 hwArticle 덩어리를 hwArticleService를 통해 저장(=create)
         return hwArticleService.createHwArticle(hwArticle);
@@ -105,7 +106,7 @@ public class HwArticleController {
             }
     )
     public HwArticle retrieve(Principal principal,
-                              @RequestParam(name = "hwArticleId", defaultValue = "1", required = true) Long hwArticleId
+                              @RequestParam(name = "hwArticleId", required = true) Long hwArticleId
                               ) {
 
         // 권한 검증 필요
@@ -174,7 +175,7 @@ public class HwArticleController {
     public String update(
             Principal principal,
             @RequestBody HwArticle hwArticle,
-            @RequestParam(name = "hwArticleId", defaultValue = "1", required = true) Long hwArticleId
+            @RequestParam(name = "hwArticleId", required = true) Long hwArticleId
     ) {
         // 권한 검증(학생이면서 최초 작성자와 동일한 경우에만 가능)
         // 1-1. principal로 사용자의 userId 받아오기
@@ -227,7 +228,7 @@ public class HwArticleController {
             }
     )
     public String delete(Principal principal,
-                         @RequestParam(name = "hwArticleId", defaultValue = "1", required = true) Long hwArticleId) {
+                         @RequestParam(name = "hwArticleId", required = true) Long hwArticleId) {
 
         // 권한 검증(학생이면서 최초 작성자와 동일한 경우에만 가능)
         // 1-1. principal로 사용자의 userId 받아오기
