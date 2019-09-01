@@ -131,7 +131,7 @@ public class HomeworkController {
 
 
     // Todo: 관리자 계정의 과제목록 READ, WRITE권한을 줄 것인지 생각해야
-    ///////////////////////////   Homework 목록읽기(=게시판)   ///////////////////////////
+    ///////////////////////////   현재 진행중인 Homework 목록읽기(=게시판)   ///////////////////////////
     // http://localhost:8080/class/assignment/list
     @PreAuthorize("hasAnyAuthority('HW_READ')")     // 학생, 강사 가능
     @RequestMapping(
@@ -190,6 +190,76 @@ public class HomeworkController {
         }
     }
 
+    
+    ///////////////////////////   종료된 Homework 목록읽기   ///////////////////////////
+    // http://localhost:8080/class/assignment/listEnded
+    @PreAuthorize("hasAnyAuthority('HW_READ')")     // 학생, 강사 가능
+    @RequestMapping(
+            path = "/listended",
+            method = RequestMethod.POST,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public ResultItems<Homework> listOfEnded(
+            Principal principal,
+            @RequestParam(name = "page", defaultValue = "1", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size
+    ) {
+
+        // 1. principal에서 classId받아오기
+        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
+        Long userId = user.getUserId();
+        Long classId = userIdToClassIdConverter.userIdToClassId(userId);
+
+        // 1-1. 학생인 경우
+        if(user.getRole().getRoleCode().equals("role_student")){
+            System.out.println("현재 로그인한 사용자(userId: " + userId + ")는 학생이고, 반번호는 : "+ classId + "입니다");
+        }
+        // 1-2. 선생인 경우
+        else if(user.getRole().getRoleCode().equals("role_teacher")) {
+            System.out.println("현재 로그인한 사용자(userId: " + userId + ")는 강사이고, 반번호는 : "+ classId + "입니다");
+        }
+        // 1-3. 그외의 경우
+        else {
+            // 반정보가 없는 권한없는 사용자(=차단해야)
+            System.out.println("과제목록을 볼 권한이 없는 사용자(userId: " + userId + ")가 접근했습니다");
+        }
+
+        // 2. 현재시간(=요청시간) 계산용 파트(진행중 과제만 표시하기 위해)
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        String requestedTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
+        System.out.println("현재시간(요청시간) : " + requestedTime);
+
+        // 3. Pageable 파트
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        // 4. homeworkService에 반번호, 현재시간 넘겨주고 조건에 부합하는(반번호 일치, 마감이 현재시간 이후) 과제들만 받아옴
+        Page<Homework> EndedHomeworkList = homeworkService.listOfEndedHomeworkByClassIdAndDate(classId, requestedTime, pageable);
+
+        if(EndedHomeworkList.getTotalElements() > 0) {
+            return new ResultItems<Homework>(EndedHomeworkList.stream().collect(Collectors.toList()), page, size, EndedHomeworkList.getTotalElements());
+        }
+        else {
+            // 결과가 없는 경우 에러메시지 출력해야 ("현재 진행중인 과제가 없습니다")
+            // 어떻게 구현하지?
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Todo: 권한체크 강화해야 (list에서 한 번 거르지만 여기서 다시 걸러야함. 반이 일치하는지)
     ///////////////////////////   Homework 상세보기(=게시물 상세)   ///////////////////////////
@@ -208,7 +278,7 @@ public class HomeworkController {
         System.out.println("번호 : " + hwId);
         return homeworkService.itemOfHomework(hwId).get();
     }
-    
+
     // Todo: 관리자는 작성자가 아니어도 수정 가능하게 해야하는지?(현재는 불가능)
     ///////////////////////////   Homework 수정 (강사만)   ///////////////////////////
     // http://localhost:8080/class/assignment/view?hwno={hwno}
