@@ -90,7 +90,7 @@ public class ManageMemberController {
                                        @RequestParam(name = "page", defaultValue = "1", required = false) int page,
                                        @RequestParam(name = "size", defaultValue = "15", required = false) int size){
 //        Pageable pageable = PageRequest.of(page-1, size);
-        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("teacherId").descending());
         Page<Teacher> teachers = userService.listOfTeacherByAdmin(pageable);
         return new ResultItems<Teacher>(teachers.stream().collect(Collectors.toList()),page, size, teachers.getTotalElements());
     }
@@ -109,7 +109,8 @@ public class ManageMemberController {
             Principal principal,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "15", required = false) int size) {
-        Pageable pageable = PageRequest.of(page-1, size);
+//        Pageable pageable = PageRequest.of(page-1, size);
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("studentId").descending());
         Page<Student> students = userService.listOfStudentByAdmin(pageable);
 
         return new ResultItems<Student>(students.stream().collect(Collectors.toList()),page, size, students.getTotalElements());

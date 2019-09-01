@@ -69,7 +69,7 @@ public class AttendLogController {
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
 
 //        Pageable pageable = PageRequest.of(page - 1, size);
-        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("attendLogId").descending());
         Page<AttendLog> attendLogList = attendLogService.listOfAttendLogByStudentId(studentId, pageable);
 
 
@@ -89,6 +89,7 @@ public class AttendLogController {
 
     // 1. 매일 01:00 에 모든 학생의 출석상태를 INIT 으로 등록
     @Scheduled(cron = "0 0 1 ? * MON-FRI")
+//    @Scheduled(cron = "0 21 22 ? * *")
     public AttendLog InitAttendLog(){
         List<Student> students = studentService.itemsOfStudentsByClassId();
 
