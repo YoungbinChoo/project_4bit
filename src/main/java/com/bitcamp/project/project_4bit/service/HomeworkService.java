@@ -54,6 +54,11 @@ public class HomeworkService {
     }
 
     @Transactional(readOnly = true)
+    public Page<Homework> listOfEndedHomeworkByClassIdAndDate(Long classId, String requestedTime, Pageable pageable) {
+        return homeworkRepository.findAllEndedByClassIdAndRequestedTime(classId, requestedTime, pageable);
+    }
+
+    @Transactional(readOnly = true)
     public Homework loadHomeworkByHwId(Long hwId){
         return homeworkRepository.findByHwId(hwId);
     }

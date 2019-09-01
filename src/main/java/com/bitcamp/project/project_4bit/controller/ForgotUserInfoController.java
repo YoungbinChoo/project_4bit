@@ -25,7 +25,6 @@ public class ForgotUserInfoController {
     @Autowired
     private UserRepository userRepository;
 
-
     @Autowired
     private RandomKeyGenerator randomKeyGenerator;
 
