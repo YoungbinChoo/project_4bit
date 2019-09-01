@@ -65,7 +65,7 @@ public class ClassGroupController {
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
 
 //        Pageable pageable = PageRequest.of(page -1, size);
-        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("classId").descending());
         Page<ClassTeacherLog> classList = classGroupService.listOfClassGroup(pageable);
 
         if(user.getRole().getRoleCode().equals("role_admin")){

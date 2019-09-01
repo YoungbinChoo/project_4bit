@@ -58,8 +58,8 @@ public class CounselController {
             Long classId = userService.loadClassIdByUserId(user.getUserId());
 
             //3. classId로 학생 리스트를 뽑는다.
-//            Pageable pageable = PageRequest.of(page-1, size);
-            Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+            Pageable pageable = PageRequest.of(page-1, size);
+//            Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
             Page<Student> students = userService.listOfStudentByClassId(classId,pageable);
 
             return new ResultItems<Student>(students.stream().collect(Collectors.toList()),page,size,students.getTotalElements());

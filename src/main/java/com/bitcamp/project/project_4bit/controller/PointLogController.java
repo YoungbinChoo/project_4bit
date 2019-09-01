@@ -44,7 +44,7 @@ public class PointLogController {
 
         if (user.getUserId() == userId){
 //            Pageable pageable = PageRequest.of(page - 1, size);
-            Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+            Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("pointLogId").descending());
             Page<PointLog> pointLogs = pointLogService.listofPointLog(pageable);
             return new ResultItems<PointLog>(pointLogs.stream().collect(Collectors.toList()),page,size,pointLogs.getTotalElements());
         }else {

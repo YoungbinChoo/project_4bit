@@ -112,7 +112,7 @@ public class ReplyController {
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
 //        Pageable pageable = PageRequest.of(page - 1, size);
-        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("replyId").descending());
 
         Page<Reply> replyList = replyService.listOfReplyByArticleId(articleId, pageable);
 
