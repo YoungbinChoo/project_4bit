@@ -46,7 +46,7 @@ public class CounselController {
             })
     public ResultItems<Student> listOf(Principal principal,
                                        @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-                                       @RequestParam(name = "size", defaultValue = "15", required = false) int size){
+                                       @RequestParam(name = "size", defaultValue = "5", required = false) int size){
 
         // 1. 접속한 강사의 정보
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
