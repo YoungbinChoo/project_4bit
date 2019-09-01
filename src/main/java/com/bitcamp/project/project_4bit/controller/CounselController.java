@@ -47,7 +47,7 @@ public class CounselController {
             })
     public ResultItems<Student> listOf(Principal principal,
                                        @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-                                       @RequestParam(name = "size", defaultValue = "5", required = false) int size){
+                                       @RequestParam(name = "size", defaultValue = "10", required = false) int size){
 
         // 1. 접속한 강사의 정보
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
@@ -58,8 +58,8 @@ public class CounselController {
             Long classId = userService.loadClassIdByUserId(user.getUserId());
 
             //3. classId로 학생 리스트를 뽑는다.
-//            Pageable pageable = PageRequest.of(page-1, size);
-            Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+            Pageable pageable = PageRequest.of(page-1, size);
+            //Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
             Page<Student> students = userService.listOfStudentByClassId(classId,pageable);
 
             return new ResultItems<Student>(students.stream().collect(Collectors.toList()),page,size,students.getTotalElements());
