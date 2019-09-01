@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -120,7 +121,9 @@ public class HwReplyController {
         Long userIdOfCurrentUser = user.getUserId();
 
         // 2. Pageable 파트
-        Pageable pageable = PageRequest.of(page - 1, size);
+//        Pageable pageable = PageRequest.of(page - 1, size);
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+
 
         // 3. hwReplyService에 hwArticleId 넘겨주고 조건에 부합하는(=hwArticleId가 일치하는) 댓글만 받아옴
         Page<HwReply> hwReplyList = hwReplyService.listOfHwReplyByHwArticleId(hwArticleId, pageable);
