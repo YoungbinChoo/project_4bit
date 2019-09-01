@@ -69,7 +69,7 @@ public class QuizController {
 //        받아온 user와 constraintDefine를 quiz에 담아서 준비
         quiz.setUser(user);
         quiz.setConstraintDefine(constraintDefine);
-
+//        System.out.println("Quiz : "+ quiz.getQuizChapter());
 //        완전히 모든항목이 세팅된 quiz를 quizService에게 인자로 넘겨주기
         return quizService.createQuiz(quiz);
     }

@@ -50,7 +50,8 @@ public class TestQuizController {
     public TestQuiz createTestQuiz(
             @RequestBody TestQuiz testQuiz,
             @RequestParam(name = "testId", required = false) Long testId,
-            @RequestParam(name = "quizId", required = false) Long quizId){
+            @RequestParam(name = "quizId", required = false) Long quizId
+            ){
         /*
          * 1. test_quiz_id : 고유번호 자동생성
          * 2. test_quiz_no : 시험 문제의 문제번호
@@ -60,7 +61,7 @@ public class TestQuizController {
 
         System.out.println("시험 : " + testId);
         System.out.println("문제 : " + quizId);
-        
+
         TestGroup testGroup = testGroupService.findOneByTestId(testId);
         Quiz quiz = quizService.findOneByQuiz(quizId);
 
