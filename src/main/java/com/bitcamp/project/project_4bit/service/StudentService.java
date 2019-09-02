@@ -40,4 +40,10 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
+
+    // 유저ID 로 학생정보를 찾기
+    @Transactional
+    public Student findStudentByUserId(Long userId){
+        return studentRepository.findByUser_UserId(userId);
+    }
 }
