@@ -65,8 +65,8 @@ public class StudentTestController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 역할 : 학생들 점수 확인
-    // 엔드포인트 : http://localhost:8080/study/endedtest/showscore/userId={userId}/testno={testno}
-    @PreAuthorize("hasAnyAuthority('STEST_READ')")
+    // 엔드포인트 : http://localhost:8080/study/endedtest/showscore/userId={userId}/testId={testId}
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/study/endedtest/showscore/userId={userId}/testId={testId}",
