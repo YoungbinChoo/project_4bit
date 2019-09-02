@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
@@ -42,7 +43,8 @@ public class PointLogController {
         User user = (User)userDetailsService.loadUserByUsername(principal.getName());
 
         if (user.getUserId() == userId){
-            Pageable pageable = PageRequest.of(page - 1, size);
+//            Pageable pageable = PageRequest.of(page - 1, size);
+            Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("pointLogId").descending());
             Page<PointLog> pointLogs = pointLogService.listofPointLog(pageable);
             return new ResultItems<PointLog>(pointLogs.stream().collect(Collectors.toList()),page,size,pointLogs.getTotalElements());
         }else {

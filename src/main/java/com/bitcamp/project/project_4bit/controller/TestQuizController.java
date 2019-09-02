@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -170,6 +171,8 @@ public class TestQuizController {
             @RequestParam(name = "size", defaultValue = "10", required = false) int size){
 
         Pageable pageable = PageRequest.of(page - 1, size);
+//        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+
         System.out.println("문제리스트_시험_번호 : " + testId);
 
         Page<TestQuiz> listOfTestQuiz =  testQuizService.findAllOfTestQuizByTestId(testId, pageable);

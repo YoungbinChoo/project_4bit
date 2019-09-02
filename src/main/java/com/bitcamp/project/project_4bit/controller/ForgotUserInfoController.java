@@ -25,7 +25,6 @@ public class ForgotUserInfoController {
     @Autowired
     private UserRepository userRepository;
 
-
     @Autowired
     private RandomKeyGenerator randomKeyGenerator;
 
@@ -52,7 +51,7 @@ public class ForgotUserInfoController {
             return result;
         } else {
             String username = user.getUsername();
-            result.put(name,"회원님의 ID는" + username + " 입니다");
+            result.put("find","회원님의 ID는" + username + " 입니다");
             return result;
         }
     }
@@ -80,7 +79,7 @@ public class ForgotUserInfoController {
         // 사용자가 입력한 이메일 유효한지 확인
         User user = userRepository.findByEmail(address);
         if (user == null) {
-            resultMap.put("undefine","해당 이메일로 가입된 회원정보가 존재하지 않습니다.");
+            resultMap.put("nothing","해당 이메일로 가입된 회원정보가 존재하지 않습니다.");
             return resultMap;
         } else {
 
@@ -106,7 +105,7 @@ public class ForgotUserInfoController {
             // mailService 통해서 메일 전송 (메일주소, 제목, 본문)
             mailService.sendEmail(address, msgSubject, msgText);
 
-            resultMap.put(userName,"요청하신 이메일 주소 " + address + "로 임시비밀번호를 보내드렸습니다");
+            resultMap.put("find","요청하신 이메일 주소 " + address + "로 임시비밀번호를 보내드렸습니다");
 
             return resultMap;
         }
@@ -131,12 +130,46 @@ public class ForgotUserInfoController {
             String userPhone = user.getPhone();
 
             if(userId.equals(username) && userName.equals(name) && userPhone.equals(phone)){
+//                System.out.println("결과 값 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + true);
                 return true;
             }else {
+                System.out.println("결과 값 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + false);
                 return false;
             }
         }
     }
+
+    /*
+    * @RequestMapping(
+            path = "/compare",
+            method = RequestMethod.GET,
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public Map<Boolean,String> compareUserInfo(@RequestParam("username") String username,
+                                   @RequestParam("name") String name,
+                                   @RequestParam("phone") String phone) {
+
+        // 사용자가 입력한 ID/이름/연락처 정보가 유효한지 확인
+        User user = userRepository.findByUsernameAndNameAndPhone(username,name, phone);
+        Map<Boolean, String> result =new HashMap<>();
+
+        if (user == null) {
+            result.put(false, "회원의 정보가 존재하지 않습니다.");
+            return result;
+        } else {
+            String userId = user.getUsername();
+            String userName = user.getName();
+            String userPhone = user.getPhone();
+
+            if(userId.equals(username) && userName.equals(name) && userPhone.equals(phone)){
+                result.put(true, "일치");
+                return result;
+            }else {
+                result.put(false,"불일치");
+                return result;
+            }
+        }
+    }
+    * */
 }
 
 

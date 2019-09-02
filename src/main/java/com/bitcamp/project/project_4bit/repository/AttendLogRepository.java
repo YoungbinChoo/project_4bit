@@ -23,6 +23,7 @@ public interface AttendLogRepository extends JpaRepository<AttendLog, Long> {
 
     // 학생의 출석현황 list 뽑기
     Page<AttendLog> findAllByStudent_StudentId(Long studentId, Pageable pageable);
+    Page<AttendLog> findAllByStudent_User_userId(Long studentId, Pageable pageable);
 
     // 모든 count 를 0으로 바꾸기위한 쿼리
     @Modifying

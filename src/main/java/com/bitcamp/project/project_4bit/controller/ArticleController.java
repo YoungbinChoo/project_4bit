@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -167,7 +168,8 @@ public class ArticleController {
         Long currentUserClassId = userIdToClassIdConverter .userIdToClassId(user.getUserId());
 
         // 3. 게시글들을 모두 articleList에 저장
-        Pageable pageable = PageRequest.of(page - 1, size);
+//        Pageable pageable = PageRequest.of(page - 1, size);
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("articleId").descending());
         Page<Article> articleList = articleService.listOfArticleByBoardId(boardId, pageable);
 
 
