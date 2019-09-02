@@ -39,4 +39,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value = "UPDATE student s SET s.counsel=?2 WHERE s.student_id=?1", nativeQuery = true)
     int updateCounsel(Long studentId, String counsel);
 
+    // 로드맵 마지막단계 업데이트
+    @Modifying
+    @Query(value = "UPDATE student SET roadmap_last=?2 WHERE student_id=?1", nativeQuery = true)
+    int updateRoadmapLast(Long userId, int roadmapLast);
+
 }

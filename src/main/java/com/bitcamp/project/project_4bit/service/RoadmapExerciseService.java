@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -20,16 +19,16 @@ public class RoadmapExerciseService {
     // 역할    : RoadmapExercise 내용 전체출력
     // 설명    : findAll 은 Page 인터페이스 안에 구현되있는 구현체이다.
     @Transactional
-    public Page<RoadmapExercise> listOfExerciseSequence(Pageable pageable){
+    public Page<RoadmapExercise> listOfExerciseSequence(Pageable pageable) {
 
         return roadmapExerciseRepository.findAll(pageable);
     }
 
     // 역할    : ExerciseSequence를 랜덤생성하여 문제 출제
     @Transactional(readOnly = true)
-    public RoadmapExercise itemOfRoadmapExerciseAndExerciseSequence(Integer roadmapStageNo){
+    public RoadmapExercise itemOfRoadmapExerciseAndExerciseSequence(Integer roadmapStageNo) {
         Long[] exerciseArray = roadmapExerciseRepository.findByRoadmapExercise_ExerciseSequence(roadmapStageNo);
-        int randomNum = new Random().nextInt(5);
+        int randomNum = new Random().nextInt(3);
         System.out.println("랜덤생성된 숫자: " + randomNum);
 
         Long selectedExerciseSequence = exerciseArray[randomNum];

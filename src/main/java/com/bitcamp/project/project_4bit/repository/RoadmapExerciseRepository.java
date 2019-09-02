@@ -22,4 +22,6 @@ public interface RoadmapExerciseRepository extends JpaRepository<RoadmapExercise
     // exerciseSequence 랜덤 생성
     @Query(value = "SELECT * FROM roadmap_exercise WHERE exercise_sequence=?1", nativeQuery = true)
     RoadmapExercise findByExerciseSequence(Long exerciseSequence);
+
+
 }
