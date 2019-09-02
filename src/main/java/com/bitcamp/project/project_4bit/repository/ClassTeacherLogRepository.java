@@ -1,6 +1,8 @@
 package com.bitcamp.project.project_4bit.repository;
 
 import com.bitcamp.project.project_4bit.entity.ClassTeacherLog;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,7 +22,8 @@ public interface ClassTeacherLogRepository extends JpaRepository<ClassTeacherLog
     @Query(value = "SELECT * FROM project_4bit.class_teacher_log l WHERE l.teacher_id=?1 ORDER BY l.class_teacher_event_time DESC LIMIT 1", nativeQuery = true)
     ClassTeacherLog findAllByTeacher_TeacherId(Long teacherId);
 
-
-
+    @Query(value = "SELECT * FROM class_teacher_log WHERE (class_id, class_teacher_event_time) IN " +
+            "(SELECT class_id, MAX(class_teacher_event_time) FROM class_teacher_log GROUP BY class_id)", nativeQuery = true)
+    Page<ClassTeacherLog> findAll_LastClassGroupLog(Pageable pageable);
 
 }

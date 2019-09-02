@@ -3,7 +3,6 @@ package com.bitcamp.project.project_4bit.service;
 import com.bitcamp.project.project_4bit.entity.Admin;
 import com.bitcamp.project.project_4bit.entity.ClassTeacherLog;
 import com.bitcamp.project.project_4bit.entity.Student;
-import com.bitcamp.project.project_4bit.entity.Teacher;
 import com.bitcamp.project.project_4bit.repository.AdminRepository;
 import com.bitcamp.project.project_4bit.repository.ClassTeacherLogRepository;
 import com.bitcamp.project.project_4bit.repository.StudentRepository;

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -90,6 +91,8 @@ public class QuizController {
             @RequestParam(name = "size", defaultValue = "10", required = false) int size){
 
         Pageable pageable = PageRequest.of(page-1, size);
+//        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("quizId").descending());
+
         Page<Quiz> quizList = quizService.findAllByQuiz(pageable);
 
         return new ResultItems<Quiz>(quizList.stream().collect(Collectors.toList()), page, size, quizList.getTotalElements());

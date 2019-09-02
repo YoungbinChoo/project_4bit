@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class ReplyService {
 
@@ -47,4 +49,11 @@ public class ReplyService {
         replyRepository.deleteById(replyId);
     }
 
+    // 역할    : BoardId 와 ArticleId를 통해 게시물 상세보기
+    // 설명    : 해당 boardId 에 포함되어 있는 article 들을 뽑아낸다.
+    //           해당 게시판에 없는 articleId를 사용하면 404error가 발생 -> 나중에 처리해주어야 함
+    @Transactional(readOnly = true)
+    public Optional<Reply> itemOfArticleAndBoardIdAndReplyId(Long articleId, Long replyId){
+        return replyRepository.findByReply_ArticleIdAndReplyId(articleId,replyId);
+    }
 }

@@ -60,7 +60,7 @@ public class FileController {
     }
 
     // 여러 파일을 업로드
-    @PostMapping(value = "/files")
+    @PostMapping(path = "/files")
     public List<UploadFileResponse> uploadFiles(
             @RequestParam("files") MultipartFile[] files,
             @RequestParam(name = "articleId") Long articleId,

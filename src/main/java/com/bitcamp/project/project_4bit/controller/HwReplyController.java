@@ -20,12 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -119,7 +121,9 @@ public class HwReplyController {
         Long userIdOfCurrentUser = user.getUserId();
 
         // 2. Pageable 파트
-        Pageable pageable = PageRequest.of(page - 1, size);
+//        Pageable pageable = PageRequest.of(page - 1, size);
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("hwReplyId").descending());
+
 
         // 3. hwReplyService에 hwArticleId 넘겨주고 조건에 부합하는(=hwArticleId가 일치하는) 댓글만 받아옴
         Page<HwReply> hwReplyList = hwReplyService.listOfHwReplyByHwArticleId(hwArticleId, pageable);
@@ -131,6 +135,21 @@ public class HwReplyController {
         return new ResultItems<HwReply>(hwReplyList.stream().collect(Collectors.toList()), page, size, hwReplyList.getTotalElements());
     }
 
+
+    // HwReply 하나 조회
+    @PreAuthorize("hasAnyAuthority('NOTICE_READ','JOB_READ','PRO_READ','CBOARD_READ','CNOTICE_READ','LIBRARY_READ')")
+    @RequestMapping(
+            path = "/view",
+            method = RequestMethod.GET,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )public HwReply retrieve(
+            @RequestParam(name = "hwArticleId", required = true) Long hwArticleId){
+
+                return hwReplyService.itemOfHwReply(hwArticleId).get();
+    }
 
 
 

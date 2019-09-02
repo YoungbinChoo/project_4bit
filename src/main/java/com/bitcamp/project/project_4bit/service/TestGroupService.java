@@ -76,26 +76,16 @@ public class TestGroupService {
         return testGroupRepository.updateTestGroup(testName, testStartTime, testEndTime, testDescription, testId, classId);
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 역할 : 시험 삭제
     @Transactional
     public void deleteTestGroup(Long testId){
-        testGroupRepository.deleteById(testId);
+        System.out.println("테스트그룹_시험_번호 : "+ testId);
+        testGroupRepository.deleteByTestId(testId);
      }
 
-
-
-
-
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // StudentTest를 만들면서 추가한 부분
     @Transactional
@@ -109,5 +99,14 @@ public class TestGroupService {
     @Transactional
     public int updateStudentScore(int sum, double avg, int max, int min,Long testId){
         return testGroupRepository.updateTestGroup(sum, avg, max, min, testId);
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 작성된 article의 user_id 를 찾아꺼내오는 역할.
+    @Transactional
+    public Long findTestGroupOwnerId(Long testId){
+        return testGroupRepository.findTestGroupOwner(testId);
     }
 }

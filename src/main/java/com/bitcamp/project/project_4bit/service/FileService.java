@@ -83,7 +83,7 @@ public class FileService {
 
         }catch(Exception e){
             throw new FileNotFoundException("File not found" + fileName);
-        }
+    }
     }
 
     public Resource loadFileAsResource(String fileName){

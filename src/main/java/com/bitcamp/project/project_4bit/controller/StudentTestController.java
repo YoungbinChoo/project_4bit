@@ -35,7 +35,7 @@ public class StudentTestController {
     // 시험 응시를 누르면 실행되어야 하는 메소드
     @PreAuthorize("hasAnyAuthority('STEST_WRITE')")
     @RequestMapping(
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
             path = "/class/test/apply/testId={testId}",
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,

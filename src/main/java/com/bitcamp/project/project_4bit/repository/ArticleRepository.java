@@ -38,8 +38,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     Optional<Article> findByBoardTypeList_BoardIdAndArticleId(String boardId, Long articleId);
 
 
-
-
     // article의 contents 수정
     // update 는 반환형이 1/0 이라서 int 형으로 반환해야되는 것이다.
     @Modifying

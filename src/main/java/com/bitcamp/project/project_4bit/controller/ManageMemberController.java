@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -79,7 +80,7 @@ public class ManageMemberController {
     // EndPoint : http://localhost:8080/manage/member/teacher
     @PreAuthorize("hasAnyAuthority('MANAGE_READ')")
     @RequestMapping(
-            path = "/teacher",
+            path = "/teacher/list",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -88,7 +89,8 @@ public class ManageMemberController {
     public ResultItems<Teacher> listOfTeacher(Principal principal,
                                        @RequestParam(name = "page", defaultValue = "1", required = false) int page,
                                        @RequestParam(name = "size", defaultValue = "15", required = false) int size){
-        Pageable pageable = PageRequest.of(page-1, size);
+//        Pageable pageable = PageRequest.of(page-1, size);
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("teacherId").descending());
         Page<Teacher> teachers = userService.listOfTeacherByAdmin(pageable);
         return new ResultItems<Teacher>(teachers.stream().collect(Collectors.toList()),page, size, teachers.getTotalElements());
     }
@@ -107,7 +109,8 @@ public class ManageMemberController {
             Principal principal,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "15", required = false) int size) {
-        Pageable pageable = PageRequest.of(page-1, size);
+//        Pageable pageable = PageRequest.of(page-1, size);
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("studentId").descending());
         Page<Student> students = userService.listOfStudentByAdmin(pageable);
 
         return new ResultItems<Student>(students.stream().collect(Collectors.toList()),page, size, students.getTotalElements());
