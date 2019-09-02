@@ -1,6 +1,9 @@
 package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.Article;
+import com.bitcamp.project.project_4bit.entity.ArticleFile;
+import com.bitcamp.project.project_4bit.entity.File;
+import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.ArticleFileService;
 import com.bitcamp.project.project_4bit.service.FileService;
 import com.bitcamp.project.project_4bit.util.UploadFileResponse;
@@ -19,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.LongFunction;
@@ -36,6 +40,9 @@ public class FileController {
     @Autowired
     private ArticleFileController articleFileController;
 
+    @Autowired
+    private ArticleFileService articleFileService;
+
     // 파일 한개를 업로드
     @PostMapping(value = "/file",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -52,6 +59,7 @@ public class FileController {
                 .toUriString();
 
         Long fileId = fileService.findFileId(replaceFileName).getFileId();
+
 
         articleFileController.createArticleFile(articleId,fileId);
 
