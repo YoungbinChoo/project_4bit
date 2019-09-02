@@ -46,4 +46,9 @@ public class StudentService {
     public Student findStudentByUserId(Long userId){
         return studentRepository.findByUser_UserId(userId);
     }
+
+    @Transactional
+    public int updateLastRoadmap(Long userId, int roadmapLast){
+        return studentRepository.updateRoadmapByUserId(userId, roadmapLast);
+    }
 }

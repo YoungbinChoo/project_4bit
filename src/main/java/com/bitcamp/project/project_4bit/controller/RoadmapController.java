@@ -85,4 +85,28 @@ public class RoadmapController {
             throw new AuthException("이전 문제를 풀어야됩니다.");
         }
     }
+    // 역할 : 문제를 풀면 다음단계로 업데이트
+    // http://localhost:8080/roadmap?roadmapLast=1
+    @PreAuthorize("hasAnyAuthority('ROADMAP_READ')")
+    @RequestMapping(
+            method = RequestMethod.PATCH,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE})
+    public int updateRoadmapLast(Principal principal,
+                                     @RequestParam int roadmapLast){
+        // 현재 유저정보
+        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
+        Student currentStudent = studentService.findStudentByUserId(user.getUserId());
+
+        if(roadmapLast == currentStudent.getRoadmapLast()){
+            int lastRoadmap = currentStudent.getRoadmapLast();
+            lastRoadmap = lastRoadmap + 1;
+
+            return studentService.updateLastRoadmap(currentStudent.getUser().getUserId(), lastRoadmap);
+        }
+        else{
+            return 0;
+        }
+    }
 }
