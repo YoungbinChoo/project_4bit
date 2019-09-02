@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -56,7 +57,7 @@ public interface TestGroupRepository extends JpaRepository<TestGroup, Long> {
     // 역할 : 시험 수정
     @Modifying
     @Query(value = "UPDATE test_group SET test_name=?1, test_start_time=?2, test_end_time=?3, test_description=?4 WHERE test_id =?5 AND class_id = ?6", nativeQuery = true)
-    int updateTestGroup(String testName, String testStartTime, String testEndTime, String testDescription, Long testId, Long classId);
+    int updateTestGroup(String testName, Date testStartTime, Date testEndTime, String testDescription, Long testId, Long classId);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

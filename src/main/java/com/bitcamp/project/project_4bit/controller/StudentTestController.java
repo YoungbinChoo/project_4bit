@@ -65,28 +65,21 @@ public class StudentTestController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 역할 : 학생들 점수 확인
-    // 엔드포인트 : http://localhost:8080/study/endedtest/showscore/testno={testno}
-    @PreAuthorize("hasAnyAuthority('STEST_READ')")
+    // 엔드포인트 : http://localhost:8080/study/endedtest/showscore/userId={userId}/testId={testId}
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
             method = RequestMethod.GET,
-            path = "/study/endedtest/showscore/testId={testId}",
+            path = "/study/endedtest/showscore/userId={userId}/testId={testId}",
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             }
     )
     public int showTestScore(
-            Principal principal,
+            @PathVariable("userId") Long userId,
             @PathVariable("testId") Long testId) {
 
         System.out.println("조회_시험_번호 : " + testId);
-
-        /* ------------------------------------- [userId 얻기] ------------------------------------- */
-        // 1. principal을 이용해 user 전체 정보를 얻음
-        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
-
-        // 2. user 정보에서 userId를 얻음
-        Long userId = user.getUserId();
 
         System.out.println("조회_유저_번호 : " + userId);
 
