@@ -63,4 +63,10 @@ public class AttendLogService {
     public List<AttendLog> findTwoLog(Long studentId){
         return attendLogRepository.findLastTwoLog(studentId);
     }
+
+    // 수정하기위해 최근 로그를 삭제
+    @Transactional
+    public void deleteAttendLog(Long attendLogId){
+        attendLogRepository.deleteById(attendLogId);
+    }
 }
