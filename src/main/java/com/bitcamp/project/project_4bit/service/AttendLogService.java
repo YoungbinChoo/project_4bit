@@ -46,6 +46,12 @@ public class AttendLogService {
         return attendLogRepository.findAllByStudent_StudentId(studentId, pageable);
     }
 
+    // 유저아이디로 출석로그를 검색
+    @Transactional
+    public Page<AttendLog> listOfAttendLogByUserId(Long userId, Pageable pageable){
+        return attendLogRepository.findAllByStudent_User_userId(userId, pageable);
+    }
+
     // 모든 count를 0으로 바꾸는 서비스
     @Transactional
     public int updateAttendEventName(String eventName, Long studentId){

@@ -56,13 +56,13 @@ public class AttendLogController {
     // 학생 한명의 출석현황을 조회
     @PreAuthorize("hasAnyAuthority('CBOARD_READ','CNOTICE_READ','LIBRARY_READ')")
     @RequestMapping(
-            path = "{studentId}",
+            path = "{userId}",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE})
     public ResultItems<AttendLog> attendLog(Principal principal,
-                                            @PathVariable("studentId") Long studentId,
+                                            @PathVariable("userId") Long userId,
                                             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
                                             @RequestParam(name = "size", defaultValue = "10", required = false) int size){
 
@@ -70,26 +70,30 @@ public class AttendLogController {
 
 //        Pageable pageable = PageRequest.of(page - 1, size);
         Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("attendLogId").descending());
-        Page<AttendLog> attendLogList = attendLogService.listOfAttendLogByStudentId(studentId, pageable);
+
+        Page<AttendLog> attendLogList = attendLogService.listOfAttendLogByUserId(userId, pageable);
 
 
-        if(user.getRole().getRoleCode().equals("role_admin")||user.getRole().getRoleCode().equals("role_teacher")){
-            System.out.println("Role >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+user.getRole().getRoleCode());
-            return new ResultItems<AttendLog>(attendLogList.stream().collect(Collectors.toList()), page, size, attendLogList.getTotalElements());
-        }else if(user.getRole().getRoleCode().equals("role_student")){
-            if(user.getUserId().equals((studentService.loadStudentByStudentId(studentId)).getUser().getUserId())){
+        return new ResultItems<AttendLog>(attendLogList.stream().filter(t->!t.getEventName().equals("INIT")).collect(Collectors.toList()), page, size, attendLogList.getTotalElements());
 
-                return new ResultItems<AttendLog>(attendLogList.stream().collect(Collectors.toList()), page, size, attendLogList.getTotalElements());
-            }
-        }
-        throw new AuthException("해당 권한이 없습니다.");
+
+//        if(user.getRole().getRoleCode().equals("role_admin")||user.getRole().getRoleCode().equals("role_teacher")){
+//            System.out.println("Role >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+user.getRole().getRoleCode());
+//            return new ResultItems<AttendLog>(attendLogList.stream().collect(Collectors.toList()), page, size, attendLogList.getTotalElements());
+//        }else if(user.getRole().getRoleCode().equals("role_student")){
+//            if(user.getUserId().equals((studentService.loadStudentByStudentId(studentId)).getUser().getUserId())){
+//
+//                return new ResultItems<AttendLog>(attendLogList.stream().collect(Collectors.toList()), page, size, attendLogList.getTotalElements());
+//            }
+//        }
+//        throw new AuthException("해당 권한이 없습니다.");
     }
 
 
 
     // 1. 매일 01:00 에 모든 학생의 출석상태를 INIT 으로 등록
-    @Scheduled(cron = "0 0 1 ? * MON-FRI")
-//    @Scheduled(cron = "0 21 22 ? * *")
+//    @Scheduled(cron = "0 0 1 ? * MON-FRI")
+    @Scheduled(cron = "0 24 12 ? * *")
     public AttendLog InitAttendLog(){
         List<Student> students = studentService.itemsOfStudentsByClassId();
 
@@ -143,10 +147,13 @@ public class AttendLogController {
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 
             // 2. 지각의 기준이 되는 시간을 세팅(String 형)
-            String str_standardLateTime = "09:30:00";
+//            String str_standardLateTime = "09:30:00";
+            String str_standardLateTime = "12:26:00";
 
             // 3. 학원이 끝나는 시간을 세팅(String)
-            String str_ClassEndTime = "18:10:00";
+//            String str_ClassEndTime = "18:10:00";
+            String str_ClassEndTime = "12:30:00";
+
 
             // 4. 해당 학생의 가장 최근 출석기록의 시간을 구해온다. ( 조퇴의 기준을 잡기 위함 )
             Date db_AttendLastTime = attendLogService.findLastAttendLog(student.getStudentId()).getEventAttendTime();
@@ -169,18 +176,16 @@ public class AttendLogController {
             // 가장 마지막의 로그의 시간
             Date oldAttendTime = new SimpleDateFormat("HH:mm:ss").parse(formatter.format(db_AttendLastTime));
 
-            System.out.println("newAttendTime>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + newAttendTime);
-            System.out.println("oldAttendTime>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + oldAttendTime);
-
-            long ccc = standardLateTime.getTime();
-            long eee = classEndTime.getTime();
-            System.out.println("ccc ?????????????????????????????????????????????????????????????" + ccc);
-            System.out.println("eee ?????????????????????????????????????????????????????????????" + eee);
-
-            long nnn = newAttendTime.getTime();
-            long ooo = oldAttendTime.getTime();
-            System.out.println("nnn ?????????????????????????????????????????????????????????????" + nnn);
-            System.out.println("ooo ?????????????????????????????????????????????????????????????" + ooo);
+//            System.out.println("newAttendTime>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + newAttendTime);
+//            System.out.println("oldAttendTime>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + oldAttendTime);
+//            long ccc = standardLateTime.getTime();
+//            long eee = classEndTime.getTime();
+//            System.out.println("ccc ?????????????????????????????????????????????????????????????" + ccc);
+//            System.out.println("eee ?????????????????????????????????????????????????????????????" + eee);
+//            long nnn = newAttendTime.getTime();
+//            long ooo = oldAttendTime.getTime();
+//            System.out.println("nnn ?????????????????????????????????????????????????????????????" + nnn);
+//            System.out.println("ooo ?????????????????????????????????????????????????????????????" + ooo);
 
 
             // 8. (지각기준)시간
@@ -201,6 +206,7 @@ public class AttendLogController {
             //    새롭게 eventName 을 세팅
             String lastAttendEventName = attendLogService.selectAttendLog(newAttend.getStudent().getStudentId()).getEventName();
 
+
             // 11. 조건에 따라 입실, 지각, 퇴실, 조퇴, 결석을 결정해줌
             if(lastAttendEventName.equals("INIT")){
                 if(lateStandardTime < 0 ){
@@ -218,13 +224,15 @@ public class AttendLogController {
                 }
             }
             else if(lastAttendEventName.equals("입실")){
-                System.out.println("-----------------------------------------------------------------------------"+absentStandardTime/1000);
-                System.out.println("-----------------------------------------------------------------------------"+earlyLeaveStandardTime/1000);
-                if(absentStandardTime/1000 > 14400 && earlyLeaveStandardTime > 0){
+//                System.out.println("-----------------------------------------------------------------------------"+absentStandardTime/1000);
+//                System.out.println("-----------------------------------------------------------------------------"+earlyLeaveStandardTime/1000);
+//                if(absentStandardTime/1000 > 14400 && earlyLeaveStandardTime > 0){
+                if(absentStandardTime/1000 > 60 && earlyLeaveStandardTime > 0){
                     newAttend.setEventName("조퇴");
                     return attendLogService.createAttendLog(newAttend);
                 }
-                else if(absentStandardTime/1000 > 14400 && earlyLeaveStandardTime < 0){
+//                else if(absentStandardTime/1000 > 14400 && earlyLeaveStandardTime < 0){
+                else if(absentStandardTime/1000 > 60 && earlyLeaveStandardTime < 0){
                     newAttend.setEventName("퇴실");
                     return attendLogService.createAttendLog(newAttend);
                 }
@@ -235,11 +243,13 @@ public class AttendLogController {
             else if(lastAttendEventName.equals("지각")){
                 System.out.println("-----------------------------------------------------------------------------"+absentStandardTime/1000);
                 System.out.println("-----------------------------------------------------------------------------"+earlyLeaveStandardTime/1000);
-                if(absentStandardTime/1000 >= 14400 && earlyLeaveStandardTime > 0){
+//                if(absentStandardTime/1000 >= 14400 && earlyLeaveStandardTime > 0){
+                if(absentStandardTime/1000 >= 60 && earlyLeaveStandardTime > 0){
                     newAttend.setEventName("조퇴");
                     return attendLogService.createAttendLog(newAttend);
                 }
-                else if(absentStandardTime/1000 >= 14400 && earlyLeaveStandardTime < 0) {
+//                else if(absentStandardTime/1000 >= 14400 && earlyLeaveStandardTime < 0) {
+                else if(absentStandardTime/1000 >= 60 && earlyLeaveStandardTime < 0) {
                     newAttend.setEventName("퇴실");
                     return attendLogService.createAttendLog(newAttend);
                 }else{
@@ -258,7 +268,7 @@ public class AttendLogController {
     }
 
     // 3. 매일 23시 50분에 결석 처리
-    @Scheduled(cron = "0 50 23 ? * MON-FRI")
+    @Scheduled(cron = "0 31 12 ? * MON-FRI")
     public int updateEvent(){
         try{
             List<Student> students = studentService.itemsOfStudentsByClassId();
@@ -301,7 +311,8 @@ public class AttendLogController {
                         long timeCal = newLargeTime.getTime() - newSmallTime.getTime();
 
                         // 그 시간차이가 240분(4시간) 보다 작다면 결석
-                        if (timeCal / 1000 < 14400) {
+//                        if (timeCal / 1000 < 14400) {
+                        if (timeCal / 1000 < 60) {
                             attendLogService.updateAttendEventName(str,attendLog.getStudent().getStudentId());
                         }
                     }
