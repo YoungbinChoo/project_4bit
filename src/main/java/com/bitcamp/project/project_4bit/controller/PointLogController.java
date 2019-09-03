@@ -4,7 +4,6 @@ import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
 import com.bitcamp.project.project_4bit.service.PointLogService;
-import org.hibernate.type.PrimitiveCharacterArrayNClobType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

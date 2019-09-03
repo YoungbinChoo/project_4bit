@@ -1,20 +1,17 @@
 package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.Roadmap;
-import com.bitcamp.project.project_4bit.entity.RoadmapExercise;
 import com.bitcamp.project.project_4bit.entity.Student;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.exception.AuthException;
 import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
-import com.bitcamp.project.project_4bit.service.RoadmapExerciseService;
 import com.bitcamp.project.project_4bit.service.RoadmapService;
 import com.bitcamp.project.project_4bit.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

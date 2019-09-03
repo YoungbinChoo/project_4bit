@@ -21,11 +21,6 @@ public class ArticleFileService {
         return articleFileRepository.save(articleFile);
     }
 
-//    @Transactional
-//    public ArticleFile findArticleFile(Long articleId){
-//        return articleFileRepository.findByArticleFileId(articleId);
-//    }
-
     @Transactional
     public List<ArticleFile> findArticleFile(Long articleId){
         return articleFileRepository.findByArticle_ArticleId(articleId);
