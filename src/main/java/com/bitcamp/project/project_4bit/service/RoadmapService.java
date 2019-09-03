@@ -24,7 +24,7 @@ public class RoadmapService {
 
     // 역할    : RoadmapStageNo를 통해 내용 상세보기
     @Transactional(readOnly = true)
-    public Integer itemOfRoadmapAndRoadmapStageNo(Integer roadmapStageNo){
+    public Roadmap itemOfRoadmapAndRoadmapStageNo(Integer roadmapStageNo){
         return roadmapRepository.findByRoadmap_RoadmapStageNo(roadmapStageNo);
     }
 }

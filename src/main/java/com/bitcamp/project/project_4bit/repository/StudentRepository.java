@@ -51,5 +51,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value = "SELECT * FROM student WHERE attend_id =?1", nativeQuery = true)
     Student findOneByAttendId(String attendId);
 
+    // 학생의 마지막로드맵단계를 수정하는 쿼리
+    @Modifying
+    @Query(value = "UPDATE student s SET s.roadmap_last=?2 WHERE s.user_id=?1", nativeQuery = true)
+    int updateRoadmapByUserId(Long userId, int roadmapLast);
 
 }

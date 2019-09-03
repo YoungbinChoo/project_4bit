@@ -18,6 +18,6 @@ public interface RoadmapRepository extends JpaRepository<Roadmap,Integer> {
 
     // 해당 RoadmapStageNo에 해당하는 Roadmap 하나를 조회
     @Query(value = "SELECT * FROM roadmap WHERE roadmap_stage_no=?1", nativeQuery = true)
-    Integer findByRoadmap_RoadmapStageNo(Integer roadmapStageNo);
+    Roadmap findByRoadmap_RoadmapStageNo(Integer roadmapStageNo);
 
 }
