@@ -270,4 +270,54 @@ public class HwArticleController {
 
 
 
+
+
+    ///////////////////////////   자신이 작성한 HwArticle 조회(학생용)   ///////////////////////////
+    // http://localhost:8080/class/assignment/submit/findMyHwArticle?hwId={hwId}
+
+//    @PreAuthorize("hasAnyAuthority('HW_READ')")
+    @RequestMapping(
+            path = "/findMyHwArticle",
+            method = RequestMethod.POST,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public Long findMyHwArticle(Principal principal, @RequestParam(name = "hwId", required = true) Long hwId) {
+
+        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
+        Long userIdOfCurrentUser = user.getUserId();
+        System.out.println("접속한 유저: " + user.getName());
+        System.out.println("찾아낸 hwArticleId: " + hwArticleService.loadHwArticleIdByHwIdAndUserId(hwId, userIdOfCurrentUser));
+
+        return hwArticleService.loadHwArticleIdByHwIdAndUserId(hwId, userIdOfCurrentUser);
+    }
+
+
+
+
+    ///////////////////////////   학생이 작성한 HwArticle 조회(강사용)   ///////////////////////////
+    // http://localhost:8080/class/assignment/submit/findMyHwArticle?hwId={hwId}
+
+    //    @PreAuthorize("hasAnyAuthority('HW_READ')")
+    @RequestMapping(
+            path = "/findMyHwArticleForTeacher",
+            method = RequestMethod.POST,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public Long findMyHwArticleForTeacher(Principal principal, @RequestParam(name = "hwId", required = true) Long hwId, @RequestParam(name = "userId", required = true) Long userId) {
+
+        System.out.println("찾아낸 hwArticleId: " + hwArticleService.loadHwArticleIdByHwIdAndUserId(hwId, userId));
+
+        return hwArticleService.loadHwArticleIdByHwIdAndUserId(hwId, userId);
+    }
+
+
+
+
+
 }

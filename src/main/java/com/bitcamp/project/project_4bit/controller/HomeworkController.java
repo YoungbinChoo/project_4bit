@@ -251,16 +251,6 @@ public class HomeworkController {
 
 
 
-
-
-
-
-
-
-
-
-
-
     // Todo: 권한체크 강화해야 (list에서 한 번 거르지만 여기서 다시 걸러야함. 반이 일치하는지)
     ///////////////////////////   Homework 상세보기(=게시물 상세)   ///////////////////////////
     // http://localhost:8080/class/assignment/view?hwno=1
@@ -373,6 +363,9 @@ public class HomeworkController {
             return "userId 불일치 경고: 본인이 제출한 과제만 삭제할 수 있습니다";
         }
     }
+
+
+
 
 
 

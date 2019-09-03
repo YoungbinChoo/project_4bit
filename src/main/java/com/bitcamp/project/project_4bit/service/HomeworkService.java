@@ -2,6 +2,7 @@ package com.bitcamp.project.project_4bit.service;
 
 import com.bitcamp.project.project_4bit.entity.Homework;
 import com.bitcamp.project.project_4bit.repository.HomeworkRepository;
+import com.bitcamp.project.project_4bit.repository.HwArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,4 +63,5 @@ public class HomeworkService {
     public Homework loadHomeworkByHwId(Long hwId){
         return homeworkRepository.findByHwId(hwId);
     }
+
 }
