@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Date;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController

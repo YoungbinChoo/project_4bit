@@ -2,7 +2,6 @@ package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.ConstraintDefine;
 import com.bitcamp.project.project_4bit.entity.Quiz;
-import com.bitcamp.project.project_4bit.entity.TestGroup;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.ConstraintDefineService;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

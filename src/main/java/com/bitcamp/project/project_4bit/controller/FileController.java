@@ -1,9 +1,5 @@
 package com.bitcamp.project.project_4bit.controller;
 
-import com.bitcamp.project.project_4bit.entity.Article;
-import com.bitcamp.project.project_4bit.entity.ArticleFile;
-import com.bitcamp.project.project_4bit.entity.File;
-import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.ArticleFileService;
 import com.bitcamp.project.project_4bit.service.FileService;
 import com.bitcamp.project.project_4bit.util.UploadFileResponse;
@@ -14,18 +10,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.LongFunction;
 import java.util.stream.Collectors;
 
 
