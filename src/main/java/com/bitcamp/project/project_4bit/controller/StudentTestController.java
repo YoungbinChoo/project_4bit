@@ -176,17 +176,16 @@ public class StudentTestController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public void startStudentTest(
+    public boolean startStudentTest(
             @PathVariable("testId")Long testId,
             @PathVariable("userId")Long userId){
 
         Long studentTestId = studentTestService.readStudentTestId(testId, userId);
 
         if(studentTestId == null){
-            System.out.println("학생 시험 번호가 없습니다");
-//            createStudentTest();
+            return true;
         } else{
-            System.out.println("이미 만들어진 학생 시험 번호가 있습니다 기존 시험 페이지로 이동합니다");
+            return false;
         }
     }
 

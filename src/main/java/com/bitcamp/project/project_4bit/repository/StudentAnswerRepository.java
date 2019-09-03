@@ -28,7 +28,8 @@ public interface StudentAnswerRepository extends JpaRepository<StudentAnswer, Lo
     @Query(value = "UPDATE student_answer SET student_test_answer_content = ?1 WHERE student_test_id = ?2 AND test_quiz_id = ?3", nativeQuery = true)
     int updateStudentAnswer(String studentTestAnswerContent, Long studentTestId, Long testQuizId);
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////////////
 
     @Query(value = "SELECT * FROM student_answer WHERE student_test_id = ?1 ORDER BY test_quiz_id", nativeQuery = true)
     Page<StudentAnswer> FindStudentAnswerListByStudentTestId(Long studentTestId, Pageable pageable);

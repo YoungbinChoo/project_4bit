@@ -47,7 +47,7 @@ public interface StudentTestRepository extends JpaRepository<StudentTest,Long> {
 
     // 역할 : 학생 시험 점수를 구하여 stTestScore에 넣는 메소드를 만들기 위해 필요
     //       testId와 userId로 studnetTestId를 조회
-    @Query(value = "SELECT student_test_id FROM student_test WHERE test_id = ?1 AND user_id = ?2", nativeQuery = true)
+    @Query(value = "SELECT student_test_id FROM student_test WHERE test_id = ?1 AND user_id = ?2 ORDER BY student_test_id DESC limit 1;", nativeQuery = true)
     Long findStudentTestIdByTestIdAndUserId(Long testId, Long userId);
 
 }
