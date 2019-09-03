@@ -4,7 +4,6 @@ package com.bitcamp.project.project_4bit.controller;
 import com.bitcamp.project.project_4bit.entity.Admin;
 import com.bitcamp.project.project_4bit.entity.ClassTeacherLog;
 import com.bitcamp.project.project_4bit.entity.Student;
-import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
 import com.bitcamp.project.project_4bit.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

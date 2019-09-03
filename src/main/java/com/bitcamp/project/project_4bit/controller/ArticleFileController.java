@@ -4,7 +4,6 @@ package com.bitcamp.project.project_4bit.controller;
 import com.bitcamp.project.project_4bit.entity.Article;
 import com.bitcamp.project.project_4bit.entity.ArticleFile;
 import com.bitcamp.project.project_4bit.entity.File;
-import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.ArticleFileService;
 import com.bitcamp.project.project_4bit.service.ArticleService;
 import com.bitcamp.project.project_4bit.service.FileService;
@@ -13,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController

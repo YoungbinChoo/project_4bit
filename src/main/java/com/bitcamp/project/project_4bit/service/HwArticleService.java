@@ -77,4 +77,9 @@ public class HwArticleService {
     public HwArticle loadHwArticleByHwArticleId(Long hwArticleId) {
         return hwArticleRepository.findByHwArticleId(hwArticleId);
     }
+
+    @Transactional(readOnly = true)
+    public Long loadHwArticleIdByHwIdAndUserId(Long hwId, Long userId) {
+        return hwArticleRepository.findByHwIdAndUserId(hwId, userId);
+    }
 }
