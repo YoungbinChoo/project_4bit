@@ -1,12 +1,10 @@
 package com.bitcamp.project.project_4bit.controller;
 
-import com.bitcamp.project.project_4bit.entity.AttendLog;
 import com.bitcamp.project.project_4bit.entity.Student;
 import com.bitcamp.project.project_4bit.entity.Teacher;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.model.RegisterMember;
 import com.bitcamp.project.project_4bit.model.ResultItems;
-import com.bitcamp.project.project_4bit.service.AttendLogService;
 import com.bitcamp.project.project_4bit.service.RegisterMemberService;
 import com.bitcamp.project.project_4bit.service.UserService;
 import com.bitcamp.project.project_4bit.util.PrincipalUtil;
@@ -14,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -88,7 +87,8 @@ public class ManageMemberController {
     public ResultItems<Teacher> listOfTeacher(Principal principal,
                                        @RequestParam(name = "page", defaultValue = "1", required = false) int page,
                                        @RequestParam(name = "size", defaultValue = "15", required = false) int size){
-        Pageable pageable = PageRequest.of(page-1, size);
+//        Pageable pageable = PageRequest.of(page-1, size);
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("teacherId").descending());
         Page<Teacher> teachers = userService.listOfTeacherByAdmin(pageable);
         return new ResultItems<Teacher>(teachers.stream().collect(Collectors.toList()),page, size, teachers.getTotalElements());
     }
@@ -107,7 +107,8 @@ public class ManageMemberController {
             Principal principal,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "15", required = false) int size) {
-        Pageable pageable = PageRequest.of(page-1, size);
+//        Pageable pageable = PageRequest.of(page-1, size);
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("studentId").descending());
         Page<Student> students = userService.listOfStudentByAdmin(pageable);
 
         return new ResultItems<Student>(students.stream().collect(Collectors.toList()),page, size, students.getTotalElements());

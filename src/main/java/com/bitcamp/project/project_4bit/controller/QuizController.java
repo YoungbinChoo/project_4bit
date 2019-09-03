@@ -2,7 +2,6 @@ package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.ConstraintDefine;
 import com.bitcamp.project.project_4bit.entity.Quiz;
-import com.bitcamp.project.project_4bit.entity.TestGroup;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.model.ResultItems;
 import com.bitcamp.project.project_4bit.service.ConstraintDefineService;
@@ -90,6 +89,8 @@ public class QuizController {
             @RequestParam(name = "size", defaultValue = "10", required = false) int size){
 
         Pageable pageable = PageRequest.of(page-1, size);
+//        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("quizId").descending());
+
         Page<Quiz> quizList = quizService.findAllByQuiz(pageable);
 
         return new ResultItems<Quiz>(quizList.stream().collect(Collectors.toList()), page, size, quizList.getTotalElements());

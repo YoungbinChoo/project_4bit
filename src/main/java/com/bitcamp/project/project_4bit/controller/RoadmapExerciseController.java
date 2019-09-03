@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -41,6 +40,8 @@ public class RoadmapExerciseController {
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
+//        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+
         Page<RoadmapExercise> roadmapExerciseList = roadmapExerciseService.listOfExerciseSequence(pageable);
 
         return new ResultItems<RoadmapExercise>(roadmapExerciseList.stream().collect(Collectors.toList()), page, size, roadmapExerciseList.getTotalElements());

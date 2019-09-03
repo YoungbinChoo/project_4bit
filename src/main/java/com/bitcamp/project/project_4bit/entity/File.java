@@ -29,6 +29,10 @@ public class File implements Serializable {
     @Column(name = "file_name")
     private String fileName;
 
+//    // 파일 URL
+//    @Column(name = "file_url")
+//    private String fileUrl;
+
     // file_size 파일크기
     @Column(name = "file_size")
     private Long fileSize;
@@ -76,6 +80,14 @@ public class File implements Serializable {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+
+//    public String getFileUrl() {
+//        return fileUrl;
+//    }
+//
+//    public void setFileUrl(String fileUrl) {
+//        this.fileUrl = fileUrl;
+//    }
 
     public Long getFileSize() {
         return fileSize;

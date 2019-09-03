@@ -1,7 +1,6 @@
 package com.bitcamp.project.project_4bit.controller;
 
 import com.bitcamp.project.project_4bit.entity.User;
-import com.bitcamp.project.project_4bit.repository.UserRepository;
 import com.bitcamp.project.project_4bit.service.LocalUserDetailsService;
 import com.bitcamp.project.project_4bit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

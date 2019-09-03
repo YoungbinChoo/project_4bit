@@ -1,7 +1,5 @@
 package com.bitcamp.project.project_4bit.entity;
 
-import com.bitcamp.project.project_4bit.util.BolleanToInoutConverter;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;

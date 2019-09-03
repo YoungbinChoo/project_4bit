@@ -123,6 +123,8 @@ public class TestGroupController {
             @RequestParam(name = "size", defaultValue = "10", required = false) int size){
 
         Pageable pageable = PageRequest.of(page - 1, size);
+//        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+
 
         /* ------------------------------------- [User 얻기] ------------------------------------- */
         // 1. principal으로 User정보 획득

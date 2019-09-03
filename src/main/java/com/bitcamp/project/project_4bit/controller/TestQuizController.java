@@ -170,6 +170,8 @@ public class TestQuizController {
             @RequestParam(name = "size", defaultValue = "10", required = false) int size){
 
         Pageable pageable = PageRequest.of(page - 1, size);
+//        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("id").descending());
+
         System.out.println("문제리스트_시험_번호 : " + testId);
 
         Page<TestQuiz> listOfTestQuiz =  testQuizService.findAllOfTestQuizByTestId(testId, pageable);
