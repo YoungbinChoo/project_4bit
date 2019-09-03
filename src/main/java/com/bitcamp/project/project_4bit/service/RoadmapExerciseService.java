@@ -29,7 +29,7 @@ public class RoadmapExerciseService {
     @Transactional(readOnly = true)
     public RoadmapExercise itemOfRoadmapExerciseAndExerciseSequence(Integer roadmapStageNo){
         Long[] exerciseArray = roadmapExerciseRepository.findByRoadmapExercise_ExerciseSequence(roadmapStageNo);
-        int randomNum = new Random().nextInt(5);
+        int randomNum = new Random().nextInt(3);
         System.out.println("랜덤생성된 숫자: " + randomNum);
 
         Long selectedExerciseSequence = exerciseArray[randomNum];

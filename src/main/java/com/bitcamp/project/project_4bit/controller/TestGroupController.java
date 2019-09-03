@@ -463,7 +463,7 @@ public class TestGroupController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public int updateScores(@PathVariable("testId") Long testId){
+    public int updateScores(@PathVariable("testId") Long testId){ 
 
         int sum = studentTestService.readSumByTestId(testId);
         System.out.println("총점 : " + sum);
