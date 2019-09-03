@@ -315,9 +315,5 @@ public class HwArticleController {
 
         return hwArticleService.loadHwArticleIdByHwIdAndUserId(hwId, userId);
     }
-
-
-
-
-
+    
 }
