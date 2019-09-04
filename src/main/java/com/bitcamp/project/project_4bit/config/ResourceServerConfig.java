@@ -42,6 +42,7 @@
 package com.bitcamp.project.project_4bit.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
@@ -55,6 +56,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     private static final String ENDPOINT_URL = "http://localhost:8080/oauth/check_token";
     private static final String RESOURCE_ID = "project-4bit-server";
 //    private static final String RESOURCE_ID = "todo-server-rest-api";
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/hdfhsfhsfsf/**")
+                .authenticated();
+    }
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {

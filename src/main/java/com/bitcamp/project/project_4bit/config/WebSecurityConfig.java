@@ -124,6 +124,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(
+                        "/fileupload/files/**",
                         "/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources",

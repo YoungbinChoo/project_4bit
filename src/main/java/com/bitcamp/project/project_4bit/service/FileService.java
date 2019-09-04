@@ -66,7 +66,7 @@ public class FileService {
 
             // 동일한 파일이라도 시간에 따라 파일명이 바뀌게 함
             String replaceFileName = hashingUtil.sha256Encoding(fileName + LocalDateTime.now());  //  파일명 + 시간을 해서 동일한 파일명이 들어와도 중복을 방지
-            Files.move(targetLocation, targetLocation.resolveSibling(replaceFileName));   // 파일명 변경(원본 파일명 -> 암호화된 파일명)
+            Files.move(targetLocation, targetLocation.resolveSibling(file.getOriginalFilename()));   // 파일명 변경(원본 파일명 -> 암호화된 파일명)
 
 
             // 파일명 변경 후 DB에 매핑
