@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/class/assignment/submit")
@@ -42,8 +44,6 @@ public class HwArticleController {
 
     @Autowired
     private PointLogService pointLogService;
-
-
 
 
     // Todo: 학생 아니어도 가능?, 현재 유효한 과제인가 검증 필요
@@ -91,8 +91,6 @@ public class HwArticleController {
     }
 
 
-
-
     // Todo : 관리자도 상세보기가 가능하게 해야하나?
     ///////////////////////////   HwArticle 상세보기(=제출한 과제 확인)   ///////////////////////////
     // http://localhost:8080/class/assignment/submit/view?hwArticleId={hwArticleId}
@@ -107,7 +105,7 @@ public class HwArticleController {
     )
     public HwArticle retrieve(Principal principal,
                               @RequestParam(name = "hwArticleId", required = true) Long hwArticleId
-                              ) {
+    ) {
 
         // 권한 검증 필요
         // 학생은 자기자신이 제출한 과제물만, 강사는 자기반의 학생들이 제출한 모든 과제를 볼 수 있어야 함
@@ -122,13 +120,12 @@ public class HwArticleController {
         Long classIdOfHwArticle = hwArticleService.loadClassIdByHwArticleId(hwArticleId);
 
         // 2-1. 학생인 경우
-        if(user.getRole().getRoleCode().equals("role_student")) {
+        if (user.getRole().getRoleCode().equals("role_student")) {
             // 현재 접근하려는 사람의 userId가 기존에 과제 제출한 사람의 userId와 동일한 경우에만 열람 허용
-            if(userIdOfCurrentUser == userIdOfHwArticle){
+            if (userIdOfCurrentUser == userIdOfHwArticle) {
                 System.out.println("학생 신원 조회 성공");
                 return hwArticleService.itemOfHwArticle(hwArticleId).get();
-            }
-            else {
+            } else {
                 // userId 불일치 경고: 본인의 과제 제출물만 볼 수 있습니다
                 System.out.println("에러: 유저번호 " + userIdOfCurrentUser + "번 유저(학생)가 타인의 제출물을 열람 시도하였습니다");
                 return null;
@@ -136,14 +133,13 @@ public class HwArticleController {
         }
 
         // 2-2. 강사인 경우
-        else if(user.getRole().getRoleCode().equals("role_teacher")) {
+        else if (user.getRole().getRoleCode().equals("role_teacher")) {
             // 본인이 맡은 반 학생의 과제만 열람 가능(= 열람 요청자와 최초 작성자의 classId 일치여부 확인)
 
-            if(classIdOfCurrentUser == classIdOfHwArticle) {
+            if (classIdOfCurrentUser == classIdOfHwArticle) {
                 System.out.println("강사 신원 조회 성공");
                 return hwArticleService.itemOfHwArticle(hwArticleId).get();
-            }
-            else {
+            } else {
                 // classId 불일치 경고: 강사는 자신의 담당반 학생들의 과제 제출물만 볼 수 있습니다
                 System.out.println("유저번호 " + userIdOfCurrentUser + "번 유저(강사)가 타반 학생의 제출물을 열람 시도하였습니다");
                 return null;
@@ -157,7 +153,6 @@ public class HwArticleController {
             return null;
         }
     }
-
 
 
     // Todo : 관리자는 본인이 쓴게 아니어도 수정이 가능하게 해야하나?
@@ -186,33 +181,30 @@ public class HwArticleController {
         Long userIdOfHwArticle = hwArticleService.loadUserIdByHwArticleId(hwArticleId);
 
         // 2-1. 학생인 경우
-        if(user.getRole().getRoleCode().equals("role_student")) {
+        if (user.getRole().getRoleCode().equals("role_student")) {
             // 현재 접근하려는 사람의 userId가 기존에 과제 제출한 사람의 userId와 동일한 경우에만 수정 허용
-            if(userIdOfCurrentUser == userIdOfHwArticle){
+            if (userIdOfCurrentUser == userIdOfHwArticle) {
                 System.out.println("작성자 신원 일치 확인");
                 // 업데이트 수행, 성공여부 0 or 1로 받아옴
                 int isUpdateSuccess = hwArticleService.updateHwArticle(hwArticleId, hwArticle);
 
-                if(isUpdateSuccess==0)
+                if (isUpdateSuccess == 0)
                     return "수정에 실패했습니다";
-                else if(isUpdateSuccess==1)
+                else if (isUpdateSuccess == 1)
                     return "성공적으로 수정하였습니다";
                 else
                     return "알 수 없는 오류";
-            }
-            else {
+            } else {
                 // userId 불일치 경고: 본인의 과제 제출물만 볼 수 있습니다
                 System.out.println("에러: 유저번호 " + userIdOfCurrentUser + "번 유저(학생)가 타인(" + userIdOfHwArticle + "번 유저)의 제출물을 수정 시도하였습니다");
                 return "userId 불일치 경고: 본인이 제출한 과제만 수정할 수 있습니다";
             }
-        }
-        else {
+        } else {
             // 신원 불일치 경고: 학생이 아니면 수정메뉴 진입 불가능
             System.out.println("에러: 유저번호 " + userIdOfCurrentUser + "번 유저(비학생)가 학생(" + userIdOfHwArticle + "번 유저)의 제출물을 수정 시도하였습니다");
             return "신원 불일치 경고: 제출한 과제 수정은 학생만 가능합니다";
         }
     }
-
 
 
     // Todo : 관리자는 본인이 쓴게 아니어도 삭제가 가능하게 해야하나?
@@ -239,28 +231,25 @@ public class HwArticleController {
         Long userIdOfHwArticle = hwArticleService.loadUserIdByHwArticleId(hwArticleId);
 
         // 2-1. 학생인 경우
-        if(user.getRole().getRoleCode().equals("role_student")) {
+        if (user.getRole().getRoleCode().equals("role_student")) {
             // 현재 접근하려는 사람의 userId가 기존에 과제 제출한 사람의 userId와 동일한 경우에만 수정 허용
-            if(userIdOfCurrentUser == userIdOfHwArticle){
+            if (userIdOfCurrentUser == userIdOfHwArticle) {
                 System.out.println("학생 신원 조회 성공");
                 // 삭제 수행, 리턴없음(void)
                 hwArticleService.deleteHwArticle(hwArticleId);
 
                 // 삭제 후 해당 hwId에 해당하는 항목이 DB에 남아있는지 확인(잘 지워졌는지)
-                if(hwArticleService.itemOfHwArticle(hwArticleId).isPresent()==false){
+                if (hwArticleService.itemOfHwArticle(hwArticleId).isPresent() == false) {
                     return hwArticleId + "번 과제 제출물이 성공적으로 삭제됐습니다";
-                }
-                else {
+                } else {
                     return "과제 제출물 삭제에 실패했습니다";
                 }
-            }
-            else {
+            } else {
                 // userId 불일치 경고: 본인의 과제 제출물만 삭제할 수 있습니다
                 System.out.println("에러: 유저번호 " + userIdOfCurrentUser + "번 유저(학생)가 타인(" + userIdOfHwArticle + "번 유저)의 제출물을 삭제 시도하였습니다");
                 return "userId 불일치 경고: 본인이 제출한 과제만 삭제할 수 있습니다";
             }
-        }
-        else {
+        } else {
             // 신원 불일치 경고: 학생이 아니면 수정메뉴 진입 불가능
             System.out.println("에러: 유저번호 " + userIdOfCurrentUser + "번 유저(비학생)가 학생(" + userIdOfHwArticle + "번 유저)의 제출물을 삭제 시도하였습니다");
             return "신원 불일치 경고: 제출한 과제 삭제는 학생만 가능합니다";
@@ -268,14 +257,10 @@ public class HwArticleController {
     }
 
 
-
-
-
-
     ///////////////////////////   자신이 작성한 HwArticle 조회(학생용)   ///////////////////////////
     // http://localhost:8080/class/assignment/submit/findMyHwArticle?hwId={hwId}
 
-//    @PreAuthorize("hasAnyAuthority('HW_READ')")
+    //    @PreAuthorize("hasAnyAuthority('HW_READ')")
     @RequestMapping(
             path = "/findMyHwArticle",
             method = RequestMethod.POST,
@@ -284,15 +269,27 @@ public class HwArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Long findMyHwArticle(Principal principal, @RequestParam(name = "hwId", required = true) Long hwId) {
-
+    public Map<Boolean,Long> findMyHwArticle(Principal principal, @RequestParam(name = "hwId", required = true) Long hwId) {
+        // 반환 형태가 있으면 Long  없으면 boolean형으로 다름
+        // 없을 때 프론트에서 Long을 받아야 하는데 boolean형으로 들어오니까 임시로 값을 넣어주는 것 같다
+        // boolean으로 지정 시 >> 상세보기 불가
+        // Long으로 지정 시 >> 리액트에서 Long을 비교할 수 없음
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
         Long userIdOfCurrentUser = user.getUserId();
         System.out.println("접속한 유저: " + user.getName());
         System.out.println("찾아낸 hwArticleId: " + hwArticleService.loadHwArticleIdByHwIdAndUserId(hwId, userIdOfCurrentUser));
 
-        return hwArticleService.loadHwArticleIdByHwIdAndUserId(hwId, userIdOfCurrentUser);
+        Long hwArticleId = hwArticleService.loadHwArticleIdByHwIdAndUserId(hwId, userIdOfCurrentUser);
+        Map<Boolean, Long> resultMap = new HashMap<>();
+        if (hwArticleId != null) {
+            resultMap.put(true, hwArticleId);
+            return  resultMap;
+        } else {
+            resultMap.put(false, 0L);
+            return  resultMap;
+        }
     }
+
 
 
 
@@ -309,11 +306,19 @@ public class HwArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Long findMyHwArticleForTeacher(Principal principal, @RequestParam(name = "hwId", required = true) Long hwId, @RequestParam(name = "userId", required = true) Long userId) {
+    public Map<Boolean, Long> findMyHwArticleForTeacher(Principal principal, @RequestParam(name = "hwId", required = true) Long hwId, @RequestParam(name = "userId", required = true) Long userId) {
 
         System.out.println("찾아낸 hwArticleId: " + hwArticleService.loadHwArticleIdByHwIdAndUserId(hwId, userId));
 
-        return hwArticleService.loadHwArticleIdByHwIdAndUserId(hwId, userId);
+        Long hwArticleId = hwArticleService.loadHwArticleIdByHwIdAndUserId(hwId, userId);
+        Map<Boolean, Long> resultMap = new HashMap<>();
+        if (hwArticleId != null) {
+            resultMap.put(true, hwArticleId);
+            return  resultMap;
+        } else {
+            resultMap.put(false, 0L);
+            return  resultMap;
+        }
     }
     
 }

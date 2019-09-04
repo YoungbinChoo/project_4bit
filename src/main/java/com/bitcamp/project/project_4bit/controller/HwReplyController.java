@@ -121,17 +121,20 @@ public class HwReplyController {
 
         // 2. Pageable 파트
 //        Pageable pageable = PageRequest.of(page - 1, size);
-        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("hwReplyId").descending());
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("hw_reply_id").descending());
 
-
+        System.out.println("번호 : " + hwArticleId);
         // 3. hwReplyService에 hwArticleId 넘겨주고 조건에 부합하는(=hwArticleId가 일치하는) 댓글만 받아옴
         Page<HwReply> hwReplyList = hwReplyService.listOfHwReplyByHwArticleId(hwArticleId, pageable);
         System.out.println("해당 hwArticle에 달린 댓글갯수: " + hwReplyList.getTotalElements() + "개");
 
     //        // 4. hwReplyId로 댓글 원작성자의 userId 받아오기
 //        Long userIdOfHwReply = hwReplyService.loadHwReplyByHwReplyId(hwReplyId).getUser().getUserId();
-
-        return new ResultItems<HwReply>(hwReplyList.stream().collect(Collectors.toList()), page, size, hwReplyList.getTotalElements());
+        if(hwReplyList != null) {
+            return new ResultItems<HwReply>(hwReplyList.stream().collect(Collectors.toList()), page, size, hwReplyList.getTotalElements());
+        } else {
+            return null;
+        }
     }
 
 
