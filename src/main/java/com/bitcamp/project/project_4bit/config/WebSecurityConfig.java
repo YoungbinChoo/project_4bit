@@ -132,7 +132,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/webjars/**",
                         "/swagger-resources/configuration/ui",
                         "/swagger-ui.html",
-                        "/swagger-resources/configuration/security"
+                        "/swagger-resources/configuration/security",
+                        "/fileupload/files/{fileName:.+}"
                 ).permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
                 .anyRequest().authenticated()

@@ -121,7 +121,7 @@ public class HwReplyController {
 
         // 2. Pageable 파트
 //        Pageable pageable = PageRequest.of(page - 1, size);
-        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("hwReplyId").descending());
+        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("hw_Reply_id").descending());
 
 
         // 3. hwReplyService에 hwArticleId 넘겨주고 조건에 부합하는(=hwArticleId가 일치하는) 댓글만 받아옴
