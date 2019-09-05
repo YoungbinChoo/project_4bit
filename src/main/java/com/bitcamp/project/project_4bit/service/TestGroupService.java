@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -71,7 +72,7 @@ public class TestGroupService {
 
     // 역할 : 시험 수정
     @Transactional
-    public int updateTestGroup(String testName, String testStartTime, String testEndTime, String testDescription, Long testId, Long classId){
+    public int updateTestGroup(String testName, Date testStartTime, Date testEndTime, String testDescription, Long testId, Long classId){
 
         return testGroupRepository.updateTestGroup(testName, testStartTime, testEndTime, testDescription, testId, classId);
     }

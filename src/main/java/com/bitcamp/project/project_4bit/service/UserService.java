@@ -241,4 +241,21 @@ public class UserService {
             return 0;
         }
     }
+
+
+    @Transactional(readOnly = true)
+    public User loadUserByNameAndPhone(String name, String phone) {
+        return userRepository.findByNameAndPhone(name, phone);
+    }
+
+    @Transactional(readOnly = true)
+    public User loadUserByUserId(Long userId) {
+        return userRepository.findByUserId(userId);
+    }
+
+    @Transactional
+    public int updateUserPassword(Long userId, String tempPassword) {
+        return userRepository.updateUserPassword(userId, tempPassword);
+    }
+
 }

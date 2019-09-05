@@ -86,5 +86,4 @@ public class StudentTestService {
     public Long readStudentTestId(Long testId, Long userId){
         return studentTestRepository.findStudentTestIdByTestIdAndUserId(testId, userId);
     }
-
 }

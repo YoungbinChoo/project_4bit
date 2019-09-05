@@ -16,4 +16,7 @@ public interface HwArticleRepository extends JpaRepository<HwArticle, Long> {
     @Modifying
     @Query(value = "UPDATE hw_article h SET h.hw_contents=?2, h.hw_update_date=now() WHERE h.hw_article_id =?1", nativeQuery = true)
     int updateHwArticle(Long hwArticleId, String newHwContents);
+
+    @Query(value = "SELECT hw_article_id FROM hw_article WHERE hw_id=?1 AND user_id=?2", nativeQuery = true)
+    Long findByHwIdAndUserId(Long hwId, Long UserId);
 }

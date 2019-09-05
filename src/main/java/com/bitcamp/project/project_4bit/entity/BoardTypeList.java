@@ -1,7 +1,6 @@
 package com.bitcamp.project.project_4bit.entity;
 
 
-import com.bitcamp.project.project_4bit.util.BooleanToStringConverter;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;

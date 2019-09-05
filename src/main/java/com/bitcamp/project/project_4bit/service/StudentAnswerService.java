@@ -4,6 +4,8 @@ import com.bitcamp.project.project_4bit.entity.StudentAnswer;
 import com.bitcamp.project.project_4bit.entity.TestGroup;
 import com.bitcamp.project.project_4bit.repository.StudentAnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,5 +43,13 @@ public class StudentAnswerService {
     @Transactional
     public int updateStudentAnswer(String studentTestAnswerContent, Long studentTestId, Long testQuizId){
         return studentAnswerRepository.updateStudentAnswer(studentTestAnswerContent, studentTestId, testQuizId);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // 역할 : 학생 답 리스트 출력
+    @Transactional
+    public Page<StudentAnswer> ListOfStudentAnswer(Long studentTestId, Pageable pageable){
+        return studentAnswerRepository.FindStudentAnswerListByStudentTestId(studentTestId , pageable);
     }
 }

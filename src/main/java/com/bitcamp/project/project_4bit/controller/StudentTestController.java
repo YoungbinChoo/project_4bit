@@ -65,28 +65,21 @@ public class StudentTestController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 역할 : 학생들 점수 확인
-    // 엔드포인트 : http://localhost:8080/study/endedtest/showscore/testno={testno}
-    @PreAuthorize("hasAnyAuthority('STEST_READ')")
+    // 엔드포인트 : http://localhost:8080/study/endedtest/showscore/userId={userId}/testId={testId}
+    @PreAuthorize("hasAnyAuthority('TEST_READ')")
     @RequestMapping(
             method = RequestMethod.GET,
-            path = "/study/endedtest/showscore/testId={testId}",
+            path = "/study/endedtest/showscore/userId={userId}/testId={testId}",
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             }
     )
     public int showTestScore(
-            Principal principal,
+            @PathVariable("userId") Long userId,
             @PathVariable("testId") Long testId) {
 
         System.out.println("조회_시험_번호 : " + testId);
-
-        /* ------------------------------------- [userId 얻기] ------------------------------------- */
-        // 1. principal을 이용해 user 전체 정보를 얻음
-        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
-
-        // 2. user 정보에서 userId를 얻음
-        Long userId = user.getUserId();
 
         System.out.println("조회_유저_번호 : " + userId);
 
@@ -183,17 +176,16 @@ public class StudentTestController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public void startStudentTest(
+    public boolean startStudentTest(
             @PathVariable("testId")Long testId,
             @PathVariable("userId")Long userId){
 
         Long studentTestId = studentTestService.readStudentTestId(testId, userId);
 
         if(studentTestId == null){
-            System.out.println("학생 시험 번호가 없습니다");
-//            createStudentTest();
+            return true;
         } else{
-            System.out.println("이미 만들어진 학생 시험 번호가 있습니다 기존 시험 페이지로 이동합니다");
+            return false;
         }
     }
 

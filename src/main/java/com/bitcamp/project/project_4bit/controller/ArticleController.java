@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,23 +34,6 @@ import java.util.stream.Collectors;
 * 수정내용
 각 CRUD 에 대해서 권한 체크를 해서 해당 권한이 없거나 유저 정보가 불일치 한다면 CRUD 불가
 * */
-
-
-// ================   param 으로 넘어오는 Article 구성 ====================================================
-// 1. article_id : 사용자입력 X, Auto_Increment
-// 2. article_create_date : 사용자입력 X, 저장한 순간의 시간이 DB에 저장
-// 3. article_update_date : 사용자입력 X, 수정한 순간의 시간이 DB에 저장(최초 저장시에는 생성시간과 동일)
-// 4. article_hits : 사용자 입력 X, Todo : 누르면 자동으로 증가되도록 로직을 만들어줘야됨
-// 5. article_like : 사용자 입력 X, Todo : 누르면 자동으로 증가되도록 로직을 만들어줘야됨
-// 6. group_id : 사용자 입력 X,
-// 7. depth : 사용자 입력 X,
-// 8. sequence : 사용자 입력 X
-// 9. article_tile : 사용자 입력.
-// 10. article_contents : 사용자 입력.
-// 11. user_id : 사용자 입력 X, principal 을 통해서 지정
-// 12. board_id : 사용자 입력 X, Client 의 URL 에서 /board 다음의 내용을 받아옴.
-// =======================================================================================================
-
 
 
 @RestController
@@ -76,9 +58,6 @@ public class ArticleController {
     //          어느 게시판에 게시글을 쓸 건지 정해주어야되므로 setBoardTypeList()를 사용하여 설정해줍니다.
     //          selectBoardId() 는 BoardTypeListService 안에 있습니다.
     // EndPoint :  http://localhost:8080/board/class_1_board/write
-
-
-
     @PreAuthorize("hasAnyAuthority('NOTICE_WRITE','JOB_WRITE','PRO_WRITE','CBOARD_WRITE','CNOTICE_WRITE','LIBRARY_WRITE')")
     @RequestMapping(
             path = "/{boardId}/write",

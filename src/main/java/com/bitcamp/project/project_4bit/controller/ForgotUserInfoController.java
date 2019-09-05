@@ -3,6 +3,7 @@ package com.bitcamp.project.project_4bit.controller;
 import com.bitcamp.project.project_4bit.entity.User;
 import com.bitcamp.project.project_4bit.repository.UserRepository;
 import com.bitcamp.project.project_4bit.service.MailService;
+import com.bitcamp.project.project_4bit.service.UserService;
 import com.bitcamp.project.project_4bit.util.RandomKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,6 +27,9 @@ public class ForgotUserInfoController {
     private UserRepository userRepository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private RandomKeyGenerator randomKeyGenerator;
 
 
@@ -41,7 +45,8 @@ public class ForgotUserInfoController {
         System.out.println("입력받은 이름: " + name + ", 입력받은 연락처: " + phone);
 
         // 사용자가 입력한 이름/연락처 정보가 유효한지 확인
-        User user = userRepository.findByNameAndPhone(name, phone);
+        User user = userService.loadUserByNameAndPhone(name, phone);
+//                userRepository.findByNameAndPhone(name, phone);
 
         Map<String,String> result =new HashMap<>();
 
@@ -90,7 +95,7 @@ public class ForgotUserInfoController {
 
             // 생성된 임시 비밀번호로 DB상 회원정보 변경
             Long userId = user.getUserId();
-            int result = userRepository.updateUserPassword(userId, tempPassword);
+            int result = userService.updateUserPassword(userId, tempPassword);
 
             // 보낼 이메일 제목
             String msgSubject = "4Bit Portal Team: 임시 비밀번호 발급 안내";
