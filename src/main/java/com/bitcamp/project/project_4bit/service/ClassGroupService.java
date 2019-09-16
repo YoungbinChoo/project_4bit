@@ -100,8 +100,8 @@ public class ClassGroupService {
 
     // 반 리스트를 출력
     @Transactional
-    public Page<ClassTeacherLog> listOfClassGroup(Pageable pageable){
-        return classTeacherLogRepository.findAll_LastClassGroupLog(pageable);
+    public Page<ClassGroup> listOfClassGroup(Pageable pageable){
+        return classGroupRepository.findAll(pageable);
     }
 
 }

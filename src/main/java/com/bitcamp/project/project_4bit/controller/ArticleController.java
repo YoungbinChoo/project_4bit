@@ -71,10 +71,6 @@ public class ArticleController {
     private UserIdToClassIdConverter userIdToClassIdConverter;
 
     // 게시물 작성
-    // input : URL 에서의 boardId 를 매개변수 넘겨서 service 로 넘겨서 조건으로 사용할 수 있게 해줍니다.
-    // 참고사항: 전체공지, 취업, 프로젝트영상, 반별자유게시물, 반별공지, 반별자료 에 대한 쓰기 권한이 필요하다.
-    //          어느 게시판에 게시글을 쓸 건지 정해주어야되므로 setBoardTypeList()를 사용하여 설정해줍니다.
-    //          selectBoardId() 는 BoardTypeListService 안에 있습니다.
     // EndPoint :  http://localhost:8080/board/class_1_board/write
 
 
