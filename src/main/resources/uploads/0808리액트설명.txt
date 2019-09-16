@@ -1,0 +1,81 @@
+상태변화는 props로 전달
+-전달할 때 부모에 부모에 부모를 타고 가야해서 전달하고싶은만큼 n번만큼 알려줘야해
+그러니까 redux를 사용
+->Redux는 Global이야 
+App State
+브로드캐스팅으로 바로 꼭대기(App state)로 콜
+각각의 component는 서로 상관이없어(local이니까)
+근데 App state가 바뀌면 다른건 다 바뀌어 (global)
+
+리덕스가 스토어 정의하고 provider에 넣으면
+provider 안에 있는 건 모두 관리된다 (provider가 실제론 app 위에 있는 놈)
+
+리덕스에 state는 전체 프로그램의 state
+
+-state 만들 때
+1.리듀서
+-상태를 운영하는 머신
+리듀서가 상태를 어떤 상태가 들어갈지 설계 (어떻게 combine할지)
+combine리듀서 한 결과가 state가 어떻게 되는지
+상태가 이상하면 리듀서를 봐야한다 =>그래서 우리가 logger를 쓰는거야
+logger는 previous, 현재, after를 보여준다
+a에서 b로 상태가 변경되는 걸 action이라고 한다(항상 같은 input에 같은 output 나오는 순수함수)
+리듀서는 순수함수
++)functional 프로그램의 근간은 pure funcion
+  -immutable : 같은 입력에 항상 같은 결과물
+
+logger를 항상 넣어놓고 리듀서 확인
+
+2.초기상태
+
+3.미들웨어
+
+- 둘 중 하나의 방식을 사용해야한다
+1)
+const state = this.state
+
+2)
+this.setstate({
+	...state,
+	items : {}
+});
+
+이렇게 하지 않으면 상태가 덮어져서 이전까지에서 업데이트가 아니라 하나만 남는다
+
+=> local은 각각의 컴포넌트 
+     전역을 위해 편리하게 flex 그리고 발달된 게 리덕스 
+
+-
+(스토어의 )state = {
+	Auth : {} //각각의 값을 만드는게 리듀서야
+	cart : (state, action) => ()
+}
+
+스토어에 state가 추가될때마다 리듀서가 추가된다
+추가될떄마다 combine해주면된다
+
+cart : cartReducer(state, actions) => ();
+
+cartReducer인데 이름 지어주고 싶으면 cart: 이렇게 추가해서 지어준거야
+
+
+-
+axios Middleware -> logger -> thunk -> reducer
+이 순서로 간다
+axios가 logger 뒤에있어도 되지만 그러면 logger가 안찍혀
+
+-
+fetch
+axios
+ajax
+->이걸 reducer에 전달하기 위한 잡무를 axiosMiddleware가 해준다
+
+interaction를 통해서 header를 다른걸 넣어줘도 되지만
+어려우니까,,
+하나가 아닌 여러 api를 데리고올때는 middleware를 여러개 만들거나
+여전히 fetch,axios,ajax를 사용해서 호출해야한다
+
+-
+
+
+

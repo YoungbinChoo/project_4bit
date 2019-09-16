@@ -72,10 +72,10 @@ public class AttendLogController {
     }
 
 
-
+    // #1 INIT (서버켜고 +1분으로 설정)
     // 1. 매일 01:00 에 모든 학생의 출석상태를 INIT 으로 등록
 //    @Scheduled(cron = "0 0 1 ? * MON-FRI")
-    @Scheduled(cron = "0 30 18 ? * *")
+    @Scheduled(cron = "00 02 10 ? * *")
     public AttendLog InitAttendLog(){
         List<Student> students = studentService.itemsOfStudentsByClassId();
 
@@ -114,6 +114,7 @@ public class AttendLogController {
 
         // 4. 가장 최근의 일일출석로그카운트를 찾아온 후 +1 한 다음 세팅
         int lastCount = attendLogService.findLastAttendLog(newAttend.getStudent().getStudentId()).getDailyAttendCount();
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+ lastCount);
         newAttend.setDailyAttendCount(lastCount+1);
 
 
@@ -122,13 +123,15 @@ public class AttendLogController {
             // HH : 시간 mm : 분 ss : 초
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 
+            // #2 지각 기준시간 세팅 (시작 후 +3분)
             // 2. 지각의 기준이 되는 시간을 세팅(String 형)
 //            String str_standardLateTime = "09:30:00";
-            String str_standardLateTime = "18:32:00";
+            String str_standardLateTime = "12:10:00";
 
+            // #3 조퇴 기준시간 세팅 (시작 후 +5분)
             // 3. 학원이 끝나는 시간을 세팅(String)
 //            String str_ClassEndTime = "18:10:00";
-            String str_ClassEndTime = "18:34:00";
+            String str_ClassEndTime = "12:12:00";
 
 
             // 4. 해당 학생의 가장 최근 출석기록의 시간을 구해온다. ( 조퇴의 기준을 잡기 위함 )
@@ -291,9 +294,10 @@ public class AttendLogController {
         return null;
     }
 
+    // #4 매일 자정 일괄 출석결과 처리 (시작시간 +7분)
     // 3. 매일 23시 50분에 결석 처리
 //    @Scheduled(cron = "0 50 23 ? * MON-FRI")
-    @Scheduled(cron = "0 35 18 ? * MON-FRI")
+    @Scheduled(cron = "0 12 12 ? * MON-FRI")
     public int updateEvent(){
         try{
             List<Student> students = studentService.itemsOfStudentsByClassId();

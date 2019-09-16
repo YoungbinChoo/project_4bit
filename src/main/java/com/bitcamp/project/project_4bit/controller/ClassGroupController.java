@@ -53,7 +53,7 @@ public class ClassGroupController {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public ResultItems<ClassTeacherLog> listOfClass(
+    public ResultItems<ClassGroup> listOfClass(
             Principal principal,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
@@ -62,10 +62,10 @@ public class ClassGroupController {
 
         Pageable pageable = PageRequest.of(page -1, size);
 //        Pageable pageable = PageRequest.of((page < 1? 0 : page-1),(size<0?10:size), Sort.by("classId").descending());
-        Page<ClassTeacherLog> classList = classGroupService.listOfClassGroup(pageable);
+        Page<ClassGroup> classList = classGroupService.listOfClassGroup(pageable);
 
         if(user.getRole().getRoleCode().equals("role_admin")){
-            return new ResultItems<ClassTeacherLog>(classList.stream().collect(Collectors.toList()), page, size, classList.getTotalElements());
+            return new ResultItems<ClassGroup>(classList.stream().filter(t->!t.getClassName().equals("관리용 데이터")).collect(Collectors.toList()), page, size, classList.getTotalElements());
         }
         return null;
     }
